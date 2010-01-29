@@ -1,5 +1,5 @@
 
-package radioplaylist;
+package src;
 
 import javax.swing.JFrame;
 
