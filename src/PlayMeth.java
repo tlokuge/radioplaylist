@@ -23,22 +23,10 @@ public class PlayMeth
         playlist = new ArrayList<Song>();
         totalTime = remainTime = 0;
     }
-    /**
-     * checks for existing song
-     */
-    public boolean songExists(Song song)
-    {
-        if(!playlist.isEmpty())
-        {
-            for(int i = 0; i<playlist.size(); i++)
-                return(song.equals(playlist.get(i)));
-        }
-        return false;
-    }
             
     public void addSong(Song song)
     {
-        if(!songExists(song))
+        if(!playlist.contains(song))
         {
             playlist.add(song);
             totalTime+=song.getTime();
@@ -48,7 +36,7 @@ public class PlayMeth
 
     public int deleteSong(Song song)
     {
-        if(songExists(song))
+        if(playlist.contains(song))
         {
             for(int i = 0; i<playlist.size(); i++)
             {
@@ -69,14 +57,27 @@ public class PlayMeth
         playlist.clear();
     }
 
-    public void swapSongs(Song song1, Song song2)
+    public void shiftUp(Song song1, Song song2)
     {
-        Song temp;
-        temp = song1;
-        song1 = song2;
-        song2 = temp;
+        if(song1!= playlist.get(0))//not first song in playlist
+        {
+            Song temp;
+            temp = song1;
+            song1 = song2;
+            song2 = temp;
+        }
     }
 
+    public void shiftDn(Song song1, Song song2)
+    {
+        if(song1!= playlist.get(playlist.size()-1))//not last song in playlist
+        {
+            Song temp;
+            temp = song1;
+            song1 = song2;
+            song2 = temp;
+        }
+    }
     public boolean safeZone()
     {
         return !(totalTime < 43*60 /**seconds*/ || totalTime > 43*48 /**seconds*/);

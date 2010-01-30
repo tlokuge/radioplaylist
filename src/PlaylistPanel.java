@@ -39,7 +39,7 @@ public class PlaylistPanel extends JComponent
     JButton delete_button;
     JButton shuffle_button;
     JButton clear_button;
-
+    
     public PlaylistPanel()
     {
         middle_panel        = new JPanel();
@@ -144,5 +144,77 @@ public class PlaylistPanel extends JComponent
         mid_mid_panel.add(shuffle_button);
         mid_mid_panel.add(clear_button);
         mid_mid_panel.setVisible(true);
+    }
+    
+    //calling all playlist methods
+    PlayMeth method = new PlayMeth();
+    
+    private enum ButtonType { MVUP, MVDN , SAVE , LOAD , ADD, REMOVE, RANDOMIZE, CLEAR; }
+    
+    private class ButtonListener implements ActionListener
+    {
+        private ButtonType type;
+
+        public ButtonListener(ButtonType type)
+        {
+            this.type = type;
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            switch(type)
+            {
+                case MVUP:      doMvUpButtonAction(e);     break;
+                case MVDN:      doMvDnButtonAction(e);     break;
+                case SAVE:      doSaveButtonAction(e);     break;
+                case LOAD:      doLoadButtonAction(e);     break;
+                case ADD:       doAddButtonAction(e);      break;
+                case REMOVE:    doRemoveButtonAction(e);   break;
+                case RANDOMIZE: doRandomButtonAction(e);   break;
+                case CLEAR:     doClearButtonAction(e);    break;
+            }
+        }
+
+      
+       
+        private void doMvUpButtonAction(ActionEvent e)
+        {
+            //method.shiftUp(
+        }
+
+        private void doMvDnButtonAction(ActionEvent e)
+        {
+
+        }
+
+        private void doSaveButtonAction(ActionEvent e)
+        {
+
+        }
+
+        private void doLoadButtonAction(ActionEvent e)
+        {
+
+        }
+
+        private void doAddButtonAction(ActionEvent e)
+        {
+            
+        }
+        
+        private void doRemoveButtonAction(ActionEvent e)
+        {
+            
+        }
+        
+        private void doRandomButtonAction(ActionEvent e)
+        {
+        
+        }
+        
+        private void doClearButtonAction(ActionEvent e)
+        {
+            
+        }
     }
 }
