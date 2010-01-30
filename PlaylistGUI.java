@@ -26,8 +26,8 @@ public class PlaylistGUI
 
         library_frame.setLocation(600,0);
             
-        library_frame.setTitle(" Song Playlist");
-        control_frame.setTitle(" Playlist Controls");
+        library_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
+        control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
         
         play_panel    = new PlaylistPanel();
         control_panel = new ControlPanel(library_frame);

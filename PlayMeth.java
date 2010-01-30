@@ -1,6 +1,7 @@
 package radioplaylist;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
 /**
  * Write a description of class SongTest here.
  *
@@ -12,6 +13,7 @@ public class PlayMeth
     // instance variables - replace the example below with your own
     private ArrayList<Song> playlist;
     private int totalTime, remainTime;
+
     /**
      * Constructor for objects of class SongTest
      */
@@ -20,36 +22,44 @@ public class PlayMeth
         playlist = new ArrayList<Song>();
         totalTime = remainTime = 0;
     }
-            
+
+    public boolean containsSong(Song song)
+    {
+        return playlist.contains(song);
+    }
+
     public void addSong(Song song)
     {
-        if(!playlist.contains(song))
-        {
-            playlist.add(song);
-            totalTime+=song.getTime();
-            song.bumpFreq();
-        }
+        if(containsSong(song))
+            return;
+
+        playlist.add(song);
+        totalTime  += song.getTime();
+        remainTime += song.getTime();
+        song.bumpFreq();
     }
 
     public int deleteSong(Song song)
     {
-        if(playlist.contains(song))
+        if(!containsSong(song))
+            return 0;
+
+        for(int i = 0; i<playlist.size(); i++)
         {
-            for(int i = 0; i<playlist.size(); i++)
+            if(song.equals(playlist.get(i)))
             {
-                if(song.equals(playlist.get(i)))
-                {
-                    playlist.remove(i);
-                    totalTime-=song.getTime();
-                    song.dropFreq();
-                    return 1;
-                }
+                playlist.remove(i);
+                totalTime -= song.getTime();
+                remainTime -= song.getTime();
+                song.dropFreq();
+                return 1;
             }
         }
+
         return 0;
     }
 
-    public void clearList()
+    public void clearPlaylist()
     {
         playlist.clear();
     }
@@ -77,7 +87,8 @@ public class PlayMeth
     }
     public boolean safeZone()
     {
-        return !(totalTime < 43*60 /**seconds*/ || totalTime > 43*48 /**seconds*/);
+        return !(totalTime < 43*60 /**seconds*/
+                || totalTime > 43*48 /**seconds*/);
     }
 
     public void randomize()
@@ -92,8 +103,14 @@ public class PlayMeth
         }
         playlist = p;
     }
-//
-//     public void saveSongs()
-//     {
 
+    public void savePlaylist()
+    {
+
+    }
+
+    public void loadPlaylist()
+    {
+
+    }
 }
