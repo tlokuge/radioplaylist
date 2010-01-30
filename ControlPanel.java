@@ -1,5 +1,4 @@
-
-package src;
+package radioplaylist;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -52,8 +51,8 @@ public class ControlPanel extends JPanel
         next_song       = new Label("NEXT: ");
         duration        = new Label();
 
-        play_icon  = new ImageIcon("src/images/play.png");
-        pause_icon = new ImageIcon("src/images/pause.png");
+        play_icon  = new ImageIcon("src/radioplaylist/images/play.png");
+        pause_icon = new ImageIcon("src/radioplaylist/images/pause.png");
         
         doTestStuff();
         initializeLabels();
@@ -87,10 +86,10 @@ public class ControlPanel extends JPanel
 
     private void initializeButtons()
     {
-        ImageIcon stop_icon = new ImageIcon("src/images/stop.png");
-        ImageIcon previous_icon = new ImageIcon("src/images/previous.png");
-        ImageIcon next_icon = new ImageIcon("src/images/next.png");
-        ImageIcon playlist_icon = new ImageIcon("src/images/playlist.png");
+        ImageIcon stop_icon = new ImageIcon("src/radioplaylist/images/stop.png");
+        ImageIcon previous_icon = new ImageIcon("src/radioplaylist/images/previous.png");
+        ImageIcon next_icon = new ImageIcon("src/radioplaylist/images/next.png");
+        ImageIcon playlist_icon = new ImageIcon("src/radioplaylist/images/playlist.png");
         
         play_button     = new JButton(play_icon);
         stop_button     = new JButton(stop_icon);

@@ -1,13 +1,14 @@
-
-package src;
+package radioplaylist;
 
 import javax.swing.JFrame;
 
+/* Images courtesy of:
+ * http://dryicons.com/free-icons/icons-list/blue-velvet/
+ */
 public class PlaylistGUI
 {
     JFrame library_frame;
     JFrame control_frame;
-
 
     PlaylistPanel play_panel;
     ControlPanel  control_panel;
@@ -16,7 +17,7 @@ public class PlaylistGUI
     final int LIB_FRAME_HEIGHT  = 500;
 
     final int CON_FRAME_WIDTH   = 600;
-    final int CON_FRAME_HEIGHT  = 222;
+    final int CON_FRAME_HEIGHT  = 235;
 
     public PlaylistGUI()
     {
@@ -39,6 +40,7 @@ public class PlaylistGUI
     {
         library_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
 
+        library_frame.setResizable(false);
         library_frame.add(play_panel);
         library_frame.setVisible(false);
     }
@@ -48,6 +50,7 @@ public class PlaylistGUI
         control_frame.setSize(CON_FRAME_WIDTH, CON_FRAME_HEIGHT);
         control_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        control_frame.setResizable(false);
         control_frame.add(control_panel);
         control_frame.setVisible(true);
     }

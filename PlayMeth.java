@@ -1,7 +1,4 @@
-package src;
-
- 
- 
+package radioplaylist;
 
 import java.util.*;
 /**
