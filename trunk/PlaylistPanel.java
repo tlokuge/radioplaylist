@@ -1,7 +1,4 @@
-package src;
-
-
-
+package radioplaylist;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -30,7 +27,6 @@ public class PlaylistPanel extends JComponent
     JList playlist_list;
     JList song_list;
 
-
     JButton move_up_button;
     JButton move_down_button;
     JButton save_button;
@@ -49,16 +45,14 @@ public class PlaylistPanel extends JComponent
         playlist_list   = new JList();
         song_list       = new JList();
 
-
-        ImageIcon shiftup = new ImageIcon("src/images/up.png");
-        ImageIcon shiftdown = new ImageIcon("src/images/down.png");
-        ImageIcon save_playlist = new ImageIcon("src/images/save.png");
-        ImageIcon load_playlist = new ImageIcon("src/images/load.png");
-        ImageIcon add_song = new ImageIcon("src/images/add.png");
-        ImageIcon delete_song = new ImageIcon("src/images/delete.png");
-        ImageIcon shuffle = new ImageIcon("src/images/shuffle.png");
-        ImageIcon clear = new ImageIcon("src/images/clear.png");
-
+        ImageIcon shiftup = new ImageIcon("src/radioplaylist/images/up.png");
+        ImageIcon shiftdown = new ImageIcon("src/radioplaylist/images/down.png");
+        ImageIcon save_playlist = new ImageIcon("src/radioplaylist/images/save.png");
+        ImageIcon load_playlist = new ImageIcon("src/radioplaylist/images/load.png");
+        ImageIcon add_song = new ImageIcon("src/radioplaylist/images/add.png");
+        ImageIcon delete_song = new ImageIcon("src/radioplaylist/images/delete.png");
+        ImageIcon shuffle = new ImageIcon("src/radioplaylist/images/shuffle.png");
+        ImageIcon clear = new ImageIcon("src/radioplaylist/images/clear.png");
 
         move_up_button  = new JButton(shiftup);
         move_down_button= new JButton(shiftdown);
