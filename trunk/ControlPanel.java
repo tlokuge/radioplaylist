@@ -39,20 +39,20 @@ public class ControlPanel extends JPanel
 
         if(playlist_frame == null)
         {
-            System.err.println("ERROR! UNABLE TO OPEN PLAYLIST FRAME!");
+            System.err.println(StringConstantHolder.CP_OPEN_PF_ERR);
             return;
         }
 
         label_panel  = new JPanel();
         button_panel = new JPanel();
 
-        cur_song        = new Label("NOW PLAYING:");
-        prev_song       = new Label("PREVIOUS: ");
-        next_song       = new Label("NEXT: ");
-        duration        = new Label();
+        cur_song  = new Label(StringConstantHolder.CP_NWP_LABEL);
+        prev_song = new Label(StringConstantHolder.CP_PRV_LABEL);
+        next_song = new Label(StringConstantHolder.CP_NXT_LABEL);
+        duration  = new Label();
 
-        play_icon  = new ImageIcon("src/radioplaylist/images/play.png");
-        pause_icon = new ImageIcon("src/radioplaylist/images/pause.png");
+        play_icon  = new ImageIcon(StringConstantHolder.CP_PLY_IMG);
+        pause_icon = new ImageIcon(StringConstantHolder.CP_PSE_IMG);
         
         doTestStuff();
         initializeLabels();
@@ -86,22 +86,17 @@ public class ControlPanel extends JPanel
 
     private void initializeButtons()
     {
-        ImageIcon stop_icon = new ImageIcon("src/radioplaylist/images/stop.png");
-        ImageIcon previous_icon = new ImageIcon("src/radioplaylist/images/previous.png");
-        ImageIcon next_icon = new ImageIcon("src/radioplaylist/images/next.png");
-        ImageIcon playlist_icon = new ImageIcon("src/radioplaylist/images/playlist.png");
-        
         play_button     = new JButton(play_icon);
-        stop_button     = new JButton(stop_icon);
-        previous_button = new JButton(previous_icon);
-        next_button     = new JButton(next_icon);
-        playlist_button = new JButton(playlist_icon);
+        stop_button     = new JButton(new ImageIcon(StringConstantHolder.CP_STP_IMG));
+        previous_button = new JButton(new ImageIcon(StringConstantHolder.CP_PRV_IMG));
+        next_button     = new JButton(new ImageIcon(StringConstantHolder.CP_NXT_IMG));
+        playlist_button = new JButton(new ImageIcon(StringConstantHolder.CP_PLST_IMG));
 
-        play_button.setToolTipText("Click to play or pause your playlist.");
-        stop_button.setToolTipText("Click to stop your playlist.");
-        previous_button.setToolTipText("Click to play previous song.");
-        next_button.setToolTipText("Click to play next song.");
-        playlist_button.setToolTipText("Click to open your playlist.");
+        play_button.setToolTipText(StringConstantHolder.CP_PLY_TT);
+        stop_button.setToolTipText(StringConstantHolder.CP_STP_TT);
+        previous_button.setToolTipText(StringConstantHolder.CP_PRV_TT);
+        next_button.setToolTipText(StringConstantHolder.CP_NXT_TT);
+        playlist_button.setToolTipText(StringConstantHolder.CP_OPN_TT);
 
         play_button.addActionListener(new ButtonListener(ButtonType.PLAY));
         stop_button.addActionListener(new ButtonListener(ButtonType.STOP));
