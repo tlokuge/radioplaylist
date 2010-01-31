@@ -1,7 +1,8 @@
-package radioplaylist;
+ 
 
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JFileChooser;
 /**
  * Write a description of class SongTest here.
  *
@@ -106,7 +107,9 @@ public class PlayMeth
 
     public void savePlaylist()
     {
-
+        JFileChooser chooser = new JFileChooser();
+      
+        
     }
 
     public void loadPlaylist()

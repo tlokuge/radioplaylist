@@ -1,4 +1,4 @@
-package radioplaylist;
+ 
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JOptionPane;
 
 public class PlaylistPanel extends JComponent
 {
@@ -25,8 +26,8 @@ public class PlaylistPanel extends JComponent
     JButton move_down_button;
     JButton save_button;
     JButton load_button;
-    JButton insert_button;
-    JButton delete_button;
+    JButton add_button;
+    JButton remove_button;
     JButton shuffle_button;
     JButton clear_button;
     
@@ -43,8 +44,8 @@ public class PlaylistPanel extends JComponent
         move_down_button= new JButton(new ImageIcon(StringConstantHolder.PP_DN_IMG));
         save_button     = new JButton(new ImageIcon(StringConstantHolder.PP_SV_IMG));
         load_button     = new JButton(new ImageIcon(StringConstantHolder.PP_LD_IMG));
-        insert_button   = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_IMG));
-        delete_button   = new JButton(new ImageIcon(StringConstantHolder.PP_DEL_IMG));
+        add_button   = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_IMG));
+        remove_button   = new JButton(new ImageIcon(StringConstantHolder.PP_DEL_IMG));
         shuffle_button  = new JButton(new ImageIcon(StringConstantHolder.PP_RDM_IMG));
         clear_button    = new JButton(new ImageIcon(StringConstantHolder.PP_CLR_IMG));
 
@@ -88,23 +89,32 @@ public class PlaylistPanel extends JComponent
         playlist_song_list.setListData(str);
     }
 
-    public void addTooltips()
+    public void initializeButtons()
     {
         //Instructions when hovering over buttons
         move_up_button.setToolTipText(StringConstantHolder.PP_UP_TT);
         move_down_button.setToolTipText(StringConstantHolder.PP_DN_TT);
         save_button.setToolTipText(StringConstantHolder.PP_SV_TT);
         load_button.setToolTipText(StringConstantHolder.PP_LD_TT);
-        insert_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
-        delete_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
+        add_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
+        remove_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
         shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
         clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
+        
+        move_up_button.addActionListener(new ButtonListener(ButtonType.MVUP));
+        move_down_button.addActionListener(new ButtonListener(ButtonType.MVDN));
+        save_button.addActionListener(new ButtonListener(ButtonType.SAVE));
+        load_button.addActionListener(new ButtonListener(ButtonType.LOAD));
+        add_button.addActionListener(new ButtonListener(ButtonType.ADD));
+        remove_button.addActionListener(new ButtonListener(ButtonType.REMOVE));
+        shuffle_button.addActionListener(new ButtonListener(ButtonType.RANDOMIZE));
+        clear_button.addActionListener(new ButtonListener(ButtonType.CLEAR));
     }
 
     public void initializePanels()
     {
         doTestStuff();
-        addTooltips();
+        initializeButtons();
         
         initializeComponents();
 
@@ -119,8 +129,8 @@ public class PlaylistPanel extends JComponent
         play_control_panel.add(move_down_button);
         play_control_panel.add(save_button);
         play_control_panel.add(load_button);
-        play_control_panel.add(insert_button);
-        play_control_panel.add(delete_button);
+        play_control_panel.add(add_button);
+        play_control_panel.add(remove_button);
         play_control_panel.add(shuffle_button);
         play_control_panel.add(clear_button);
         play_control_panel.setVisible(true);
@@ -162,17 +172,17 @@ public class PlaylistPanel extends JComponent
 
         private void doMvDnButtonAction(ActionEvent e)
         {
-
+            
         }
 
         private void doSaveButtonAction(ActionEvent e)
         {
-
+            
         }
 
         private void doLoadButtonAction(ActionEvent e)
         {
-
+            
         }
 
         private void doAddButtonAction(ActionEvent e)
