@@ -132,6 +132,7 @@ public class ControlPanel extends JPanel
 
         Label()
         {
+            super();
             left_label = new JLabel();
             right_label = new JLabel();
 
@@ -140,6 +141,7 @@ public class ControlPanel extends JPanel
 
         Label(String left)
         {
+            super();
             left_label = new JLabel(left);
             right_label = new JLabel();
 
@@ -148,6 +150,7 @@ public class ControlPanel extends JPanel
 
         Label(String left, String right)
         {
+            super();
             left_label = new JLabel(left);
             right_label = new JLabel(right);
 
