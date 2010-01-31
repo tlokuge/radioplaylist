@@ -22,7 +22,7 @@ public class PlaylistPanel extends JComponent
 
     JList song_library_list;
 
-    ArrayList<JList> playlist_list;
+    ArrayList<JPlayList> playlist_list;
 
     JTabbedPane playlist_tab;
 
@@ -42,7 +42,7 @@ public class PlaylistPanel extends JComponent
 
         song_library_list  = new JList();
 
-        playlist_list   = new ArrayList<JList>();
+        playlist_list   = new ArrayList<JPlayList>();
 
         playlist_tab    = new JTabbedPane();
 
@@ -74,7 +74,6 @@ public class PlaylistPanel extends JComponent
         {
             list.setSelectedIndex(-1);
             list.setBorder(new EtchedBorder());
-                    //BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_PLCHLDR_TAB));
         }
     }
 
@@ -97,7 +96,7 @@ public class PlaylistPanel extends JComponent
         song_library_list.setListData(str);
 
         for(int i = 0; i < 5; ++i)
-            playlist_list.add(new JList());
+            playlist_list.add(new JPlayList(StringConstantHolder.PP_PLCHLDR_TAB));
         
         for(JList list : playlist_list)
             list.setListData(str);
@@ -128,7 +127,7 @@ public class PlaylistPanel extends JComponent
     private void initializePlaylistTabs()
     {
         for(JList list : playlist_list)
-            playlist_tab.add(list, StringConstantHolder.PP_PLCHLDR_TAB);
+            playlist_tab.add(list, list.getName());
 
         playlist_tab.setTabPlacement(JTabbedPane.LEFT);
     }
@@ -225,5 +224,18 @@ public class PlaylistPanel extends JComponent
         {
             JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");            
         }
+    }
+
+    private class JPlayList extends JList
+    {
+        private String name;
+
+        public JPlayList(String name)
+        {
+            super();
+            this.name = name;
+        }
+
+        public String getName() { return name; }
     }
 }
