@@ -1,4 +1,4 @@
- 
+package radioplaylist; 
 
 public abstract class StringConstantHolder
 {
@@ -17,6 +17,9 @@ public abstract class StringConstantHolder
     static final String PP_PLAYLIST_PANEL = "Playlist";
     static final String PP_LIBRARY_PANEL  = "Song Library";
 
+    // Placeholder Tab name
+    static final String PP_PLCHLDR_TAB = "[PH]Tab";
+    
     // Button Tooltips
     static final String PP_UP_TT  = "Click to move song up.";
     static final String PP_DN_TT  = "Click to move song down.";

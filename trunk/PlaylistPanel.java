@@ -1,4 +1,4 @@
- 
+ package radioplaylist;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -10,17 +10,21 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.border.EtchedBorder;
+import java.util.ArrayList;
 
 public class PlaylistPanel extends JComponent
 {
     JPanel main_panel;
-    JPanel list_panel;
     JPanel play_control_panel;
 
     JList song_library_list;
-    JList playlist_song_list;
+
+    ArrayList<JList> playlist_list;
+
+    JTabbedPane playlist_tab;
 
     JButton move_up_button;
     JButton move_down_button;
@@ -33,18 +37,20 @@ public class PlaylistPanel extends JComponent
     
     public PlaylistPanel()
     {
-        main_panel        = new JPanel();
-        list_panel       = new JPanel();
-        play_control_panel  = new JPanel();
+        main_panel         = new JPanel();
+        play_control_panel = new JPanel();
 
-        song_library_list   = new JList();
-        playlist_song_list       = new JList();
+        song_library_list  = new JList();
+
+        playlist_list   = new ArrayList<JList>();
+
+        playlist_tab    = new JTabbedPane();
 
         move_up_button  = new JButton(new ImageIcon(StringConstantHolder.PP_UP_IMG));
         move_down_button= new JButton(new ImageIcon(StringConstantHolder.PP_DN_IMG));
         save_button     = new JButton(new ImageIcon(StringConstantHolder.PP_SV_IMG));
         load_button     = new JButton(new ImageIcon(StringConstantHolder.PP_LD_IMG));
-        add_button   = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_IMG));
+        add_button      = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_IMG));
         remove_button   = new JButton(new ImageIcon(StringConstantHolder.PP_DEL_IMG));
         shuffle_button  = new JButton(new ImageIcon(StringConstantHolder.PP_RDM_IMG));
         clear_button    = new JButton(new ImageIcon(StringConstantHolder.PP_CLR_IMG));
@@ -58,14 +64,18 @@ public class PlaylistPanel extends JComponent
         setVisible(true);
     }
 
-    public void initializeComponents()
+    private void initializeComponents()
     {
         song_library_list.setSelectedIndex(-1);
-        playlist_song_list.setSelectedIndex(-1);
         song_library_list.setBorder(
                 BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_LIBRARY_PANEL));
-        playlist_song_list.setBorder(
-                BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_PLAYLIST_PANEL));
+
+        for(JList list : playlist_list)
+        {
+            list.setSelectedIndex(-1);
+            list.setBorder(new EtchedBorder());
+                    //BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_PLCHLDR_TAB));
+        }
     }
 
     private void doTestStuff()
@@ -86,10 +96,14 @@ public class PlaylistPanel extends JComponent
 
         song_library_list.setListData(str);
 
-        playlist_song_list.setListData(str);
+        for(int i = 0; i < 5; ++i)
+            playlist_list.add(new JList());
+        
+        for(JList list : playlist_list)
+            list.setListData(str);
     }
 
-    public void initializeButtons()
+    private void initializeButtons()
     {
         //Instructions when hovering over buttons
         move_up_button.setToolTipText(StringConstantHolder.PP_UP_TT);
@@ -111,16 +125,23 @@ public class PlaylistPanel extends JComponent
         clear_button.addActionListener(new ButtonListener(ButtonType.CLEAR));
     }
 
-    public void initializePanels()
+    private void initializePlaylistTabs()
+    {
+        for(JList list : playlist_list)
+            playlist_tab.add(list, StringConstantHolder.PP_PLCHLDR_TAB);
+
+        playlist_tab.setTabPlacement(JTabbedPane.LEFT);
+    }
+
+    private void initializePanels()
     {
         doTestStuff();
-        initializeButtons();
-        
+        initializePlaylistTabs();
         initializeComponents();
+        initializeButtons();
 
         main_panel.setLayout(new GridLayout(1, 3));
-        main_panel.add(list_panel);
-        main_panel.add(playlist_song_list);
+        main_panel.add(playlist_tab);
         main_panel.add(song_library_list);
         main_panel.setVisible(true);
 
