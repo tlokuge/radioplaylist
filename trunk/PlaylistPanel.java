@@ -167,42 +167,42 @@ public class PlaylistPanel extends JComponent
        
         private void doMvUpButtonAction(ActionEvent e)
         {
-            //method.shiftUp(
+            JOptionPane.showMessageDialog(null,"Imagine that this function works");
         }
 
         private void doMvDnButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"Imagine that this function works too");
         }
 
         private void doSaveButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works");
         }
 
         private void doLoadButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works yet");
         }
 
         private void doAddButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"There aren't songs in the library yet....");
         }
         
         private void doRemoveButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");            
         }
         
         private void doRandomButtonAction(ActionEvent e)
         {
-        
+            JOptionPane.showMessageDialog(null,"Wanna know something random?  The gravitational constant is 6.67*10^-11");        
         }
         
         private void doClearButtonAction(ActionEvent e)
         {
-            
+            JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");            
         }
     }
 }
