@@ -1,6 +1,7 @@
 package radioplaylist;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,9 +104,14 @@ public class PlaylistPanel extends JComponent
 
         for(int i = 0; i < 5; ++i)
             playlist_list.add(new PlayList());
-        
-        for(JList list : playlist_list)
-            list.setListData(str);
+
+        Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1);
+        Song s2 = new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
+        Song s3 = new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
+
+        playlist_list.get(0).addSong(s1);
+        playlist_list.get(0).addSong(s2);
+        playlist_list.get(0).addSong(s3);
     }
 
     private void initializeButtons()
@@ -220,12 +226,15 @@ public class PlaylistPanel extends JComponent
 
         private void doSaveButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works");
+            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            pl.savePlaylist();
+            //JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works");
         }
 
         private void doLoadButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works yet");
+            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            pl.loadPlaylist();
         }
 
         private void doAddButtonAction(ActionEvent e)

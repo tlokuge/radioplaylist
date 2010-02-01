@@ -43,6 +43,10 @@ public abstract class StringConstantHolder
     // Errors
     static final String CP_OPEN_PF_ERR = "ERROR! UNABLE TO OPEN PLAYLIST FRAME!";
 
+    // File Chooser names
+    static final String CP_OPEN_FC  = "Open Playlist";
+    static final String CP_SAVE_FC  = "Save Playlist";
+
     // Labels
     static final String CP_NWP_LABEL = "NOW PLAYING: ";
     static final String CP_PRV_LABEL = "PREVIOUS: ";

@@ -1,5 +1,12 @@
 package radioplaylist;  
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JFileChooser;
@@ -10,11 +17,12 @@ import javax.swing.JList;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class PlayList extends JList
+public class PlayList extends JList implements Serializable
 {
     // instance variables - replace the example below with your own
     private ArrayList<Song> playlist;
     private int totalTime, remainTime;
+    JFileChooser chooser;
 
     /**
      * Constructor for objects of class SongTest
@@ -26,6 +34,7 @@ public class PlayList extends JList
         playlist  = new ArrayList<Song>();
         totalTime = remainTime = 0;
 
+        chooser = new JFileChooser();
         setName(StringConstantHolder.PL_NEW_PL);
     }
 
@@ -36,6 +45,7 @@ public class PlayList extends JList
         playlist  = new ArrayList<Song>();
         totalTime = remainTime = 0;
 
+        chooser = new JFileChooser();
         setName(name);
     }
 
@@ -157,12 +167,43 @@ public class PlayList extends JList
 
     public void savePlaylist()
     {
-        JFileChooser chooser = new JFileChooser();
-        
+        int retval = chooser.showSaveDialog(this);
+        if(retval == JFileChooser.CANCEL_OPTION)
+            return;
+
+        try
+        {
+            File f = chooser.getSelectedFile();
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+            out.writeObject(playlist);
+            out.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void loadPlaylist()
     {
+        int retval = chooser.showOpenDialog(this);
+        if(retval == JFileChooser.CANCEL_OPTION)
+            return;
 
+        try
+        {
+            File f = chooser.getSelectedFile();
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+            playlist = (ArrayList<Song>)in.readObject();
+            in.close();
+
+            populateListData();
+            revalidate();
+            repaint();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
