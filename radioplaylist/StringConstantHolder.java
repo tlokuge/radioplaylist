@@ -4,18 +4,18 @@ public abstract class StringConstantHolder
 {
     /************** PlaylistPanel.java *****************/
     // ImageIcons
-    static final String PP_UP_IMG  = "src/radioplaylist/images/up.png";
-    static final String PP_DN_IMG  = "src/radioplaylist/images/down.png";
-    static final String PP_SV_IMG  = "src/radioplaylist/images/save.png";
-    static final String PP_LD_IMG  = "src/radioplaylist/images/load.png";
-    static final String PP_ADD_IMG = "src/radioplaylist/images/add.png";
-    static final String PP_DEL_IMG = "src/radioplaylist/images/delete.png";
-    static final String PP_RDM_IMG = "src/radioplaylist/images/randomize.png";
-    static final String PP_CLR_IMG = "src/radioplaylist/images/clear.png";
-    static final String PP_REMPL_IMG = "src/radioplaylist/images/removeplaylist.png";
-    static final String PP_ADDPL_IMG = "src/radioplaylist/images/addplaylist.png";
-    static final String PP_REMSG_IMG = "src/radioplaylist/images/removesongs.png";
-    static final String PP_ADDSG_IMG = "src/radioplaylist/images/addsongs.png";
+    static final String PP_UP_IMG  = "src/images/up.png";
+    static final String PP_DN_IMG  = "src/images/down.png";
+    static final String PP_SV_IMG  = "src/images/save.png";
+    static final String PP_LD_IMG  = "src/images/load.png";
+    static final String PP_ADD_IMG = "src/images/add.png";
+    static final String PP_DEL_IMG = "src/images/delete.png";
+    static final String PP_RDM_IMG = "src/images/randomize.png";
+    static final String PP_CLR_IMG = "src/images/clear.png";
+    static final String PP_REMPL_IMG = "src/images/removeplaylist.png";
+    static final String PP_ADDPL_IMG = "src/images/addplaylist.png";
+    static final String PP_REMSG_IMG = "src/images/removesongs.png";
+    static final String PP_ADDSG_IMG = "src/images/addsongs.png";
 
     // Panel Titles
     static final String PP_PLAYLIST_PANEL = "Playlist";
@@ -49,12 +49,12 @@ public abstract class StringConstantHolder
     static final String CP_NXT_LABEL = "NEXT: ";
 
     // ImageIcons
-    static final String CP_PLY_IMG  = "src/radioplaylist/images/play.png";
-    static final String CP_PSE_IMG  = "src/radioplaylist/images/pause.png";
-    static final String CP_STP_IMG  = "src/radioplaylist/images/stop.png";
-    static final String CP_PRV_IMG  = "src/radioplaylist/images/previous.png";
-    static final String CP_NXT_IMG  = "src/radioplaylist/images/next.png";
-    static final String CP_PLST_IMG = "src/radioplaylist/images/playlist.png";
+    static final String CP_PLY_IMG  = "src/images/play.png";
+    static final String CP_PSE_IMG  = "src/images/pause.png";
+    static final String CP_STP_IMG  = "src/images/stop.png";
+    static final String CP_PRV_IMG  = "src/images/previous.png";
+    static final String CP_NXT_IMG  = "src/images/next.png";
+    static final String CP_PLST_IMG = "src/images/playlist.png";
 
     // Tooltips
     static final String CP_PLY_TT = "Click to play or pause your playlist.";
