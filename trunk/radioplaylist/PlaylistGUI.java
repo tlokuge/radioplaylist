@@ -1,7 +1,5 @@
 package radioplaylist;  
 
-import radioplaylist.PlaylistPanel;
-import radioplaylist.ControlPanel;
 import javax.swing.JFrame;
 
 /* Images courtesy of:
