@@ -38,6 +38,16 @@ public class Song implements Serializable
         popular = 50;
     }
 
+    public void setTitle(String title) { this.title = title; }
+    public void setArtist(String artist) { this.artist = artist; }
+    public void setAlbum(String album) { this.album = album; }
+    public void setRecNum(int recNum)   { this.recNum = recNum; }
+    public void setRecType(String recType) { this.recType = recType; }
+    public void setDuration(int duration) { this.duration = duration; }
+    public void setYear(int year) { this.year = year; }
+    public void setFrequency(int freq) { this.freq = freq; }
+    public void setPopularity(int popular) { this.popular = popular; }
+
     public int getRecNum()
     {
         return recNum;
@@ -122,6 +132,24 @@ public class Song implements Serializable
      */
     public String toString()
     {
-        return "Title: "+ title+ " Artist: " + artist + " Album: " + album + " Year: " + year + " Duration: " + duration + " Times Played: " + freq + " Popularity: " + popular;
+        return title + ";\n" +
+               artist + ";\n" +
+               duration + ";\n" +
+               album + ";\n" +
+               year + ";\n" +
+               freq + ";\n" +
+               popular + ";\n" +
+               recNum + ";\n";
     }
+    /*public String toString()
+    {
+        return "Song Title: " + title + ";\n"
+             + "Song Performer: " + artist + ";\n"
+             + "Duration: " + duration + ";\n"
+             + "Song Album: " + album + ";\n"
+             + "Year of publication: " + year + ";\n"
+             + "Times Played: " + freq + ";\n"
+             + "Popularity: " + popular + ";\n"
+             + "Record Library Access Number: " + recNum + ";\n";
+    }*/
 }
