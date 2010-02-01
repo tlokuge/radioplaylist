@@ -1,4 +1,4 @@
- package radioplaylist;
+  
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -208,16 +208,21 @@ public class PlaylistPanel extends JComponent
         private void doAddButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"There aren't songs in the library yet....");
+            if(!method.safeZone())
+                JOptionPane.showMessageDialog(null, "You are not within the 43 to 48 minute range, please add or remove some songs", "Time Range Error", 2);
         }
         
         private void doRemoveButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");            
+            JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");
+            if(!method.safeZone())
+                JOptionPane.showMessageDialog(null, "You are not within the 43 to 48 minute range, please add or remove some songs", "Time Range Error", 2);
         }
         
         private void doRandomButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"Wanna know something random?  The gravitational constant is 6.67*10^-11");        
+            method.randomize();
         }
         
         private void doClearButtonAction(ActionEvent e)
