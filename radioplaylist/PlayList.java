@@ -3,14 +3,18 @@ package radioplaylist;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 /**
  * Write a description of class SongTest here.
  *
@@ -174,9 +178,15 @@ public class PlayList extends JList implements Serializable
         try
         {
             File f = chooser.getSelectedFile();
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
-            out.writeObject(playlist);
+            PrintStream out = new PrintStream(f);
+            out.print(getName() + ";\n");
+            for(Song s : playlist)
+                out.print(s);
+
             out.close();
+            //ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+            //out.writeObject(playlist);
+            //out.close();
         }
         catch(Exception e)
         {
@@ -193,10 +203,59 @@ public class PlayList extends JList implements Serializable
         try
         {
             File f = chooser.getSelectedFile();
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+            Scanner in = new Scanner(f);
+
+            String str = in.nextLine();
+            setName(str);
+
+            System.out.println(str);
+            while(in.hasNext())
+            {
+                Song s = new Song();
+
+                str = in.next(); // Song Title
+                s.setTitle(str);
+
+                str = getNextSegmentUsingScanner(in); // Song Performer
+                if(str == null)
+                    return;
+                s.setArtist(str);
+
+                str = getNextSegmentUsingScanner(in); // Song Duration
+                if(str == null)
+                    return;
+                s.setDuration(Integer.parseInt(str));
+
+                str = getNextSegmentUsingScanner(in);
+                if(str == null)
+                    return;
+                s.setAlbum(str);
+
+                str = getNextSegmentUsingScanner(in);
+                if(str == null)
+                    return;
+                s.setYear(Integer.parseInt(str));
+
+                str = getNextSegmentUsingScanner(in);
+                if(str == null)
+                    return;
+                s.setFrequency(Integer.parseInt(str));
+
+                str = getNextSegmentUsingScanner(in);
+                if(str == null)
+                    return;
+                s.setPopularity(Integer.parseInt(str));
+
+                str = getNextSegmentUsingScanner(in);
+                if(str == null)
+                    return;
+                s.setRecNum(Integer.parseInt(str));
+            }
+
+            /*ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
             playlist = (ArrayList<Song>)in.readObject();
             in.close();
-
+            */
             populateListData();
             revalidate();
             repaint();
@@ -205,5 +264,23 @@ public class PlayList extends JList implements Serializable
         {
             e.printStackTrace();
         }
+    }
+
+    public void sendError(String err)
+    {
+        JOptionPane.showMessageDialog(null, err);
+    }
+
+    public String getNextSegmentUsingScanner(Scanner in)
+    {
+        if(in.hasNext())
+        {
+            String str = in.next();
+            System.out.println(str);
+            return str;
+        }
+
+        sendError("Parse error");
+        return null;
     }
 }
