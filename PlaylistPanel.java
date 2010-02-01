@@ -30,15 +30,13 @@ public class PlaylistPanel extends JComponent
     JButton move_down_button;
     JButton save_button;
     JButton load_button;
-    JButton add_button;
-    JButton remove_button;
+    JButton add_song_button;
+    JButton remove_song_button;
+    JButton add_playlist_button;
+    JButton remove_playlist_button;
     JButton shuffle_button;
     JButton clear_button;
 
-    JButton removeplaylist_button;
-    JButton addplaylist_button;
-    JButton removesongs_button;
-    JButton addsongs_button;
     
     public PlaylistPanel()
     {
@@ -51,19 +49,17 @@ public class PlaylistPanel extends JComponent
 
         playlist_tab    = new JTabbedPane();
 
-        move_up_button  = new JButton(new ImageIcon(StringConstantHolder.PP_UP_IMG));
-        move_down_button= new JButton(new ImageIcon(StringConstantHolder.PP_DN_IMG));
-        save_button     = new JButton(new ImageIcon(StringConstantHolder.PP_SV_IMG));
-        load_button     = new JButton(new ImageIcon(StringConstantHolder.PP_LD_IMG));
-        add_button      = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_IMG));
-        remove_button   = new JButton(new ImageIcon(StringConstantHolder.PP_DEL_IMG));
-        shuffle_button  = new JButton(new ImageIcon(StringConstantHolder.PP_RDM_IMG));
-        clear_button    = new JButton(new ImageIcon(StringConstantHolder.PP_CLR_IMG));
+        move_up_button         = new JButton(new ImageIcon(StringConstantHolder.PP_UP_IMG));
+        move_down_button       = new JButton(new ImageIcon(StringConstantHolder.PP_DN_IMG));
+        save_button            = new JButton(new ImageIcon(StringConstantHolder.PP_SV_IMG));
+        load_button            = new JButton(new ImageIcon(StringConstantHolder.PP_LD_IMG));
+        add_song_button        = new JButton(new ImageIcon(StringConstantHolder.PP_ADDSG_IMG));
+        remove_song_button     = new JButton(new ImageIcon(StringConstantHolder.PP_REMSG_IMG));
+        add_playlist_button    = new JButton(new ImageIcon(StringConstantHolder.PP_ADDPL_IMG));
+        remove_playlist_button = new JButton(new ImageIcon(StringConstantHolder.PP_REMPL_IMG));
+        shuffle_button         = new JButton(new ImageIcon(StringConstantHolder.PP_RDM_IMG));
+        clear_button           = new JButton(new ImageIcon(StringConstantHolder.PP_CLR_IMG));
 
-        removeplaylist_button = new JButton(new ImageIcon(StringConstantHolder.PP_REM_PL));
-        addplaylist_button = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_PL));
-        removesongs_button = new JButton(new ImageIcon(StringConstantHolder.PP_REM_SG));
-        addsongs_button = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_SG));
 
         setLayout(new BorderLayout());
         initializePanels();
@@ -119,29 +115,23 @@ public class PlaylistPanel extends JComponent
         move_down_button.setToolTipText(StringConstantHolder.PP_DN_TT);
         save_button.setToolTipText(StringConstantHolder.PP_SV_TT);
         load_button.setToolTipText(StringConstantHolder.PP_LD_TT);
-        add_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
-        remove_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
+        add_song_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
+        remove_song_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
+        add_playlist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
+        remove_playlist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
         shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
         clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
-
-        removeplaylist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
-        addplaylist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
-        removesongs_button.setToolTipText(StringConstantHolder.PP_REM_SG);
-        addsongs_button.setToolTipText(StringConstantHolder.PP_ADD_SG);
         
         move_up_button.addActionListener(new ButtonListener(ButtonType.MVUP));
         move_down_button.addActionListener(new ButtonListener(ButtonType.MVDN));
         save_button.addActionListener(new ButtonListener(ButtonType.SAVE));
         load_button.addActionListener(new ButtonListener(ButtonType.LOAD));
-        add_button.addActionListener(new ButtonListener(ButtonType.ADD));
-        remove_button.addActionListener(new ButtonListener(ButtonType.REMOVE));
+        add_song_button.addActionListener(new ButtonListener(ButtonType.ADD_SONG));
+        remove_song_button.addActionListener(new ButtonListener(ButtonType.REMOVE_SONG));
         shuffle_button.addActionListener(new ButtonListener(ButtonType.RANDOMIZE));
         clear_button.addActionListener(new ButtonListener(ButtonType.CLEAR));
-
-        removeplaylist_button.addActionListener(new ButtonListener(null));
-        addplaylist_button.addActionListener(new ButtonListener(null));
-        removesongs_button.addActionListener(new ButtonListener(null));
-        addsongs_button.addActionListener(new ButtonListener(null));
+        add_playlist_button.addActionListener(new ButtonListener(ButtonType.ADD_PLAYLIST));
+        remove_playlist_button.addActionListener(new ButtonListener(ButtonType.REMOVE_PLAYLIST));
     }
 
     private void initializePlaylistTabs()
@@ -169,18 +159,28 @@ public class PlaylistPanel extends JComponent
         play_control_panel.add(move_down_button);
         play_control_panel.add(save_button);
         play_control_panel.add(load_button);
-        play_control_panel.add(add_button);
-        play_control_panel.add(remove_button);
+        play_control_panel.add(add_song_button);
+        play_control_panel.add(remove_song_button);
+        play_control_panel.add(add_playlist_button);
+        play_control_panel.add(remove_playlist_button);
         play_control_panel.add(shuffle_button);
         play_control_panel.add(clear_button);
-        play_control_panel.add(removeplaylist_button);
-        play_control_panel.add(addplaylist_button);
-        play_control_panel.add(removesongs_button);
-        play_control_panel.add(addsongs_button);
         play_control_panel.setVisible(true);
     }
     
-    private enum ButtonType { MVUP, MVDN , SAVE , LOAD , ADD, REMOVE, RANDOMIZE, CLEAR; }
+    private enum ButtonType 
+    {
+        MVUP,
+        MVDN,
+        SAVE,
+        LOAD,
+        ADD_SONG,
+        REMOVE_SONG,
+        ADD_PLAYLIST,
+        REMOVE_PLAYLIST,
+        RANDOMIZE,
+        CLEAR;
+    }
     
     private class ButtonListener implements ActionListener
     {
@@ -195,14 +195,16 @@ public class PlaylistPanel extends JComponent
         {
             switch(type)
             {
-                case MVUP:      doMvUpButtonAction(e);     break;
-                case MVDN:      doMvDnButtonAction(e);     break;
-                case SAVE:      doSaveButtonAction(e);     break;
-                case LOAD:      doLoadButtonAction(e);     break;
-                case ADD:       doAddButtonAction(e);      break;
-                case REMOVE:    doRemoveButtonAction(e);   break;
-                case RANDOMIZE: doRandomButtonAction(e);   break;
-                case CLEAR:     doClearButtonAction(e);    break;
+                case MVUP:           doMvUpButtonAction(e);        break;
+                case MVDN:           doMvDnButtonAction(e);        break;
+                case SAVE:           doSaveButtonAction(e);        break;
+                case LOAD:           doLoadButtonAction(e);        break;
+                case ADD_SONG:       doAddButtonAction(e);         break;
+                case REMOVE_SONG:    doRemoveButtonAction(e);      break;
+                case ADD_PLAYLIST:   doAddPlayListButtonAction(e); break;
+                case REMOVE_PLAYLIST:doRemPlayListButtonAction(e); break;
+                case RANDOMIZE:      doRandomButtonAction(e);      break;
+                case CLEAR:          doClearButtonAction(e);       break;
             }
         }
        
@@ -235,7 +237,16 @@ public class PlaylistPanel extends JComponent
         {
             JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");
         }
-        
+
+        private void doAddPlayListButtonAction(ActionEvent e)
+        {
+            JOptionPane.showMessageDialog(null, "This button blows up the world");
+        }
+
+        private void doRemPlayListButtonAction(ActionEvent e)
+        {
+            JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
+        }
         private void doRandomButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"Wanna know something random?  The gravitational constant is 6.67*10^-11");        

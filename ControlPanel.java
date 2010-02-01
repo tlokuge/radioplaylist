@@ -206,8 +206,6 @@ public class ControlPanel extends JPanel
                 case PLAYLIST:  doPlaylistButtonAction(e); break;
             }
         }
-
-      
        
         private void doPlayButtonAction(ActionEvent e)
         {
@@ -225,7 +223,7 @@ public class ControlPanel extends JPanel
 
         private void doStopButtonAction(ActionEvent e)
         {
-
+            play_button.setIcon(play_icon);
         }
 
         private void doNextButtonAction(ActionEvent e)
