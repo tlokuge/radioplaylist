@@ -1,4 +1,6 @@
-package radioplaylist;  
+package radioplaylist;
+
+import java.io.Serializable;
 
 /**
  * Write a description of class Song here.
@@ -6,7 +8,7 @@ package radioplaylist;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Song
+public class Song implements Serializable
 {
     // instance variables - replace the example below with your own
     private String title, artist, album, recType;
