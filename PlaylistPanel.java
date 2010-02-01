@@ -1,4 +1,4 @@
-  
+package radioplaylist;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -22,7 +22,7 @@ public class PlaylistPanel extends JComponent
 
     JList song_library_list;
 
-    ArrayList<JPlayList> playlist_list;
+    ArrayList<PlayList> playlist_list;
 
     JTabbedPane playlist_tab;
 
@@ -42,7 +42,7 @@ public class PlaylistPanel extends JComponent
 
         song_library_list  = new JList();
 
-        playlist_list   = new ArrayList<JPlayList>();
+        playlist_list   = new ArrayList<PlayList>();
 
         playlist_tab    = new JTabbedPane();
 
@@ -96,7 +96,7 @@ public class PlaylistPanel extends JComponent
         song_library_list.setListData(str);
 
         for(int i = 0; i < 5; ++i)
-            playlist_list.add(new JPlayList(StringConstantHolder.PP_PLCHLDR_TAB));
+            playlist_list.add(new PlayList());
         
         for(JList list : playlist_list)
             list.setListData(str);
@@ -156,9 +156,6 @@ public class PlaylistPanel extends JComponent
         play_control_panel.setVisible(true);
     }
     
-    //calling all playlist methods
-    PlayMeth method = new PlayMeth();
-    
     private enum ButtonType { MVUP, MVDN , SAVE , LOAD , ADD, REMOVE, RANDOMIZE, CLEAR; }
     
     private class ButtonListener implements ActionListener
@@ -208,39 +205,21 @@ public class PlaylistPanel extends JComponent
         private void doAddButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"There aren't songs in the library yet....");
-            if(!method.safeZone())
-                JOptionPane.showMessageDialog(null, "You are not within the 43 to 48 minute range, please add or remove some songs", "Time Range Error", 2);
         }
         
         private void doRemoveButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");
-            if(!method.safeZone())
-                JOptionPane.showMessageDialog(null, "You are not within the 43 to 48 minute range, please add or remove some songs", "Time Range Error", 2);
         }
         
         private void doRandomButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"Wanna know something random?  The gravitational constant is 6.67*10^-11");        
-            method.randomize();
         }
         
         private void doClearButtonAction(ActionEvent e)
         {
             JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");            
         }
-    }
-
-    private class JPlayList extends JList
-    {
-        private String name;
-
-        public JPlayList(String name)
-        {
-            super();
-            this.name = name;
-        }
-
-        public String getName() { return name; }
     }
 }

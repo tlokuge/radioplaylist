@@ -1,4 +1,4 @@
-  
+package radioplaylist;  
 
 /**
  * Write a description of class Song here.
@@ -108,12 +108,18 @@ public class Song
         //  popular = 50;
         popular--;
     }
+
+    public String getSongInfo()
+    {
+        return title + " - " + artist + " - " + duration;
+    }
+
     /**
      * Method that outputs the song information in a string
      * @return String value
      */
     public String toString()
     {
-        return ("Title: "+ title+ " Artist: " + artist + " Album: " + album + " Year: " + year + " Duration: " + duration + " Times Played: " + freq + " Popularity: " + popular);
+        return "Title: "+ title+ " Artist: " + artist + " Album: " + album + " Year: " + year + " Duration: " + duration + " Times Played: " + freq + " Popularity: " + popular;
     }
 }

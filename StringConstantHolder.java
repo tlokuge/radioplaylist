@@ -1,4 +1,4 @@
-  
+package radioplaylist;  
 
 public abstract class StringConstantHolder
 {
@@ -60,4 +60,7 @@ public abstract class StringConstantHolder
     // Frame Titles
     static final String PGUI_PLYLST_TTL = "Song Playlist";
     static final String PGUI_CNTRLS_TTL = "Playlist Controls";
+
+    /************** PlaylistGUI.java *****************/
+    static final String PL_NEW_PL = "New Playlist";
 }
