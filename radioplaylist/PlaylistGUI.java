@@ -15,10 +15,10 @@ public class PlaylistGUI
     PlaylistPanel play_panel;
     ControlPanel  control_panel;
 
-    final int LIB_FRAME_WIDTH   = 700;
+    final int LIB_FRAME_WIDTH   = 800;
     final int LIB_FRAME_HEIGHT  = 500;
 
-    final int CON_FRAME_WIDTH   = 600;
+    final int CON_FRAME_WIDTH   = 450;
     final int CON_FRAME_HEIGHT  = 235;
 
     public PlaylistGUI()
@@ -26,7 +26,7 @@ public class PlaylistGUI
         library_frame = new JFrame();
         control_frame = new JFrame();
 
-        library_frame.setLocation(600,0);
+        library_frame.setLocation(455,0);
             
         library_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
