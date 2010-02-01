@@ -258,7 +258,8 @@ public class PlaylistPanel extends JComponent
         }
         private void doRandomButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"Wanna know something random?  The gravitational constant is 6.67*10^-11");        
+            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            pl.randomize();
         }
         
         private void doClearButtonAction(ActionEvent e)
