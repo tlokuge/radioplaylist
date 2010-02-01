@@ -1,17 +1,12 @@
 package radioplaylist;  
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -144,6 +139,8 @@ public class PlayList extends JList implements Serializable
             playlist.remove(a);
         }
         playlist = p;
+
+        populateListData();
     }
 
     private void populateListData()
@@ -209,11 +206,14 @@ public class PlayList extends JList implements Serializable
             setName(str);
 
             System.out.println(str);
-            while(in.hasNext())
+            ArrayList<Song> pl = new ArrayList<Song>();
+            while(in.hasNextLine())
             {
                 Song s = new Song();
 
-                str = in.next(); // Song Title
+                str = getNextSegmentUsingScanner(in); // Song Title
+                if(str == null)
+                    return;
                 s.setTitle(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Performer
@@ -250,12 +250,12 @@ public class PlayList extends JList implements Serializable
                 if(str == null)
                     return;
                 s.setRecNum(Integer.parseInt(str));
+
+                pl.add(s);
             }
 
-            /*ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-            playlist = (ArrayList<Song>)in.readObject();
-            in.close();
-            */
+            playlist = pl;
+
             populateListData();
             revalidate();
             repaint();
@@ -268,14 +268,16 @@ public class PlayList extends JList implements Serializable
 
     public void sendError(String err)
     {
-        JOptionPane.showMessageDialog(null, err);
+        JOptionPane.showMessageDialog(null, err, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
     public String getNextSegmentUsingScanner(Scanner in)
     {
-        if(in.hasNext())
+        if(in.hasNextLine())
         {
-            String str = in.next();
+            String str = in.nextLine();
+            StringTokenizer token = new StringTokenizer(str, ";");
+            str = token.nextToken();
             System.out.println(str);
             return str;
         }
