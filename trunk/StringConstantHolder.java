@@ -12,6 +12,10 @@ public abstract class StringConstantHolder
     static final String PP_DEL_IMG = "src/radioplaylist/images/delete.png";
     static final String PP_RDM_IMG = "src/radioplaylist/images/randomize.png";
     static final String PP_CLR_IMG = "src/radioplaylist/images/clear.png";
+    static final String PP_REMPL_IMG = "src/radioplaylist/images/removeplaylist.png";
+    static final String PP_ADDPL_IMG = "src/radioplaylist/images/addplaylist.png";
+    static final String PP_REMSG_IMG = "src/radioplaylist/images/removesongs.png";
+    static final String PP_ADDSG_IMG = "src/radioplaylist/images/addsongs.png";
 
     // Panel Titles
     static final String PP_PLAYLIST_PANEL = "Playlist";
@@ -29,6 +33,10 @@ public abstract class StringConstantHolder
     static final String PP_DEL_TT = "Click to delete a song in your playlist.";
     static final String PP_RDM_TT = "Click to randomize your playlist.";
     static final String PP_CLR_TT = "Click to clear your playlist.";
+    static final String PP_REM_PL = "Click to remove playlist.";
+    static final String PP_ADD_PL = "Click to add playlist.";
+    static final String PP_REM_SG = "Click to remove song.";
+    static final String PP_ADD_SG = "Click to add song.";
 
 
     /************** ControlPanel.java *****************/

@@ -34,6 +34,11 @@ public class PlaylistPanel extends JComponent
     JButton remove_button;
     JButton shuffle_button;
     JButton clear_button;
+
+    JButton removeplaylist_button;
+    JButton addplaylist_button;
+    JButton removesongs_button;
+    JButton addsongs_button;
     
     public PlaylistPanel()
     {
@@ -54,6 +59,11 @@ public class PlaylistPanel extends JComponent
         remove_button   = new JButton(new ImageIcon(StringConstantHolder.PP_DEL_IMG));
         shuffle_button  = new JButton(new ImageIcon(StringConstantHolder.PP_RDM_IMG));
         clear_button    = new JButton(new ImageIcon(StringConstantHolder.PP_CLR_IMG));
+
+        removeplaylist_button = new JButton(new ImageIcon(StringConstantHolder.PP_REM_PL));
+        addplaylist_button = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_PL));
+        removesongs_button = new JButton(new ImageIcon(StringConstantHolder.PP_REM_SG));
+        addsongs_button = new JButton(new ImageIcon(StringConstantHolder.PP_ADD_SG));
 
         setLayout(new BorderLayout());
         initializePanels();
@@ -113,6 +123,11 @@ public class PlaylistPanel extends JComponent
         remove_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
         shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
         clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
+
+        removeplaylist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
+        addplaylist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
+        removesongs_button.setToolTipText(StringConstantHolder.PP_REM_SG);
+        addsongs_button.setToolTipText(StringConstantHolder.PP_ADD_SG);
         
         move_up_button.addActionListener(new ButtonListener(ButtonType.MVUP));
         move_down_button.addActionListener(new ButtonListener(ButtonType.MVDN));
@@ -122,6 +137,11 @@ public class PlaylistPanel extends JComponent
         remove_button.addActionListener(new ButtonListener(ButtonType.REMOVE));
         shuffle_button.addActionListener(new ButtonListener(ButtonType.RANDOMIZE));
         clear_button.addActionListener(new ButtonListener(ButtonType.CLEAR));
+
+        removeplaylist_button.addActionListener(new ButtonListener(null));
+        addplaylist_button.addActionListener(new ButtonListener(null));
+        removesongs_button.addActionListener(new ButtonListener(null));
+        addsongs_button.addActionListener(new ButtonListener(null));
     }
 
     private void initializePlaylistTabs()
@@ -153,6 +173,10 @@ public class PlaylistPanel extends JComponent
         play_control_panel.add(remove_button);
         play_control_panel.add(shuffle_button);
         play_control_panel.add(clear_button);
+        play_control_panel.add(removeplaylist_button);
+        play_control_panel.add(addplaylist_button);
+        play_control_panel.add(removesongs_button);
+        play_control_panel.add(addsongs_button);
         play_control_panel.setVisible(true);
     }
     
