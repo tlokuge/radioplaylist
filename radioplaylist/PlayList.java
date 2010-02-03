@@ -84,43 +84,51 @@ public class PlayList extends JList implements Serializable
     public void clearPlaylist()
     {
         playlist.clear();
+        populateListData();
     }
 
-    public void swap(Song s1, Song s2)
+    public boolean swap(Song s1, Song s2)
     {
         int ind1 = findSong(s1);
         int ind2 = findSong(s2);
 
         // Check to make sure songs exist in playlist
         if(ind1 < 0 || ind2 < 0)
-            return;
+            return false;
 
-        playlist.add(ind1, s2);
-        playlist.add(ind2, s1);
+        playlist.set(ind1, s2);
+        playlist.set(ind2, s1);
 
         populateListData();
+        return true;
     }
 
-    public void shiftUp(Song song1, Song song2)
+    public boolean shiftUp(Song song)
     {
-        if(song1!= playlist.get(0))//not first song in playlist
+        if(song == null || playlist.get(0).equals(song))
+            return false; // invalid song or first song in the playlist - no point to continue.
+        return swap(song, playlist.get(findSong(song) - 1));
+        /*if(song1!= playlist.get(0))//not first song in playlist
         {
             Song temp;
             temp = song1;
             song1 = song2;
             song2 = temp;
-        }
+        }*/
     }
 
-    public void shiftDn(Song song1, Song song2)
+    public boolean shiftDown(Song song)
     {
-        if(song1!= playlist.get(playlist.size()-1))//not last song in playlist
+        if(song == null || playlist.get(playlist.size() - 1).equals(song))
+            return false; // invalid song or last song in playlist - no point to continue.
+        return swap(song, playlist.get(findSong(song) + 1));
+        /*if(song1!= playlist.get(playlist.size()-1))//not last song in playlist
         {
             Song temp;
             temp = song1;
             song1 = song2;
             song2 = temp;
-        }
+        }*/
     }
     public boolean safeZone()
     {
@@ -164,6 +172,14 @@ public class PlayList extends JList implements Serializable
                 return i;
 
         return -1;
+    }
+
+    public Song getSongAt(int index)
+    {
+        if(index < 0 || index > playlist.size() - 1)
+            return null; // invalid index.
+
+        return playlist.get(index);
     }
 
     public void savePlaylist()
@@ -254,7 +270,9 @@ public class PlayList extends JList implements Serializable
                 pl.add(s);
             }
 
-            playlist = pl;
+            clearPlaylist();
+            for(Song s : pl)
+                addSong(s);
 
             populateListData();
             revalidate();
