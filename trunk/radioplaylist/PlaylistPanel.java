@@ -1,6 +1,7 @@
 package radioplaylist;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -145,8 +146,16 @@ public class PlaylistPanel extends JComponent
 
     private void initializePlaylistTabs()
     {
-        for(JList list : playlist_list)
-            playlist_tab.add(list, list.getName());
+        for(PlayList list : playlist_list)
+        {
+            PlayListTableModel m = new PlayListTableModel(list);
+
+            JTable table = new JTable(m);
+            RowSorter <PlayListTableModel> s = new TableRowSorter<PlayListTableModel>(m);
+            table.setRowSorter(s);
+
+            playlist_tab.add(new JScrollPane(table), m.getPlayList().getName());
+        }
 
         playlist_tab.setTabPlacement(JTabbedPane.LEFT);
     }
@@ -159,19 +168,18 @@ public class PlaylistPanel extends JComponent
         initializeButtons();
 
         main_panel.setLayout(new GridLayout(1, 3));
+//
+//        PlayListTableModel m = new PlayListTableModel();
+//        m.addSong(new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1));
+//        m.addSong(new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2));
+//        m.addSong(new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3));
+//
+//        JTable table = new JTable(m);
+//        RowSorter <PlayListTableModel> s = new TableRowSorter<PlayListTableModel>(m);
+//        table.setRowSorter(s);
 
-        SomeTableModel m = new SomeTableModel();
-        m.addSong(new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1));
-        m.addSong(new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2));
-        m.addSong(new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3));
-        
-        JTable table = new JTable(m);
-        RowSorter <SomeTableModel> s = new TableRowSorter<SomeTableModel>(m);
-        table.setRowSorter(s);
-
-        
-        main_panel.add(new JScrollPane(table));
-        //main_panel.add(playlist_tab);
+        //main_panel.add(new JScrollPane(table));
+        main_panel.add(playlist_tab);
         main_panel.add(song_library_list);
         main_panel.setVisible(true);
 
@@ -231,10 +239,14 @@ public class PlaylistPanel extends JComponent
 
         private PlayList getCurrentPlayList()
         {
-            if(playlist_tab.getSelectedComponent() instanceof PlayList)
-                return (PlayList)playlist_tab.getSelectedComponent();
+            JScrollPane p = (JScrollPane)playlist_tab.getSelectedComponent();
+            JTable t= (JTable)p.getViewport().getView();
+            PlayList pl = ((PlayListTableModel)t.getModel()).getPlayList();
 
-            return null;
+            return pl;
+            //if(playlist_tab.getSelectedComponent() instanceof PlayList)
+            //    return (PlayList)playlist_tab.getSelectedComponent();
+
         }
        
         private void doMvUpButtonAction(ActionEvent e)
@@ -331,28 +343,36 @@ public class PlaylistPanel extends JComponent
         }
     }
 
-    class SomeTableModel extends AbstractTableModel
+    class PlayListScrollPane extends JScrollPane
+    {
+        private PlayList playlist;
+
+        public PlayListScrollPane(PlayList pl)
+        {
+            super(pl);
+            playlist = pl;
+        }
+    }
+
+    class PlayListTableModel extends AbstractTableModel
     {
         private String[] columnNames =
         {
             "Title", "Artist", "Album", "Duration"
         };
 
-        private ArrayList<Song> list;
+        private PlayList playlist;
 
-        public SomeTableModel()
+        public PlayListTableModel(PlayList pl)
         {
-            list = new ArrayList<Song>();
+            playlist = pl;
         }
 
-        public void addSong(Song s)
-        {
-            list.add(s);
-        }
+        public PlayList getPlayList() { return playlist; }
 
         public int getRowCount()
         {
-            return list.size();
+            return playlist.getTotalSongs();
         }
 
         public int getColumnCount()
@@ -367,9 +387,9 @@ public class PlaylistPanel extends JComponent
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            if(rowIndex < 0 || rowIndex > list.size() - 1)
+            if(rowIndex < 0 || rowIndex > playlist.getTotalSongs() - 1)
                 return null;
-            Song s = list.get(rowIndex);
+            Song s = playlist.getSongAt(rowIndex);
             switch(columnIndex)
             {
                 case 0:
