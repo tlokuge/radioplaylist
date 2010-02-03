@@ -1,7 +1,6 @@
 package radioplaylist;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -213,27 +212,51 @@ public class PlaylistPanel extends JComponent
                 case CLEAR:          doClearButtonAction(e);       break;
             }
         }
+
+        private PlayList getCurrentPlayList()
+        {
+            if(playlist_tab.getSelectedComponent() instanceof PlayList)
+                return (PlayList)playlist_tab.getSelectedComponent();
+
+            return null;
+        }
        
         private void doMvUpButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"Imagine that this function works");
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+            int ind = pl.getSelectedIndex();
+            if(pl.shiftUp(pl.getSongAt(ind)))
+                pl.setSelectedIndex(ind - 1);
+            //JOptionPane.showMessageDialog(null,"Imagine that this function works");
         }
 
         private void doMvDnButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"Imagine that this function works too");
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+            int ind = pl.getSelectedIndex();
+            if(pl.shiftDown(pl.getSongAt(ind)))
+                pl.setSelectedIndex(ind + 1);
+            //JOptionPane.showMessageDialog(null,"Imagine that this function works too");
         }
 
         private void doSaveButtonAction(ActionEvent e)
         {
-            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
             pl.savePlaylist();
             //JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works");
         }
 
         private void doLoadButtonAction(ActionEvent e)
         {
-            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
             pl.loadPlaylist();
         }
 
@@ -254,17 +277,41 @@ public class PlaylistPanel extends JComponent
 
         private void doRemPlayListButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+
+            if(sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
+            {
+                playlist_tab.remove(pl);
+                pl = null;
+            }
+            //JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
         }
+
         private void doRandomButtonAction(ActionEvent e)
         {
-            PlayList pl = (PlayList)playlist_tab.getSelectedComponent();
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
             pl.randomize();
         }
         
         private void doClearButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");            
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+
+            if(sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
+                pl.clearPlaylist();
+            //JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");
+        }
+
+        private boolean sendConfirmDialog(String message, String title)
+        {
+            return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
+                    == JOptionPane.YES_OPTION;
         }
     }
 }
