@@ -14,6 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class PlaylistPanel extends JComponent
 {
@@ -36,7 +41,6 @@ public class PlaylistPanel extends JComponent
     JButton remove_playlist_button;
     JButton shuffle_button;
     JButton clear_button;
-
     
     public PlaylistPanel()
     {
@@ -155,7 +159,19 @@ public class PlaylistPanel extends JComponent
         initializeButtons();
 
         main_panel.setLayout(new GridLayout(1, 3));
-        main_panel.add(playlist_tab);
+
+        SomeTableModel m = new SomeTableModel();
+        m.addSong(new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1));
+        m.addSong(new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2));
+        m.addSong(new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3));
+        
+        JTable table = new JTable(m);
+        RowSorter <SomeTableModel> s = new TableRowSorter<SomeTableModel>(m);
+        table.setRowSorter(s);
+
+        
+        main_panel.add(new JScrollPane(table));
+        //main_panel.add(playlist_tab);
         main_panel.add(song_library_list);
         main_panel.setVisible(true);
 
@@ -313,5 +329,67 @@ public class PlaylistPanel extends JComponent
             return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
                     == JOptionPane.YES_OPTION;
         }
+    }
+
+    class SomeTableModel extends AbstractTableModel
+    {
+        private String[] columnNames =
+        {
+            "Title", "Artist", "Album", "Duration"
+        };
+
+        private ArrayList<Song> list;
+
+        public SomeTableModel()
+        {
+            list = new ArrayList<Song>();
+        }
+
+        public void addSong(Song s)
+        {
+            list.add(s);
+        }
+
+        public int getRowCount()
+        {
+            return list.size();
+        }
+
+        public int getColumnCount()
+        {
+            return columnNames.length;
+        }
+
+        public String getColumnName(int col)
+        {
+            return columnNames[col];
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex)
+        {
+            if(rowIndex < 0 || rowIndex > list.size() - 1)
+                return null;
+            Song s = list.get(rowIndex);
+            switch(columnIndex)
+            {
+                case 0:
+                    return s.getTitle();
+                case 1:
+                    return s.getArtist();
+                case 2:
+                    return s.getAlbum();
+                case 3:
+                    return s.getTime();
+            }
+
+            return null;
+        }
+        
+        public Class getColumnClass(int column) {
+        if (column >= 0 && column <= getColumnCount())
+          return getValueAt(0, column).getClass();
+        else
+          return Object.class;
+      }
     }
 }
