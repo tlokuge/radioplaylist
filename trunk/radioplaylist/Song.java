@@ -89,6 +89,18 @@ public class Song implements Serializable
     }
 
     /**
+     * Method to get frequency
+     * @return the play count of the song
+     */
+    public int getFrequency() { return freq; }
+
+    /**
+     * Method to get popularity of the song
+     * @return the popularity of the song
+     */
+    public int getPopularity() { return popular; }
+
+    /**
      * Method to retrieve duration of the song
      * @return the duration of the song in seconds
      */
