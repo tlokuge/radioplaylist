@@ -110,8 +110,8 @@ public class PlaylistPanel extends JComponent
             playlist_list.add(new PlayList());
 
         Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1);
-        Song s2 = new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
-        Song s3 = new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
+        Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
+        Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
 
         playlist_list.get(0).addSong(s1);
         playlist_list.get(0).addSong(s2);
@@ -290,12 +290,25 @@ public class PlaylistPanel extends JComponent
 
         private void doAddButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"There aren't songs in the library yet....");
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+            if(!pl.safeZone())
+                sendAlertDialog("Your playlist is not within 43 and 48 minutes", "Time sufficiency alert");
+            //add song function here.....
+            //pl.addSong( );
         }
         
         private void doRemoveButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null,"The text in the playlist is just for show");
+            PlayList pl = getCurrentPlayList();
+            if(pl == null)
+                return;
+            if(!pl.safeZone())
+                sendAlertDialog("Your playlist is not within 43 and 48 minutes", "Time sufficiency alert");
+            //remove song function here....
+            //pl.deleteSong( );
+
         }
 
         private void doAddPlayListButtonAction(ActionEvent e)
@@ -340,6 +353,11 @@ public class PlaylistPanel extends JComponent
         {
             return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
                     == JOptionPane.YES_OPTION;
+        }
+
+        private void sendAlertDialog(String message, String title)
+        {
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
         }
     }
 
