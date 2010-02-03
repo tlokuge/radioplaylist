@@ -182,6 +182,11 @@ public class PlayList extends JList implements Serializable
         return playlist.get(index);
     }
 
+    public int getTotalSongs()
+    {
+        return playlist.size();
+    }
+
     public void savePlaylist()
     {
         int retval = chooser.showSaveDialog(this);
