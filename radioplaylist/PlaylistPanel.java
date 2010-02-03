@@ -26,7 +26,7 @@ public class PlaylistPanel extends JComponent
     JPanel main_panel;
     JPanel play_control_panel;
 
-    JList song_library_list;
+    PlayList song_library_list;
 
     ArrayList<PlayList> playlist_list;
 
@@ -48,7 +48,7 @@ public class PlaylistPanel extends JComponent
         main_panel         = new JPanel();
         play_control_panel = new JPanel();
 
-        song_library_list  = new JList();
+        song_library_list  = new PlayList();
 
         playlist_list   = new ArrayList<PlayList>();
 
@@ -148,16 +148,27 @@ public class PlaylistPanel extends JComponent
     {
         for(PlayList list : playlist_list)
         {
-            PlayListTableModel m = new PlayListTableModel(list);
+            /*PlayListTableModel m = new PlayListTableModel(list);
 
             JTable table = new JTable(m);
             RowSorter <PlayListTableModel> s = new TableRowSorter<PlayListTableModel>(m);
             table.setRowSorter(s);
 
-            playlist_tab.add(new JScrollPane(table), m.getPlayList().getName());
+            playlist_tab.add(new JScrollPane(table), m.getPlayList().getName());*/
+            playlist_tab.add(list, list.getName());
         }
 
         playlist_tab.setTabPlacement(JTabbedPane.LEFT);
+    }
+
+    private Component initializeSongLibrary()
+    {
+        PlayListTableModel model = new PlayListTableModel(song_library_list);
+        JTable table = new JTable(model);
+        RowSorter<PlayListTableModel> sorter = new TableRowSorter<PlayListTableModel>(model);
+        table.setRowSorter(sorter);
+
+        return new JScrollPane(table);
     }
 
     private void initializePanels()
@@ -180,7 +191,7 @@ public class PlaylistPanel extends JComponent
 
         //main_panel.add(new JScrollPane(table));
         main_panel.add(playlist_tab);
-        main_panel.add(song_library_list);
+        main_panel.add(initializeSongLibrary(), song_library_list.getName());
         main_panel.setVisible(true);
 
         play_control_panel.setLayout(new GridLayout(1, 7));
@@ -195,6 +206,26 @@ public class PlaylistPanel extends JComponent
         play_control_panel.add(shuffle_button);
         play_control_panel.add(clear_button);
         play_control_panel.setVisible(true);
+    }
+
+    private PlayList getCurrentPlayList()
+    {
+        PlayList pl = null;
+        if(!(playlist_tab.getSelectedComponent() instanceof JScrollPane))
+            return null;
+        JScrollPane p = (JScrollPane)playlist_tab.getSelectedComponent();
+        if(!(p.getViewport().getView() instanceof JTable))
+            return null;
+        JTable t = (JTable)p.getViewport().getView();
+        if(t.getModel() instanceof PlayListTableModel)
+            pl = ((PlayListTableModel)t.getModel()).getPlayList();
+
+        return pl;
+    }
+
+    private Song getSelectedLibrarySong()
+    {
+        return song_library_list.getSongAt(song_library_list.getSelectedIndex());
     }
     
     private enum ButtonType 
@@ -237,17 +268,6 @@ public class PlaylistPanel extends JComponent
             }
         }
 
-        private PlayList getCurrentPlayList()
-        {
-            JScrollPane p = (JScrollPane)playlist_tab.getSelectedComponent();
-            JTable t= (JTable)p.getViewport().getView();
-            PlayList pl = ((PlayListTableModel)t.getModel()).getPlayList();
-
-            return pl;
-            //if(playlist_tab.getSelectedComponent() instanceof PlayList)
-            //    return (PlayList)playlist_tab.getSelectedComponent();
-
-        }
        
         private void doMvUpButtonAction(ActionEvent e)
         {
@@ -376,7 +396,7 @@ public class PlaylistPanel extends JComponent
     {
         private String[] columnNames =
         {
-            "Title", "Artist", "Album", "Duration"
+            "Title", "Artist", "Album", "Length", "Record Type", "Play Count", "Popularity"
         };
 
         private PlayList playlist;
@@ -418,16 +438,20 @@ public class PlaylistPanel extends JComponent
                     return s.getAlbum();
                 case 3:
                     return s.getTime();
+                case 4: return s.getRecType();
+                case 5: return s.getFrequency();
+                case 6: return s.getPopularity();
+                default:
+                        return "UNK";
             }
-
-            return null;
         }
         
-        public Class getColumnClass(int column) {
-        if (column >= 0 && column <= getColumnCount())
-          return getValueAt(0, column).getClass();
-        else
-          return Object.class;
+        public Class getColumnClass(int column)
+        {
+            if (column >= 0 && column <= getColumnCount())
+              return getValueAt(0, column).getClass();
+            else
+              return Object.class;
       }
     }
 }
