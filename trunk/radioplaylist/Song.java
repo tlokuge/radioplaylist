@@ -133,6 +133,16 @@ public class Song implements Serializable
         popular--;
     }
 
+    public boolean equals(Song other)
+    {
+        if(title.equalsIgnoreCase(other.title) && artist.equalsIgnoreCase(other.artist)
+                && year == other.year && album.equalsIgnoreCase(other.album)
+                && recType.equalsIgnoreCase(other.recType) && recNum == other.recNum)
+            return true;
+
+        return false;
+    }
+
     public String getSongInfo()
     {
         return title + " - " + artist + " - " + duration;
