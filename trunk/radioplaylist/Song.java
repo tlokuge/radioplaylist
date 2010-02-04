@@ -122,7 +122,7 @@ public class Song implements Serializable
         freq++;
         //if(day = Sunday)
         //  popular = 50;
-        popular++;
+        bumpPopularity();
     }
 
     public void dropFreq()
@@ -130,8 +130,11 @@ public class Song implements Serializable
         freq--;
         //if(day = Sunday)
         //  popular = 50;
-        popular--;
+        dropPopularity();
     }
+
+    public void bumpPopularity() { popular++; }
+    public void dropPopularity() { popular--; }
 
     public boolean equals(Song other)
     {
@@ -145,7 +148,38 @@ public class Song implements Serializable
 
     public String getSongInfo()
     {
-        return title + " - " + artist + " - " + duration;
+        return title + " - " + artist + " - " + getFormattedTime();
+    }
+
+    public String getFormattedTime()
+    {
+        String str = "";
+        int time = duration;
+        if(time > 86400) // one day
+        {
+            int numDays = Math.round(time/86400);
+            str += numDays + ":";
+            time -= (numDays * 86400);
+        }
+
+        if(time > 3600) // one hour
+        {
+            int numHours = Math.round(time/3600);
+            str += numHours + ":";
+            time -= (numHours * 3600);
+        }
+
+        if(time > 60) // one minute
+        {
+            int numMins = Math.round(time/60);
+            str += numMins + ":";
+            time -= (numMins * 60);
+        }
+        else
+            str += "0:";
+
+        str += time;
+        return str;
     }
 
     /**

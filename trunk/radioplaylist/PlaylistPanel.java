@@ -224,7 +224,9 @@ public class PlaylistPanel extends JComponent
     private Song getSelectedLibrarySong()
     {
         return ((PlayListTableModel)song_library_table.getModel())
-                .getPlayList().getSongAt(song_library_table.getSelectedRow());
+                .getPlayList().getSongAt(
+                song_library_table.getRowSorter().convertRowIndexToModel(
+                song_library_table.getSelectedRow()));
     }
     
     private enum ButtonType 
@@ -315,6 +317,8 @@ public class PlaylistPanel extends JComponent
                 return;
 
             pl.addSong(getSelectedLibrarySong());
+            song_library_table.revalidate();
+            song_library_table.repaint();
             
             if(!pl.safeZone())
                 sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
@@ -327,6 +331,11 @@ public class PlaylistPanel extends JComponent
             PlayList pl = getCurrentPlayList();
             if(pl == null)
                 return;
+
+            pl.deleteSong(getSelectedLibrarySong());
+            song_library_table.revalidate();
+            song_library_table.repaint();
+            
             if(!pl.safeZone())
                 sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
             //remove song function here....
@@ -420,7 +429,7 @@ public class PlaylistPanel extends JComponent
                 case 0:  return s.getTitle();
                 case 1:  return s.getArtist();
                 case 2:  return s.getAlbum();
-                case 3:  return s.getTime();
+                case 3:  return s.getFormattedTime();
                 case 4:  return s.getRecType();
                 case 5:  return s.getFrequency();
                 case 6:  return s.getPopularity();

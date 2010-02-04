@@ -46,12 +46,12 @@ public class PlayList extends JList implements Serializable
 
     public void addSong(Song song)
     {
-        if(containsSong(song))
+        if(song == null || containsSong(song))
             return;
         playlist.add(song);
         totalTime  += song.getTime();
         remainTime += song.getTime();
-        song.bumpFreq();
+        song.bumpPopularity();
         populateListData();
     }
 
@@ -63,7 +63,7 @@ public class PlayList extends JList implements Serializable
         playlist.remove(index);
         totalTime  -= song.getTime();
         remainTime -= song.getTime();
-        song.dropFreq();
+        song.dropPopularity();
         populateListData();
         return true;
     }
@@ -146,7 +146,7 @@ public class PlayList extends JList implements Serializable
         int time = totalTime;
         if(time > 86400) // one day
         {
-            int numDays = Math.round(totalTime/86400);
+            int numDays = Math.round(time/86400);
             str += numDays + ":";
             time -= (numDays * 86400);
         }
@@ -246,14 +246,14 @@ public class PlayList extends JList implements Serializable
             File f = chooser.getSelectedFile();
             Scanner in = new Scanner(f);
 
+            str = getNextSegmentUsingScanner(in); // PlayList name
+            if(str == null)
+                return;
+            setName(str);
+
             while(in.hasNextLine())
             {
                 s = new Song();
-
-                str = getNextSegmentUsingScanner(in); // PlayList name
-                if(str == null)
-                    return;
-                setName(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Title
                 if(str == null)
