@@ -32,6 +32,8 @@ public class ControlPanel extends JPanel
     
     ImageIcon play_icon;
     ImageIcon pause_icon;
+    ImageIcon playlist_icon;
+    ImageIcon playliston_icon;
 
     public ControlPanel(final JFrame playlist_frame)
     {
@@ -53,7 +55,9 @@ public class ControlPanel extends JPanel
 
         play_icon  = new ImageIcon(StringConstantHolder.CP_PLY_IMG);
         pause_icon = new ImageIcon(StringConstantHolder.CP_PSE_IMG);
-        
+        playlist_icon = new ImageIcon(StringConstantHolder.CP_PLST_IMG);
+        playliston_icon = new ImageIcon(StringConstantHolder.CP_PLSTN_IMG);
+
         doTestStuff();
         initializeLabels();
         initializeLabelPanel();
@@ -90,7 +94,7 @@ public class ControlPanel extends JPanel
         stop_button     = new JButton(new ImageIcon(StringConstantHolder.CP_STP_IMG));
         previous_button = new JButton(new ImageIcon(StringConstantHolder.CP_PRV_IMG));
         next_button     = new JButton(new ImageIcon(StringConstantHolder.CP_NXT_IMG));
-        playlist_button = new JButton(new ImageIcon(StringConstantHolder.CP_PLST_IMG));
+        playlist_button = new JButton(playlist_icon);
 
         play_button.setToolTipText(StringConstantHolder.CP_PLY_TT);
         stop_button.setToolTipText(StringConstantHolder.CP_STP_TT);
@@ -233,6 +237,12 @@ public class ControlPanel extends JPanel
 
         private void doPlaylistButtonAction(ActionEvent e)
         {
+            JButton p = (JButton)e.getSource();
+            if(p.getIcon() == playlist_icon)
+                playlist_button.setIcon(playliston_icon);
+            else
+                playlist_button.setIcon(playlist_icon);
+
             if(playlist_frame.isVisible())
                 playlist_frame.setVisible(false);
             else

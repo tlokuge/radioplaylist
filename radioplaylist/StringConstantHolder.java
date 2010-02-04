@@ -69,13 +69,14 @@ public abstract class StringConstantHolder
     static final String CP_PRV_IMG  = "src/images/previous.png";
     static final String CP_NXT_IMG  = "src/images/next.png";
     static final String CP_PLST_IMG = "src/images/playlist.png";
+    static final String CP_PLSTN_IMG = "src/images/playliston.png";
 
     // Tooltips
     static final String CP_PLY_TT = "Click to play or pause your playlist.";
     static final String CP_STP_TT = "Click to stop your playlist.";
     static final String CP_PRV_TT = "Click to play previous song.";
     static final String CP_NXT_TT = "Click to play next song.";
-    static final String CP_OPN_TT = "Click to open your playlist.";
+    static final String CP_OPN_TT = "Click to open or close your playlist.";
 
 
     /************** PlaylistGUI.java *****************/
