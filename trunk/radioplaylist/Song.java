@@ -158,6 +158,8 @@ public class Song implements Serializable
         if(time > 86400) // one day
         {
             int numDays = Math.round(time/86400);
+            if(numDays < 10)
+                str += "0";
             str += numDays + ":";
             time -= (numDays * 86400);
         }
@@ -165,6 +167,8 @@ public class Song implements Serializable
         if(time > 3600) // one hour
         {
             int numHours = Math.round(time/3600);
+            if(numHours < 10)
+                str += "0";
             str += numHours + ":";
             time -= (numHours * 3600);
         }
@@ -172,12 +176,16 @@ public class Song implements Serializable
         if(time > 60) // one minute
         {
             int numMins = Math.round(time/60);
+            if(numMins < 10)
+                str += "0";
             str += numMins + ":";
             time -= (numMins * 60);
         }
         else
-            str += "0:";
+            str += "00:";
 
+        if(time < 10)
+            str += "0";
         str += time;
         return str;
     }
