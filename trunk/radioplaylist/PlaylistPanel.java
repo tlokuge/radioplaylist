@@ -16,6 +16,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
+import javax.swing.event.EventListenerList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -25,6 +26,7 @@ public class PlaylistPanel extends JComponent
     JPanel play_control_panel;
 
     PlayList song_library_list;
+    JTable song_library_table;
 
     JTabbedPane playlist_tab;
 
@@ -45,8 +47,8 @@ public class PlaylistPanel extends JComponent
         play_control_panel = new JPanel();
 
         song_library_list  = new PlayList();
-
-        playlist_tab    = new JTabbedPane();
+        song_library_table = new JTable();
+        playlist_tab       = new JTabbedPane();
 
         move_up_button         = new JButton(new ImageIcon(StringConstantHolder.PP_UP_IMG));
         move_down_button       = new JButton(new ImageIcon(StringConstantHolder.PP_DN_IMG));
@@ -63,6 +65,10 @@ public class PlaylistPanel extends JComponent
         setLayout(new BorderLayout());
         initializePanels();
 
+        {
+            doTestStuff();
+        }
+
         add(main_panel, BorderLayout.CENTER);
         add(play_control_panel, BorderLayout.SOUTH);
 
@@ -78,22 +84,6 @@ public class PlaylistPanel extends JComponent
 
     private void doTestStuff()
     {
-        String[] str =
-        {
-            "Test1",
-            "Test2",
-            "Test3",
-            "Test4",
-            "Test5",
-            "Test6",
-            "Test7",
-            "Test8",
-            "Test9",
-            "Test10"
-        };
-
-        song_library_list.setListData(str);
-
         PlayList p1 = addPlayList("Sample PlayList 1");
         PlayList p2 = addPlayList("Sample PlayList 2");
         PlayList p3 = addPlayList("Sample PlayList 3");
@@ -103,6 +93,10 @@ public class PlaylistPanel extends JComponent
         Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
         Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
 
+        song_library_list.addSong(s1);
+        song_library_list.addSong(s2);
+        song_library_list.addSong(s3);
+        
         p1.addSong(s1);
         p1.addSong(s2);
         p1.addSong(s3);
@@ -159,11 +153,11 @@ public class PlaylistPanel extends JComponent
     private Component initializeSongLibrary()
     {
         PlayListTableModel model = new PlayListTableModel(song_library_list);
-        JTable table = new JTable(model);
+        song_library_table.setModel(model);
         RowSorter<PlayListTableModel> sorter = new TableRowSorter<PlayListTableModel>(model);
-        table.setRowSorter(sorter);
+        song_library_table.setRowSorter(sorter);
 
-        return new JScrollPane(table);
+        return new JScrollPane(song_library_table);
     }
 
     private PlayList addPlayList(String name)
@@ -186,9 +180,16 @@ public class PlaylistPanel extends JComponent
         playlist_tab.add(pl, pl.getName());
     }
 
+    public void addSongToLibrary(Song song)
+    {
+        if(song_library_list.containsSong(song))
+            return;
+
+        song_library_list.addSong(song);
+    }
+
     private void initializePanels()
     {
-        doTestStuff();
         initializePlaylistTabs();
         initializeComponents();
         initializeButtons();
@@ -222,7 +223,8 @@ public class PlaylistPanel extends JComponent
 
     private Song getSelectedLibrarySong()
     {
-        return song_library_list.getSongAt(song_library_list.getSelectedIndex());
+        return ((PlayListTableModel)song_library_table.getModel())
+                .getPlayList().getSongAt(song_library_table.getSelectedRow());
     }
     
     private enum ButtonType 
@@ -311,8 +313,11 @@ public class PlaylistPanel extends JComponent
             PlayList pl = getCurrentPlayList();
             if(pl == null)
                 return;
+
+            pl.addSong(getSelectedLibrarySong());
+            
             if(!pl.safeZone())
-                sendAlertDialog("Your playlist is not within 43 and 48 minutes", "Time sufficiency alert");
+                sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
             //add song function here.....
             //pl.addSong( );
         }
@@ -323,7 +328,7 @@ public class PlaylistPanel extends JComponent
             if(pl == null)
                 return;
             if(!pl.safeZone())
-                sendAlertDialog("Your playlist is not within 43 and 48 minutes", "Time sufficiency alert");
+                sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
             //remove song function here....
             //pl.deleteSong( );
         }
@@ -331,16 +336,11 @@ public class PlaylistPanel extends JComponent
         private void doAddPlayListButtonAction(ActionEvent e)
         {
             PlayList pl = new PlayList();
-            if(sendConfirmDialog("Do you wish to load the playlist from a file?", "Load PlayList"))
-                pl.loadPlaylist();
+            String pl_name = JOptionPane.showInputDialog(StringConstantHolder.PP_PL_NM_PRMPT);
+            if(pl_name != null)
+                pl.setName(pl_name);
             else
-            {
-                String pl_name = JOptionPane.showInputDialog("Enter a name for the playlist");
-                if(pl_name != null)
-                    pl.setName(pl_name);
-                else
-                    pl = null;
-            }
+                pl = null;
 
             if(pl != null)
             {
@@ -408,7 +408,7 @@ public class PlaylistPanel extends JComponent
         public PlayList getPlayList()          { return playlist; }
         public int getRowCount()               {  return playlist.getTotalSongs(); }
         public int getColumnCount()            {  return columnNames.length; }
-        public String getColumnName(int col)   { return columnNames[col]; }
+        public String getColumnName(int col)   {  return columnNames[col]; }
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {

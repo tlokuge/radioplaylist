@@ -38,11 +38,16 @@ public abstract class StringConstantHolder
     static final String PP_REM_SG = "Click to remove song.";
     static final String PP_ADD_SG = "Click to add song.";
 
-    // Confirm Messages
+    // Messages and Message Dialog Titles
     static final String PP_REMPL_TTL  = "Delete Playlist";
     static final String PP_REMPL_CNFM = "Are you sure you wish to delete this playlist forever?";
     static final String PP_CLR_TTL    = "Clear Playlist";
     static final String PP_CLR_CNFM   = "Are you sure you wish to clear this playlist?";
+    static final String PP_LD_PL_CNFM = "Do you wish to load a playlist from a file?";
+    static final String PP_LD_PL_TTL  = "Load PlayList";
+    static final String PP_TIME_WARN  = "Your playlist is not within 43 and 48 minutes";
+    static final String PP_TIME_TTL   = "Time Sufficiency Alert";
+    static final String PP_PL_NM_PRMPT= "Enter a name for the playlist";
 
     /************** ControlPanel.java *****************/
     // Errors

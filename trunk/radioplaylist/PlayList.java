@@ -29,21 +29,17 @@ public class PlayList extends JList implements Serializable
     public PlayList()
     {
         super();
-
         playlist  = new ArrayList<Song>();
         totalTime = remainTime = 0;
-
         chooser = new JFileChooser();
         setName(StringConstantHolder.PL_NEW_PL);
     }
 
     public PlayList(String name)
     {
-        super();
-        
+        super();        
         playlist  = new ArrayList<Song>();
         totalTime = remainTime = 0;
-
         chooser = new JFileChooser();
         setName(name);
     }
@@ -52,14 +48,10 @@ public class PlayList extends JList implements Serializable
     {
         if(containsSong(song))
             return;
-
         playlist.add(song);
-
         totalTime  += song.getTime();
         remainTime += song.getTime();
-
         song.bumpFreq();
-
         populateListData();
     }
 
@@ -68,16 +60,11 @@ public class PlayList extends JList implements Serializable
         int index = findSong(song);
         if(index < 0)
             return false;
-
         playlist.remove(index);
-        
         totalTime  -= song.getTime();
         remainTime -= song.getTime();
-
         song.dropFreq();
-
         populateListData();
-
         return true;
     }
 
@@ -108,13 +95,6 @@ public class PlayList extends JList implements Serializable
         if(song == null || playlist.get(0).equals(song))
             return false; // invalid song or first song in the playlist - no point to continue.
         return swap(song, playlist.get(findSong(song) - 1));
-        /*if(song1!= playlist.get(0))//not first song in playlist
-        {
-            Song temp;
-            temp = song1;
-            song1 = song2;
-            song2 = temp;
-        }*/
     }
 
     public boolean shiftDown(Song song)
@@ -122,18 +102,11 @@ public class PlayList extends JList implements Serializable
         if(song == null || playlist.get(playlist.size() - 1).equals(song))
             return false; // invalid song or last song in playlist - no point to continue.
         return swap(song, playlist.get(findSong(song) + 1));
-        /*if(song1!= playlist.get(playlist.size()-1))//not last song in playlist
-        {
-            Song temp;
-            temp = song1;
-            song1 = song2;
-            song2 = temp;
-        }*/
     }
     public boolean safeZone()
     {
-        return !(totalTime < 43*60 /**seconds*/
-                || totalTime > 48*60 /**seconds*/);
+        return !(totalTime < (43 * 60) /**seconds*/
+                || totalTime > (48 * 60) /**seconds*/);
     }
 
     public void randomize()
@@ -153,11 +126,53 @@ public class PlayList extends JList implements Serializable
 
     private void populateListData()
     {
-        String songs[] = new String[playlist.size()];
+        String songs[] = new String[playlist.size() + 1];
         for(int i = 0; i < playlist.size(); ++i)
             songs[i] = playlist.get(i).getSongInfo();
 
+        String summary = "[ " + getFormattedTime() + "     total time -   "
+                + playlist.size();
+        if(playlist.size() < 1)
+            summary += " song ]";
+        else
+            summary += " total songs ]";
+        songs[playlist.size()] = summary;
         setListData(songs);
+    }
+
+    public String getFormattedTime()
+    {
+        String str = "";
+        int time = totalTime;
+        if(time > 86400) // one day
+        {
+            int numDays = Math.round(totalTime/86400);
+            str += numDays + ":";
+            time -= (numDays * 86400);
+        }
+        else
+            str += "0:";
+
+        if(time > 3600) // one hour
+        {
+            int numHours = Math.round(time/3600);
+            str += numHours + ":";
+            time -= (numHours * 3600);
+        }
+        else
+            str += "0:";
+
+        if(time > 60) // one minute
+        {
+            int numMins = Math.round(time/60);
+            str += numMins + ":";
+            time -= (numMins * 60);
+        }
+        else
+            str += "0:";
+
+        str += time;
+        return str;
     }
 
     public boolean containsSong(Song song)

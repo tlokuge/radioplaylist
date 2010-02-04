@@ -40,7 +40,7 @@ public class PlaylistGUI
     {
         library_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
 
-        library_frame.setResizable(false);
+        //library_frame.setResizable(false);
         library_frame.add(play_panel);
         library_frame.setVisible(false);
     }
