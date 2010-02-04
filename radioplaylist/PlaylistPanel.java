@@ -7,14 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
-import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
@@ -27,8 +25,6 @@ public class PlaylistPanel extends JComponent
     JPanel play_control_panel;
 
     PlayList song_library_list;
-
-    ArrayList<PlayList> playlist_list;
 
     JTabbedPane playlist_tab;
 
@@ -49,8 +45,6 @@ public class PlaylistPanel extends JComponent
         play_control_panel = new JPanel();
 
         song_library_list  = new PlayList();
-
-        playlist_list   = new ArrayList<PlayList>();
 
         playlist_tab    = new JTabbedPane();
 
@@ -80,12 +74,6 @@ public class PlaylistPanel extends JComponent
         song_library_list.setSelectedIndex(-1);
         song_library_list.setBorder(
                 BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_LIBRARY_PANEL));
-
-        for(JList list : playlist_list)
-        {
-            list.setSelectedIndex(-1);
-            list.setBorder(new EtchedBorder());
-        }
     }
 
     private void doTestStuff()
@@ -106,16 +94,35 @@ public class PlaylistPanel extends JComponent
 
         song_library_list.setListData(str);
 
-        for(int i = 0; i < 5; ++i)
-            playlist_list.add(new PlayList());
+        PlayList p1 = addPlayList("Sample PlayList 1");
+        PlayList p2 = addPlayList("Sample PlayList 2");
+        PlayList p3 = addPlayList("Sample PlayList 3");
+        PlayList p4 = addPlayList("Sample PlayList 4");
 
         Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1);
         Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
         Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
 
-        playlist_list.get(0).addSong(s1);
-        playlist_list.get(0).addSong(s2);
-        playlist_list.get(0).addSong(s3);
+        p1.addSong(s1);
+        p1.addSong(s2);
+        p1.addSong(s3);
+
+        p2.addSong(s1);
+        p2.addSong(s2);
+        p2.addSong(s3);
+        p2.addSong(s1);
+        p2.addSong(s2);
+        p2.addSong(s3);
+        p2.addSong(s1);
+        p2.addSong(s2);
+        p2.addSong(s3);
+
+        p3.addSong(s1);
+
+        addPlayListToTab(p1);
+        addPlayListToTab(p2);
+        addPlayListToTab(p3);
+        addPlayListToTab(p4);
     }
 
     private void initializeButtons()
@@ -146,18 +153,6 @@ public class PlaylistPanel extends JComponent
 
     private void initializePlaylistTabs()
     {
-        for(PlayList list : playlist_list)
-        {
-            /*PlayListTableModel m = new PlayListTableModel(list);
-
-            JTable table = new JTable(m);
-            RowSorter <PlayListTableModel> s = new TableRowSorter<PlayListTableModel>(m);
-            table.setRowSorter(s);
-
-            playlist_tab.add(new JScrollPane(table), m.getPlayList().getName());*/
-            playlist_tab.add(list, list.getName());
-        }
-
         playlist_tab.setTabPlacement(JTabbedPane.LEFT);
     }
 
@@ -171,6 +166,26 @@ public class PlaylistPanel extends JComponent
         return new JScrollPane(table);
     }
 
+    private PlayList addPlayList(String name)
+    {
+        if(name == null || name.isEmpty())
+            name = StringConstantHolder.PL_NEW_PL;
+
+        PlayList pl = new PlayList(name);
+        pl.setBorder(new EtchedBorder());
+        pl.setSelectedIndex(-1);
+        return pl;
+    }
+
+    private void addPlayListToTab(PlayList pl)
+    {
+        for(Component c : playlist_tab.getComponents())
+            if((c instanceof PlayList) && ((PlayList)c).equals(pl))
+                return;
+
+        playlist_tab.add(pl, pl.getName());
+    }
+
     private void initializePanels()
     {
         doTestStuff();
@@ -179,17 +194,6 @@ public class PlaylistPanel extends JComponent
         initializeButtons();
 
         main_panel.setLayout(new GridLayout(1, 3));
-//
-//        PlayListTableModel m = new PlayListTableModel();
-//        m.addSong(new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1));
-//        m.addSong(new Song(1, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2));
-//        m.addSong(new Song(1, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3));
-//
-//        JTable table = new JTable(m);
-//        RowSorter <PlayListTableModel> s = new TableRowSorter<PlayListTableModel>(m);
-//        table.setRowSorter(s);
-
-        //main_panel.add(new JScrollPane(table));
         main_panel.add(playlist_tab);
         main_panel.add(initializeSongLibrary(), song_library_list.getName());
         main_panel.setVisible(true);
@@ -210,17 +214,10 @@ public class PlaylistPanel extends JComponent
 
     private PlayList getCurrentPlayList()
     {
-        PlayList pl = null;
-        if(!(playlist_tab.getSelectedComponent() instanceof JScrollPane))
-            return null;
-        JScrollPane p = (JScrollPane)playlist_tab.getSelectedComponent();
-        if(!(p.getViewport().getView() instanceof JTable))
-            return null;
-        JTable t = (JTable)p.getViewport().getView();
-        if(t.getModel() instanceof PlayListTableModel)
-            pl = ((PlayListTableModel)t.getModel()).getPlayList();
+        if(playlist_tab.getSelectedComponent() instanceof PlayList)
+            return (PlayList)playlist_tab.getSelectedComponent();
 
-        return pl;
+        return null;
     }
 
     private Song getSelectedLibrarySong()
@@ -267,13 +264,13 @@ public class PlaylistPanel extends JComponent
                 case CLEAR:          doClearButtonAction(e);       break;
             }
         }
-
        
         private void doMvUpButtonAction(ActionEvent e)
         {
             PlayList pl = getCurrentPlayList();
             if(pl == null)
                 return;
+
             int ind = pl.getSelectedIndex();
             if(pl.shiftUp(pl.getSongAt(ind)))
                 pl.setSelectedIndex(ind - 1);
@@ -285,6 +282,7 @@ public class PlaylistPanel extends JComponent
             PlayList pl = getCurrentPlayList();
             if(pl == null)
                 return;
+
             int ind = pl.getSelectedIndex();
             if(pl.shiftDown(pl.getSongAt(ind)))
                 pl.setSelectedIndex(ind + 1);
@@ -328,12 +326,28 @@ public class PlaylistPanel extends JComponent
                 sendAlertDialog("Your playlist is not within 43 and 48 minutes", "Time sufficiency alert");
             //remove song function here....
             //pl.deleteSong( );
-
         }
 
         private void doAddPlayListButtonAction(ActionEvent e)
         {
-            JOptionPane.showMessageDialog(null, "This button blows up the world");
+            PlayList pl = new PlayList();
+            if(sendConfirmDialog("Do you wish to load the playlist from a file?", "Load PlayList"))
+                pl.loadPlaylist();
+            else
+            {
+                String pl_name = JOptionPane.showInputDialog("Enter a name for the playlist");
+                if(pl_name != null)
+                    pl.setName(pl_name);
+                else
+                    pl = null;
+            }
+
+            if(pl != null)
+            {
+                playlist_tab.add(pl, pl.getName());
+                playlist_tab.setSelectedComponent(pl);
+            }
+            //JOptionPane.showMessageDialog(null, "This button blows up the world");
         }
 
         private void doRemPlayListButtonAction(ActionEvent e)
@@ -381,17 +395,6 @@ public class PlaylistPanel extends JComponent
         }
     }
 
-    class PlayListScrollPane extends JScrollPane
-    {
-        private PlayList playlist;
-
-        public PlayListScrollPane(PlayList pl)
-        {
-            super(pl);
-            playlist = pl;
-        }
-    }
-
     class PlayListTableModel extends AbstractTableModel
     {
         private String[] columnNames =
@@ -401,27 +404,11 @@ public class PlaylistPanel extends JComponent
 
         private PlayList playlist;
 
-        public PlayListTableModel(PlayList pl)
-        {
-            playlist = pl;
-        }
-
-        public PlayList getPlayList() { return playlist; }
-
-        public int getRowCount()
-        {
-            return playlist.getTotalSongs();
-        }
-
-        public int getColumnCount()
-        {
-            return columnNames.length;
-        }
-
-        public String getColumnName(int col)
-        {
-            return columnNames[col];
-        }
+        public PlayListTableModel(PlayList pl) {  playlist = pl; }
+        public PlayList getPlayList()          { return playlist; }
+        public int getRowCount()               {  return playlist.getTotalSongs(); }
+        public int getColumnCount()            {  return columnNames.length; }
+        public String getColumnName(int col)   { return columnNames[col]; }
 
         public Object getValueAt(int rowIndex, int columnIndex)
         {
@@ -430,28 +417,24 @@ public class PlaylistPanel extends JComponent
             Song s = playlist.getSongAt(rowIndex);
             switch(columnIndex)
             {
-                case 0:
-                    return s.getTitle();
-                case 1:
-                    return s.getArtist();
-                case 2:
-                    return s.getAlbum();
-                case 3:
-                    return s.getTime();
-                case 4: return s.getRecType();
-                case 5: return s.getFrequency();
-                case 6: return s.getPopularity();
-                default:
-                        return "UNK";
+                case 0:  return s.getTitle();
+                case 1:  return s.getArtist();
+                case 2:  return s.getAlbum();
+                case 3:  return s.getTime();
+                case 4:  return s.getRecType();
+                case 5:  return s.getFrequency();
+                case 6:  return s.getPopularity();
+                default: return "UNK";
             }
         }
         
         public Class getColumnClass(int column)
         {
-            if (column >= 0 && column <= getColumnCount())
-              return getValueAt(0, column).getClass();
-            else
-              return Object.class;
+            if(column >= 0 && column <= getColumnCount())
+                if(getValueAt(0, column) != null)
+                    return getValueAt(0, column).getClass();
+
+            return Object.class;
       }
     }
 }

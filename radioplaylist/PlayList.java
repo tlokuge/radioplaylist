@@ -187,10 +187,17 @@ public class PlayList extends JList implements Serializable
         return playlist.size();
     }
 
+    public boolean equals(PlayList other)
+    {
+        if(other.getName().equals(getName()) && other.playlist.equals(playlist))
+            return true;
+
+        return false;
+    }
+
     public void savePlaylist()
     {
-        int retval = chooser.showSaveDialog(this);
-        if(retval == JFileChooser.CANCEL_OPTION)
+        if(chooser.showSaveDialog(this) == JFileChooser.CANCEL_OPTION)
             return;
 
         try
@@ -202,9 +209,6 @@ public class PlayList extends JList implements Serializable
                 out.print(s);
 
             out.close();
-            //ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
-            //out.writeObject(playlist);
-            //out.close();
         }
         catch(Exception e)
         {
@@ -214,23 +218,27 @@ public class PlayList extends JList implements Serializable
 
     public void loadPlaylist()
     {
-        int retval = chooser.showOpenDialog(this);
-        if(retval == JFileChooser.CANCEL_OPTION)
+        if(chooser.showOpenDialog(this) == JFileChooser.CANCEL_OPTION)
             return;
 
         try
         {
+            String str = "";
+            int newTotalTime = 0;
+            Song s;
+            
+            ArrayList<Song> pl = new ArrayList<Song>();
             File f = chooser.getSelectedFile();
             Scanner in = new Scanner(f);
 
-            String str = in.nextLine();
-            setName(str);
-
-            System.out.println(str);
-            ArrayList<Song> pl = new ArrayList<Song>();
             while(in.hasNextLine())
             {
-                Song s = new Song();
+                s = new Song();
+
+                str = getNextSegmentUsingScanner(in); // PlayList name
+                if(str == null)
+                    return;
+                setName(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Title
                 if(str == null)
@@ -247,41 +255,39 @@ public class PlayList extends JList implements Serializable
                     return;
                 s.setDuration(Integer.parseInt(str));
 
-                str = getNextSegmentUsingScanner(in);
+                str = getNextSegmentUsingScanner(in); // Song Album
                 if(str == null)
                     return;
                 s.setAlbum(str);
 
-                str = getNextSegmentUsingScanner(in);
+                str = getNextSegmentUsingScanner(in); // Song Year
                 if(str == null)
                     return;
                 s.setYear(Integer.parseInt(str));
 
-                str = getNextSegmentUsingScanner(in);
+                str = getNextSegmentUsingScanner(in); // Song Frequency
                 if(str == null)
                     return;
                 s.setFrequency(Integer.parseInt(str));
 
-                str = getNextSegmentUsingScanner(in);
+                str = getNextSegmentUsingScanner(in); // Song Popularity
                 if(str == null)
                     return;
                 s.setPopularity(Integer.parseInt(str));
 
-                str = getNextSegmentUsingScanner(in);
+                str = getNextSegmentUsingScanner(in); // Song Record Number
                 if(str == null)
                     return;
                 s.setRecNum(Integer.parseInt(str));
 
                 pl.add(s);
+                newTotalTime += s.getTime();
             }
 
-            clearPlaylist();
-            for(Song s : pl)
-                addSong(s);
+            playlist  = pl;
+            totalTime = remainTime = newTotalTime;
 
             populateListData();
-            revalidate();
-            repaint();
         }
         catch(Exception e)
         {
@@ -297,13 +303,7 @@ public class PlayList extends JList implements Serializable
     public String getNextSegmentUsingScanner(Scanner in)
     {
         if(in.hasNextLine())
-        {
-            String str = in.nextLine();
-            StringTokenizer token = new StringTokenizer(str, ";");
-            str = token.nextToken();
-            System.out.println(str);
-            return str;
-        }
+            return new StringTokenizer(in.nextLine(), ";").nextToken();
 
         sendError("Parse error");
         return null;
