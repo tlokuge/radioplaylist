@@ -29,19 +29,23 @@ public class PlayList extends JList implements Serializable
     public PlayList()
     {
         super();
-        playlist  = new ArrayList<Song>();
-        totalTime = remainTime = 0;
-        chooser = new JFileChooser();
+        initialize();
         setName(StringConstantHolder.PL_NEW_PL);
     }
 
     public PlayList(String name)
     {
-        super();        
+        super();
+        initialize();
+        setName(name);
+    }
+
+    private void initialize()
+    {
         playlist  = new ArrayList<Song>();
         totalTime = remainTime = 0;
-        chooser = new JFileChooser();
-        setName(name);
+        chooser   = new JFileChooser();
+        populateListData();
     }
 
     public void addSong(Song song)
