@@ -103,7 +103,7 @@ public class PlayListPanel extends JPanel
     {
         // Initializing buttons
         move_up_button         = createButton(StringConstantHolder.PP_UP_NM, StringConstantHolder.PP_UP_IMG);
-        move_down_button       = createButton(StringConstantHolder.PP_DN_NM, StringConstantHolder.PP_UP_IMG);
+        move_down_button       = createButton(StringConstantHolder.PP_DN_NM, StringConstantHolder.PP_DN_IMG);
         save_button            = createButton(StringConstantHolder.PP_SV_NM, StringConstantHolder.PP_SV_IMG);
         load_button            = createButton(StringConstantHolder.PP_LD_NM, StringConstantHolder.PP_LD_IMG);
         add_song_button        = createButton(StringConstantHolder.PP_ADDSG_NM, StringConstantHolder.PP_ADDSG_IMG);
