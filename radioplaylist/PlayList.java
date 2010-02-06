@@ -51,7 +51,11 @@ public class PlayList extends JList implements Serializable
     public void addSong(Song song)
     {
         if(song == null || containsSong(song))
-            return;
+        {
+            JOptionPane.showMessageDialog(null,"The song already exists. " + "" +
+                    "Try some other songs to prevent boring our listeners to death");
+                    return;
+        }
         playlist.add(song);
         totalTime  += song.getTime();
         remainTime += song.getTime();
