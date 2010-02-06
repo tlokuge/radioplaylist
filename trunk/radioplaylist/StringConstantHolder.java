@@ -17,6 +17,20 @@ public abstract class StringConstantHolder
     static final String PP_REMSG_IMG = "src/images/removesongs.png";
     static final String PP_ADDSG_IMG = "src/images/addsongs.png";
 
+    // Button Names
+    static final String PP_UP_NM    = "Up";
+    static final String PP_DN_NM    = "Down";
+    static final String PP_SV_NM    = "Save";
+    static final String PP_LD_NM    = "Load";
+    static final String PP_ADD_NM   = "Add Song";
+    static final String PP_DEL_NM   = "Delete Song";
+    static final String PP_RDM_NM   = "Randomize PlayList";
+    static final String PP_CLR_NM   = "Clear PlayList";
+    static final String PP_ADDPL_NM = "New PlayList";
+    static final String PP_REMPL_NM = "Delete PlayList";
+    static final String PP_ADDSG_NM = "Add To PlayList";
+    static final String PP_REMSG_NM = "Remove To PlayList";
+
     // Panel Titles
     static final String PP_PLAYLIST_PANEL = "Playlist";
     static final String PP_LIBRARY_PANEL  = "Song Library";
@@ -63,13 +77,21 @@ public abstract class StringConstantHolder
     static final String CP_NXT_LABEL = "NEXT: ";
 
     // ImageIcons
-    static final String CP_PLY_IMG  = "src/images/play.png";
-    static final String CP_PSE_IMG  = "src/images/pause.png";
-    static final String CP_STP_IMG  = "src/images/stop.png";
-    static final String CP_PRV_IMG  = "src/images/previous.png";
-    static final String CP_NXT_IMG  = "src/images/next.png";
-    static final String CP_PLST_IMG = "src/images/playlist.png";
+    static final String CP_PLY_IMG   = "src/images/play.png";
+    static final String CP_PSE_IMG   = "src/images/pause.png";
+    static final String CP_STP_IMG   = "src/images/stop.png";
+    static final String CP_PRV_IMG   = "src/images/previous.png";
+    static final String CP_NXT_IMG   = "src/images/next.png";
+    static final String CP_PLST_IMG  = "src/images/playlist.png";
     static final String CP_PLSTN_IMG = "src/images/playliston.png";
+
+    // Button Names
+    static final String CP_PLY_NM  = "Play";
+    static final String CP_PSE_NM  = "Pause";
+    static final String CP_STP_NM  = "Stop";
+    static final String CP_PRV_NM  = "Previous";
+    static final String CP_NXT_NM  = "Next";
+    static final String CP_PLST_NM = "Toggle PlayList";
 
     // Tooltips
     static final String CP_PLY_TT = "Click to play or pause your playlist.";
@@ -77,7 +99,6 @@ public abstract class StringConstantHolder
     static final String CP_PRV_TT = "Click to play previous song.";
     static final String CP_NXT_TT = "Click to play next song.";
     static final String CP_OPN_TT = "Click to open or close your playlist.";
-
 
     /************** PlaylistGUI.java *****************/
     // Frame Titles

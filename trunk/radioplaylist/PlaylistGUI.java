@@ -10,7 +10,7 @@ public class PlaylistGUI
     JFrame library_frame;
     JFrame control_frame;
 
-    PlaylistPanel play_panel;
+    PlayListPanel play_panel;
     ControlPanel  control_panel;
 
     final int LIB_FRAME_WIDTH   = 800;
@@ -29,7 +29,7 @@ public class PlaylistGUI
         library_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
         
-        play_panel    = new PlaylistPanel();
+        play_panel    = new PlayListPanel();
         control_panel = new ControlPanel(library_frame);
 
         initializeLibraryFrame();

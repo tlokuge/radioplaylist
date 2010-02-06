@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,22 +49,13 @@ public class ControlPanel extends JPanel
         label_panel  = new JPanel();
         button_panel = new JPanel();
 
-        cur_song  = new Label(StringConstantHolder.CP_NWP_LABEL);
-        prev_song = new Label(StringConstantHolder.CP_PRV_LABEL);
-        next_song = new Label(StringConstantHolder.CP_NXT_LABEL);
-        duration  = new Label();
-
-        play_icon  = new ImageIcon(StringConstantHolder.CP_PLY_IMG);
-        pause_icon = new ImageIcon(StringConstantHolder.CP_PSE_IMG);
-        playlist_icon = new ImageIcon(StringConstantHolder.CP_PLST_IMG);
-        playliston_icon = new ImageIcon(StringConstantHolder.CP_PLSTN_IMG);
-
-        doTestStuff();
+        initializeImages();
         initializeLabels();
         initializeLabelPanel();
         initializeButtons();
         initializeButtonPanel();
-        
+        doTestStuff();
+
         setLayout(new BorderLayout());
         add(label_panel, BorderLayout.NORTH);
         add(button_panel, BorderLayout.SOUTH);
@@ -71,8 +63,30 @@ public class ControlPanel extends JPanel
         setVisible(true);
     }
 
+    private ImageIcon createImage(String image_path)
+    {
+        File imageFile = new File(image_path);
+        if(imageFile.exists())
+            return new ImageIcon(image_path);
+
+        return null;
+    }
+
+    private void initializeImages()
+    {
+        play_icon  = createImage(StringConstantHolder.CP_PLY_IMG);
+        pause_icon = createImage(StringConstantHolder.CP_PSE_IMG);
+        playlist_icon   = createImage(StringConstantHolder.CP_PLST_IMG);
+        playliston_icon = createImage(StringConstantHolder.CP_PLSTN_IMG);
+    }
+
     private void initializeLabels()
     {
+        cur_song  = new Label(StringConstantHolder.CP_NWP_LABEL);
+        prev_song = new Label(StringConstantHolder.CP_PRV_LABEL);
+        next_song = new Label(StringConstantHolder.CP_NXT_LABEL);
+        duration  = new Label();
+
         prev_song.setBorder(new EtchedBorder());
         next_song.setBorder(new EtchedBorder());
     }
@@ -90,11 +104,11 @@ public class ControlPanel extends JPanel
 
     private void initializeButtons()
     {
-        play_button     = new JButton(play_icon);
-        stop_button     = new JButton(new ImageIcon(StringConstantHolder.CP_STP_IMG));
-        previous_button = new JButton(new ImageIcon(StringConstantHolder.CP_PRV_IMG));
-        next_button     = new JButton(new ImageIcon(StringConstantHolder.CP_NXT_IMG));
-        playlist_button = new JButton(playlist_icon);
+        play_button     = createButton(StringConstantHolder.CP_PLY_NM, StringConstantHolder.CP_PLY_IMG);
+        stop_button     = createButton(StringConstantHolder.CP_STP_NM, StringConstantHolder.CP_STP_IMG);
+        previous_button = createButton(StringConstantHolder.CP_PRV_NM, StringConstantHolder.CP_PRV_IMG);
+        next_button     = createButton(StringConstantHolder.CP_NXT_NM, StringConstantHolder.CP_NXT_IMG);
+        playlist_button = createButton(StringConstantHolder.CP_PLST_NM, StringConstantHolder.CP_PLST_IMG);
 
         play_button.setToolTipText(StringConstantHolder.CP_PLY_TT);
         stop_button.setToolTipText(StringConstantHolder.CP_STP_TT);
@@ -120,6 +134,18 @@ public class ControlPanel extends JPanel
         button_panel.setVisible(true);
     }
 
+    private JButton createButton(String name, String image_path)
+    {
+        JButton button = new JButton();
+        ImageIcon image = createImage(image_path);
+        if(image != null)
+            button.setIcon(image);
+        else
+            button.setText(name);
+
+        return button;
+    }
+
     private void doTestStuff()
     {
         cur_song.setRightText("SONG - ARTIST - TIME");
@@ -137,7 +163,7 @@ public class ControlPanel extends JPanel
         Label()
         {
             super();
-            left_label = new JLabel();
+            left_label  = new JLabel();
             right_label = new JLabel();
 
             initialize();
@@ -146,7 +172,7 @@ public class ControlPanel extends JPanel
         Label(String left)
         {
             super();
-            left_label = new JLabel(left);
+            left_label  = new JLabel(left);
             right_label = new JLabel();
 
             initialize();
@@ -155,7 +181,7 @@ public class ControlPanel extends JPanel
         Label(String left, String right)
         {
             super();
-            left_label = new JLabel(left);
+            left_label  = new JLabel(left);
             right_label = new JLabel(right);
 
             initialize();
@@ -175,7 +201,6 @@ public class ControlPanel extends JPanel
         {
             left_label.setText(text);
 
-            revalidate();
             repaint();
         }
 
@@ -183,7 +208,6 @@ public class ControlPanel extends JPanel
         {
             right_label.setText(text);
 
-            revalidate();
             repaint();
         }
     }
@@ -213,11 +237,21 @@ public class ControlPanel extends JPanel
        
         private void doPlayButtonAction(ActionEvent e)
         {
-            JButton p = (JButton)e.getSource();
-            if(p.getIcon() == play_icon)
-                play_button.setIcon(pause_icon);
+            if(play_button.getIcon() == play_icon ||
+                    play_button.getText().equalsIgnoreCase(StringConstantHolder.CP_PLY_NM))
+            {
+                if(pause_icon != null)
+                    play_button.setIcon(pause_icon);
+                else
+                    play_button.setText(StringConstantHolder.CP_PSE_NM);
+            }
             else
-                play_button.setIcon(play_icon);
+            {
+                if(play_icon != null)
+                    play_button.setIcon(play_icon);
+                else
+                    play_button.setText(StringConstantHolder.CP_PLY_NM);
+            }
         }
 
         private void doPreviousButtonAction(ActionEvent e)
@@ -227,7 +261,10 @@ public class ControlPanel extends JPanel
 
         private void doStopButtonAction(ActionEvent e)
         {
-            play_button.setIcon(play_icon);
+            if(play_icon != null)
+                play_button.setIcon(play_icon);
+            else
+                play_button.setText(StringConstantHolder.CP_PLY_NM);
         }
 
         private void doNextButtonAction(ActionEvent e)
@@ -237,16 +274,18 @@ public class ControlPanel extends JPanel
 
         private void doPlaylistButtonAction(ActionEvent e)
         {
-            JButton p = (JButton)e.getSource();
-            if(p.getIcon() == playlist_icon)
-                playlist_button.setIcon(playliston_icon);
-            else
-                playlist_button.setIcon(playlist_icon);
-
             if(playlist_frame.isVisible())
+            {
                 playlist_frame.setVisible(false);
+                if(playlist_icon != null)
+                    playlist_button.setIcon(playlist_icon);
+            }
             else
+            {
                 playlist_frame.setVisible(true);
+                if(playliston_icon != null)
+                    playlist_button.setIcon(playliston_icon);
+            }
         }
     }
 }
