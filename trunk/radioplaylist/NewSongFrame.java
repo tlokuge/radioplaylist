@@ -28,6 +28,9 @@ public class NewSongFrame extends JFrame
     JLabel albumLabel;
     JTextField albumField;
 
+    JLabel recTypeLabel;
+    JTextField recTypeField;
+
     JLabel yearLabel;
     JTextField yearField;
 
@@ -63,6 +66,9 @@ public class NewSongFrame extends JFrame
         albumLabel = new JLabel("Album:");
         albumField = new JTextField(40);
 
+        recTypeLabel = new JLabel("Recording type:");
+        recTypeField = new JTextField(5);
+
         recLabel = new JLabel("Record Number:");
         recField = new JTextField(/*the previous record + 1,*/3);
 
@@ -77,6 +83,7 @@ public class NewSongFrame extends JFrame
 
         //initialize
         panel = new JPanel();
+        
         panel.add(titleLabel);
         panel.add(titleField);
 
@@ -86,8 +93,8 @@ public class NewSongFrame extends JFrame
         panel.add(albumLabel);
         panel.add(albumField);
 
-        panel.add(recLabel);
-        panel.add(recField);
+        panel.add(recTypeLabel);
+        panel.add(recTypeField);
 
         panel.add(yearLabel);
         panel.add(yearField);
@@ -124,12 +131,12 @@ public class NewSongFrame extends JFrame
             String title   = getTextFromField(titleField);
             String artist  = getTextFromField(artistField);
             String album   = getTextFromField(albumField);
-            String recStr  = getTextFromField(recField);
+            String recType = getTextFromField(recTypeField);
             String yearStr = getTextFromField(yearField);
             String minStr  = getTextFromField(minField);
             String secStr  = getTextFromField(secField);
 
-            if(isInvalid(title) || isInvalid(artist) || isInvalid(album) || isInvalid(recStr)
+            if(isInvalid(title) || isInvalid(artist) || isInvalid(album) || isInvalid(recType)
                     || isInvalid(yearStr) || isInvalid(minStr) || isInvalid(secStr))
             {
                 JOptionPane.showMessageDialog(null, "Please enter all field data");
@@ -139,9 +146,8 @@ public class NewSongFrame extends JFrame
             song.setTitle(title);
             song.setArtist(artist);
             song.setAlbum(album);
+            song.setRecType(recType);
 
-            int rec  = parseToInteger(recStr);
-            if(rec < 0)  return;
             int year = parseToInteger(yearStr);
             if(year < 0) return;
             int min  = parseToInteger(minStr);
@@ -149,7 +155,6 @@ public class NewSongFrame extends JFrame
             int sec  = parseToInteger(secStr);
             if(sec < 0)  return;
 
-            song.setRecNum(rec);
             song.setYear(year);
             song.setDuration(min * 60 + sec);
 
