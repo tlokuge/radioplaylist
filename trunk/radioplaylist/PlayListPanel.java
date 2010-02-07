@@ -7,16 +7,22 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
 
-public class PlayListPanel extends JPanel
+public class PlayListFrame extends JFrame
 {
+    NewSongFrame new_song_frame;
+
     JPanel main_panel;
     JPanel play_control_panel;
 
@@ -28,20 +34,23 @@ public class PlayListPanel extends JPanel
 
     JButton move_up_button;
     JButton move_down_button;
-    JButton save_button;
-    JButton load_button;
     JButton add_song_button;
     JButton remove_song_button;
+    JButton add_songpl_button;
+    JButton remove_songpl_button;
     JButton add_playlist_button;
     JButton remove_playlist_button;
     JButton shuffle_button;
     JButton clear_button;
+
+    JMenuBar menuBar;
     
-    public PlayListPanel()
+    public PlayListFrame()
     {
+        new_song_frame     = new NewSongFrame(this);
+
         main_panel         = new JPanel();
         play_control_panel = new JPanel();
-
         song_library_list  = new PlayList();
         song_library_table = new JTable();
         playlist_tab       = new JTabbedPane();
@@ -51,6 +60,7 @@ public class PlayListPanel extends JPanel
         initializePlaylistTabs();
         initializeComponents();
         initializePanels();
+        initializeMenus();
 
         {
             doTestStuff();
@@ -59,6 +69,7 @@ public class PlayListPanel extends JPanel
         add(main_panel, BorderLayout.CENTER);
         add(play_control_panel, BorderLayout.SOUTH);
 
+        new_song_frame.setVisible(false);
         setVisible(true);
     }
 
@@ -67,6 +78,48 @@ public class PlayListPanel extends JPanel
         song_library_list.setSelectedIndex(-1);
         song_library_list.setBorder(
                 BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_LIBRARY_PANEL));
+    }
+
+    private void initializeMenus()
+    {
+        menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu(StringConstantHolder.PP_MN_BR);
+        
+        JMenuItem loadItem     = new JMenuItem(StringConstantHolder.PP_LD_NM);
+        JMenuItem saveItem     = new JMenuItem(StringConstantHolder.PP_SV_NM);
+        JMenuItem newSongItem  = new JMenuItem(StringConstantHolder.PP_ADD_NM);
+        JMenuItem delSongItem  = new JMenuItem(StringConstantHolder.PP_DEL_NM);
+        JMenuItem addSongItem  = new JMenuItem(StringConstantHolder.PP_ADDSG_NM);
+        JMenuItem remSongItem  = new JMenuItem(StringConstantHolder.PP_REMSG_NM);
+        JMenuItem addPLItem    = new JMenuItem(StringConstantHolder.PP_ADDPL_NM);
+        JMenuItem remPLItem    = new JMenuItem(StringConstantHolder.PP_REMPL_NM);
+        JMenuItem randItem     = new JMenuItem(StringConstantHolder.PP_RDM_NM);
+        JMenuItem clearItem    = new JMenuItem(StringConstantHolder.PP_CLR_NM);
+
+        loadItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.LOAD));
+        saveItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.SAVE));
+        newSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONG));
+        delSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONG));
+        addSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONGPL));
+        remSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONGPL));
+        addPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
+        remPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
+        randItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
+        clearItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
+
+        menu.add(loadItem);
+        menu.add(saveItem);
+        menu.add(newSongItem);
+        menu.add(delSongItem);
+        menu.add(addSongItem);
+        menu.add(remSongItem);
+        menu.add(addPLItem);
+        menu.add(remPLItem);
+        menu.add(randItem);
+        menu.add(clearItem);
+        menuBar.add(menu);
+        setJMenuBar(menuBar);
     }
 
     private void doTestStuff()
@@ -104,10 +157,10 @@ public class PlayListPanel extends JPanel
         // Initializing buttons
         move_up_button         = createButton(StringConstantHolder.PP_UP_NM, StringConstantHolder.PP_UP_IMG);
         move_down_button       = createButton(StringConstantHolder.PP_DN_NM, StringConstantHolder.PP_DN_IMG);
-        save_button            = createButton(StringConstantHolder.PP_SV_NM, StringConstantHolder.PP_SV_IMG);
-        load_button            = createButton(StringConstantHolder.PP_LD_NM, StringConstantHolder.PP_LD_IMG);
-        add_song_button        = createButton(StringConstantHolder.PP_ADDSG_NM, StringConstantHolder.PP_ADDSG_IMG);
-        remove_song_button     = createButton(StringConstantHolder.PP_REMSG_NM, StringConstantHolder.PP_REMSG_IMG);
+        add_song_button        = createButton(StringConstantHolder.PP_ADD_NM, StringConstantHolder.PP_ADD_IMG);
+        remove_song_button     = createButton(StringConstantHolder.PP_DEL_NM, StringConstantHolder.PP_DEL_IMG);
+        add_songpl_button      = createButton(StringConstantHolder.PP_ADDSG_NM, StringConstantHolder.PP_ADDSG_IMG);
+        remove_songpl_button   = createButton(StringConstantHolder.PP_REMSG_NM, StringConstantHolder.PP_REMSG_IMG);
         add_playlist_button    = createButton(StringConstantHolder.PP_ADDPL_NM, StringConstantHolder.PP_ADDPL_IMG);
         remove_playlist_button = createButton(StringConstantHolder.PP_REMPL_NM, StringConstantHolder.PP_REMPL_IMG);
         shuffle_button         = createButton(StringConstantHolder.PP_RDM_NM, StringConstantHolder.PP_RDM_IMG);
@@ -116,25 +169,25 @@ public class PlayListPanel extends JPanel
         //Instructions when hovering over buttons
         move_up_button.setToolTipText(StringConstantHolder.PP_UP_TT);
         move_down_button.setToolTipText(StringConstantHolder.PP_DN_TT);
-        save_button.setToolTipText(StringConstantHolder.PP_SV_TT);
-        load_button.setToolTipText(StringConstantHolder.PP_LD_TT);
         add_song_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
         remove_song_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
+        add_songpl_button.setToolTipText(StringConstantHolder.PP_ADDPL_TT);
+        remove_songpl_button.setToolTipText(StringConstantHolder.PP_DELPL_TT);
         add_playlist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
         remove_playlist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
         shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
         clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
         
-        move_up_button.addActionListener(new PlayListButtonListener(this, ButtonType.MVUP));
-        move_down_button.addActionListener(new PlayListButtonListener(this, ButtonType.MVDN));
-        save_button.addActionListener(new PlayListButtonListener(this, ButtonType.SAVE));
-        load_button.addActionListener(new PlayListButtonListener(this, ButtonType.LOAD));
-        add_song_button.addActionListener(new PlayListButtonListener(this, ButtonType.ADD_SONG));
-        remove_song_button.addActionListener(new PlayListButtonListener(this, ButtonType.REMOVE_SONG));
-        shuffle_button.addActionListener(new PlayListButtonListener(this, ButtonType.RANDOMIZE));
-        clear_button.addActionListener(new PlayListButtonListener(this, ButtonType.CLEAR));
-        add_playlist_button.addActionListener(new PlayListButtonListener(this, ButtonType.ADD_PLAYLIST));
-        remove_playlist_button.addActionListener(new PlayListButtonListener(this, ButtonType.REMOVE_PLAYLIST));
+        move_up_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVUP));
+        move_down_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVDN));
+        add_song_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONG));
+        remove_song_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONG));
+        add_songpl_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONGPL));
+        remove_songpl_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONGPL));
+        shuffle_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
+        clear_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
+        add_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
+        remove_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
     }
 
     private void initializePlaylistTabs()
@@ -150,6 +203,12 @@ public class PlayListPanel extends JPanel
         song_library_table.setRowSorter(sorter);
 
         return new JScrollPane(song_library_table);
+    }
+
+    public void showNewSongFrame()
+    {
+        new_song_frame.resetFields();
+        new_song_frame.setVisible(true);
     }
 
     public PlayList createPlayList(String name)
@@ -186,6 +245,16 @@ public class PlayListPanel extends JPanel
             return;
 
         song_library_list.addSong(song);
+        song_library_table.revalidate();
+    }
+
+    public void removeSongFromLibrary(Song song)
+    {
+        if(!song_library_list.containsSong(song))
+            return;
+
+        song_library_list.deleteSong(song);
+        song_library_table.revalidate();
     }
 
     private void initializePanels()
@@ -195,13 +264,13 @@ public class PlayListPanel extends JPanel
         main_panel.add(initializeSongLibrary(), song_library_list.getName());
         main_panel.setVisible(true);
 
-        play_control_panel.setLayout(new GridLayout(1, 7));
+        play_control_panel.setLayout(new GridLayout(1, 9));
         play_control_panel.add(move_up_button);
         play_control_panel.add(move_down_button);
-        play_control_panel.add(save_button);
-        play_control_panel.add(load_button);
         play_control_panel.add(add_song_button);
         play_control_panel.add(remove_song_button);
+        play_control_panel.add(add_songpl_button);
+        play_control_panel.add(remove_songpl_button);
         play_control_panel.add(add_playlist_button);
         play_control_panel.add(remove_playlist_button);
         play_control_panel.add(shuffle_button);
@@ -219,7 +288,10 @@ public class PlayListPanel extends JPanel
 
     public Song getSelectedLibrarySong()
     {
-        return ((PlayListTableModel)song_library_table.getModel())
+        if(song_library_table.getSelectedRow() < 0)
+            return null;
+        
+        return ((PlayListTableModel) song_library_table.getModel())
                 .getPlayList().getSongAt(
                 song_library_table.getRowSorter().convertRowIndexToModel(
                 song_library_table.getSelectedRow()));
@@ -233,11 +305,14 @@ public class PlayListPanel extends JPanel
     private JButton createButton(String name, String image_path)
     {
         JButton button = new JButton();
-        File imageFile = new File(image_path);
-        if(imageFile.exists())
-            button.setIcon(new ImageIcon(image_path));
+        String path = StringConstantHolder.RD_PLYLST_IMG_FLDR + image_path;
+        if(new File(path).exists())
+            button.setIcon(new ImageIcon(path));
         else
+        {
+            System.err.println(StringConstantHolder.IMG_LOAD_ERR + path);
             button.setText(name);
+        }
 
         return button;
     }
