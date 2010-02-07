@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-public class ControlPanel extends JPanel
+public class ControlFrame extends JFrame
 {
     final JFrame playlist_frame;
 
@@ -36,7 +36,7 @@ public class ControlPanel extends JPanel
     ImageIcon playlist_icon;
     ImageIcon playliston_icon;
 
-    public ControlPanel(final JFrame playlist_frame)
+    public ControlFrame(final JFrame playlist_frame)
     {
         this.playlist_frame = playlist_frame;
 
@@ -65,9 +65,11 @@ public class ControlPanel extends JPanel
 
     private ImageIcon createImage(String image_path)
     {
-        File imageFile = new File(image_path);
-        if(imageFile.exists())
-            return new ImageIcon(image_path);
+        String path = StringConstantHolder.RD_PLYLST_IMG_FLDR + image_path;
+        if(new File(path).exists())
+            return new ImageIcon(path);
+        else
+            System.err.println(StringConstantHolder.IMG_LOAD_ERR + path);
 
         return null;
     }

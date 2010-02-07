@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
-enum ButtonType
+enum PlayListButtonType
 {
     MVUP,
     MVDN,
@@ -14,6 +14,8 @@ enum ButtonType
     LOAD,
     ADD_SONG,
     REMOVE_SONG,
+    ADD_SONGPL,
+    REMOVE_SONGPL,
     ADD_PLAYLIST,
     REMOVE_PLAYLIST,
     RANDOMIZE,
@@ -22,10 +24,10 @@ enum ButtonType
 
 public class PlayListButtonListener implements ActionListener
 {
-    private ButtonType type;
-    private final PlayListPanel panel;
+    private PlayListButtonType type;
+    private final PlayListFrame panel;
 
-    public PlayListButtonListener(final PlayListPanel panel, ButtonType type)
+    PlayListButtonListener(final PlayListFrame panel, PlayListButtonType type)
     {
         this.panel = panel;
         this.type  = type;
@@ -39,8 +41,10 @@ public class PlayListButtonListener implements ActionListener
             case MVDN:           doMvDnButtonAction(e);        break;
             case SAVE:           doSaveButtonAction(e);        break;
             case LOAD:           doLoadButtonAction(e);        break;
-            case ADD_SONG:       doAddButtonAction(e);         break;
-            case REMOVE_SONG:    doRemoveButtonAction(e);      break;
+            case ADD_SONG:       doAddSongButtonAction(e);     break;
+            case REMOVE_SONG:    doRemoveSongButtonAction(e);  break;
+            case ADD_SONGPL:     doAddButtonAction(e);         break;
+            case REMOVE_SONGPL:  doRemoveButtonAction(e);      break;
             case ADD_PLAYLIST:   doAddPlayListButtonAction(e); break;
             case REMOVE_PLAYLIST:doRemPlayListButtonAction(e); break;
             case RANDOMIZE:      doRandomButtonAction(e);      break;
@@ -102,6 +106,16 @@ public class PlayListButtonListener implements ActionListener
         if(pl == null)
             return;
         pl.loadPlaylist();
+    }
+
+    private void doAddSongButtonAction(ActionEvent e)
+    {
+        panel.showNewSongFrame();
+    }
+
+    private void doRemoveSongButtonAction(ActionEvent e)
+    {
+        panel.removeSongFromLibrary(panel.getSelectedLibrarySong());
     }
 
     private void doAddButtonAction(ActionEvent e)

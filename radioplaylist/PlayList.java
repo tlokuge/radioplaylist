@@ -2,7 +2,6 @@ package radioplaylist;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -16,7 +15,7 @@ import javax.swing.JOptionPane;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class PlayList extends JList implements Serializable
+public class PlayList extends JList
 {
     // instance variables - replace the example below with your own
     private ArrayList<Song> playlist;
@@ -50,12 +49,16 @@ public class PlayList extends JList implements Serializable
 
     public void addSong(Song song)
     {
-        if(song == null || containsSong(song))
+        if(song == null)
+            return;
+
+        if(containsSong(song))
         {
             JOptionPane.showMessageDialog(null,"The song already exists. " + "" +
                     "Try some other songs to prevent boring our listeners to death");
-                    return;
+            return;
         }
+        
         playlist.add(song);
         totalTime  += song.getTime();
         remainTime += song.getTime();
@@ -79,6 +82,7 @@ public class PlayList extends JList implements Serializable
     public void clearPlaylist()
     {
         playlist.clear();
+        totalTime = remainTime = 0;
         populateListData();
     }
 
@@ -141,7 +145,7 @@ public class PlayList extends JList implements Serializable
 
         String summary = "[ " + getFormattedTime() + "     total time -   "
                 + playlist.size();
-        if(playlist.size() < 1)
+        if(playlist.size() == 1)
             summary += " song ]";
         else
             summary += " total songs ]";

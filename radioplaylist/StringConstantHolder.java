@@ -2,27 +2,33 @@ package radioplaylist;
 
 public abstract class StringConstantHolder
 {
+    static String RD_PLYLST_IMG_FLDR = "src/images/";
+
+    static final String IMG_LOAD_ERR = "Unable to load image: ";
+
     /************** PlaylistPanel.java *****************/
     // ImageIcons
-    static final String PP_UP_IMG    = "src/images/up.png";
-    static final String PP_DN_IMG    = "src/images/down.png";
-    static final String PP_SV_IMG    = "src/images/save.png";
-    static final String PP_LD_IMG    = "src/images/load.png";
-    static final String PP_ADD_IMG   = "src/images/add.png";
-    static final String PP_DEL_IMG   = "src/images/delete.png";
-    static final String PP_RDM_IMG   = "src/images/randomize.png";
-    static final String PP_CLR_IMG   = "src/images/clear.png";
-    static final String PP_REMPL_IMG = "src/images/removeplaylist.png";
-    static final String PP_ADDPL_IMG = "src/images/addplaylist.png";
-    static final String PP_REMSG_IMG = "src/images/removesongs.png";
-    static final String PP_ADDSG_IMG = "src/images/addsongs.png";
+    static final String PP_UP_IMG      = "up.png";
+    static final String PP_DN_IMG      = "down.png";
+    static final String PP_SV_IMG      = "save.png";
+    static final String PP_LD_IMG      = "load.png";
+    static final String PP_ADD_IMG     = "new_song.png";
+    static final String PP_DEL_IMG     = "del_song.png";
+    static final String PP_ADDTOPL_IMG = "add.png";
+    static final String PP_DELPL_IMG   = "delete.png";
+    static final String PP_RDM_IMG     = "randomize.png";
+    static final String PP_CLR_IMG     = "clear.png";
+    static final String PP_REMPL_IMG   = "removeplaylist.png";
+    static final String PP_ADDPL_IMG   = "addplaylist.png";
+    static final String PP_REMSG_IMG   = "removesongs.png";
+    static final String PP_ADDSG_IMG   = "addsongs.png";
 
     // Button Names
     static final String PP_UP_NM    = "Up";
     static final String PP_DN_NM    = "Down";
-    static final String PP_SV_NM    = "Save";
-    static final String PP_LD_NM    = "Load";
-    static final String PP_ADD_NM   = "Add Song";
+    static final String PP_SV_NM    = "Save PlayList";
+    static final String PP_LD_NM    = "Load PlayList";
+    static final String PP_ADD_NM   = "New Song";
     static final String PP_DEL_NM   = "Delete Song";
     static final String PP_RDM_NM   = "Randomize PlayList";
     static final String PP_CLR_NM   = "Clear PlayList";
@@ -39,18 +45,20 @@ public abstract class StringConstantHolder
     static final String PP_PLCHLDR_TAB = "[PH]Tab";
     
     // Button Tooltips
-    static final String PP_UP_TT  = "Click to move song up.";
-    static final String PP_DN_TT  = "Click to move song down.";
-    static final String PP_SV_TT  = "Click to save your playlist.";
-    static final String PP_LD_TT  = "Click to load your playlist.";
-    static final String PP_ADD_TT = "Click to insert a song into your playlist.";
-    static final String PP_DEL_TT = "Click to delete a song in your playlist.";
-    static final String PP_RDM_TT = "Click to randomize your playlist.";
-    static final String PP_CLR_TT = "Click to clear your playlist.";
-    static final String PP_REM_PL = "Click to remove playlist.";
-    static final String PP_ADD_PL = "Click to add playlist.";
-    static final String PP_REM_SG = "Click to remove song.";
-    static final String PP_ADD_SG = "Click to add song.";
+    static final String PP_UP_TT    = "Click to move song up.";
+    static final String PP_DN_TT    = "Click to move song down.";
+    static final String PP_SV_TT    = "Click to save your playlist.";
+    static final String PP_LD_TT    = "Click to load your playlist.";
+    static final String PP_ADD_TT   = "Click to add a song to your library";
+    static final String PP_DEL_TT   = "Click to delete a song from your library";
+    static final String PP_ADDPL_TT = "Click to insert a song into your playlist.";
+    static final String PP_DELPL_TT = "Click to delete a song from your playlist.";
+    static final String PP_RDM_TT   = "Click to randomize your playlist.";
+    static final String PP_CLR_TT   = "Click to clear your playlist.";
+    static final String PP_REM_PL   = "Click to remove playlist.";
+    static final String PP_ADD_PL   = "Click to add playlist.";
+    static final String PP_REM_SG   = "Click to remove song.";
+    static final String PP_ADD_SG   = "Click to add song.";
 
     // Messages and Message Dialog Titles
     static final String PP_REMPL_TTL  = "Delete Playlist";
@@ -62,6 +70,9 @@ public abstract class StringConstantHolder
     static final String PP_TIME_WARN  = "Your playlist is not within 43 and 48 minutes";
     static final String PP_TIME_TTL   = "Time Sufficiency Alert";
     static final String PP_PL_NM_PRMPT= "Enter a name for the playlist";
+
+    // Menu Bar
+    static final String PP_MN_BR    = "Radio PlayList";
 
     /************** ControlPanel.java *****************/
     // Errors
@@ -77,13 +88,13 @@ public abstract class StringConstantHolder
     static final String CP_NXT_LABEL = "NEXT: ";
 
     // ImageIcons
-    static final String CP_PLY_IMG   = "src/images/play.png";
-    static final String CP_PSE_IMG   = "src/images/pause.png";
-    static final String CP_STP_IMG   = "src/images/stop.png";
-    static final String CP_PRV_IMG   = "src/images/previous.png";
-    static final String CP_NXT_IMG   = "src/images/next.png";
-    static final String CP_PLST_IMG  = "src/images/playlist.png";
-    static final String CP_PLSTN_IMG = "src/images/playliston.png";
+    static final String CP_PLY_IMG   = "play.png";
+    static final String CP_PSE_IMG   = "pause.png";
+    static final String CP_STP_IMG   = "stop.png";
+    static final String CP_PRV_IMG   = "previous.png";
+    static final String CP_NXT_IMG   = "next.png";
+    static final String CP_PLST_IMG  = "playlist.png";
+    static final String CP_PLSTN_IMG = "playliston.png";
 
     // Button Names
     static final String CP_PLY_NM  = "Play";

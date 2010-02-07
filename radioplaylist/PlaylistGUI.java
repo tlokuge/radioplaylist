@@ -7,11 +7,11 @@ import javax.swing.JFrame;
  */
 public class PlaylistGUI
 {
-    JFrame library_frame;
-    JFrame control_frame;
+    PlayListFrame library_frame;
+    ControlFrame control_frame;
 
-    PlayListPanel play_panel;
-    ControlPanel  control_panel;
+    PlayListFrame play_panel;
+    ControlFrame  control_panel;
 
     final int LIB_FRAME_WIDTH   = 800;
     final int LIB_FRAME_HEIGHT  = 500;
@@ -21,17 +21,14 @@ public class PlaylistGUI
 
     public PlaylistGUI()
     {
-        library_frame = new JFrame();
-        control_frame = new JFrame();
+        library_frame = new PlayListFrame();
+        control_frame = new ControlFrame(library_frame);
 
         library_frame.setLocation(455,0);
             
         library_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
-        
-        play_panel    = new PlayListPanel();
-        control_panel = new ControlPanel(library_frame);
-
+       
         initializeLibraryFrame();
         initializeControlFrame();
     }
@@ -40,8 +37,6 @@ public class PlaylistGUI
     {
         library_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
 
-        //library_frame.setResizable(false);
-        library_frame.add(play_panel);
         library_frame.setVisible(false);
     }
 
@@ -51,7 +46,6 @@ public class PlaylistGUI
         control_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         control_frame.setResizable(false);
-        control_frame.add(control_panel);
         control_frame.setVisible(true);
     }
 }
