@@ -68,6 +68,9 @@ public class PlayList extends JList
 
     public boolean deleteSong(Song song)
     {
+        if(song == null)
+            return false;
+        
         int index = findSong(song);
         if(index < 0)
             return false;
