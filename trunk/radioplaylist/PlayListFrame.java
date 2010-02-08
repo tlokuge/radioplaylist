@@ -66,10 +66,6 @@ public class PlayListFrame extends JFrame
         initializePanels();
         initializeMenus();
 
-        {
-            doTestStuff();
-        }
-
         add(main_panel, BorderLayout.CENTER);
         add(play_control_panel, BorderLayout.SOUTH);
 
@@ -131,36 +127,6 @@ public class PlayListFrame extends JFrame
         menu.add(clearItem);
         menuBar.add(menu);
         setJMenuBar(menuBar);
-    }
-
-    private void doTestStuff()
-    {
-        PlayList p1 = createPlayList("Sample PlayList 1");
-        PlayList p2 = createPlayList("Sample PlayList 2");
-        PlayList p3 = createPlayList("Sample PlayList 3");
-        PlayList p4 = createPlayList("Sample PlayList 4");
-
-        Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "1", 450, 1, 1);
-        Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "2", 680, 2, 2);
-        Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "3", 900, 3, 3);
-        
-        addSongToLibrary(s1);
-        addSongToLibrary(s2);
-        addSongToLibrary(s3);
-        
-        p1.addSong(s1);
-        p1.addSong(s2);
-        p1.addSong(s3);
-
-        p2.addSong(s1);
-        p2.addSong(s2);
-
-        p3.addSong(s1);
-
-        addPlayListToTab(p1, false);
-        addPlayListToTab(p2, false);
-        addPlayListToTab(p3, true);
-        addPlayListToTab(p4, false);
     }
 
     private void initializeButtons()

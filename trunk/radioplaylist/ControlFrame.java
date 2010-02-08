@@ -211,21 +211,12 @@ public class ControlFrame extends JFrame
 
     public void setSongDuration(String elapsed, String total)
     {
-        duration.setLeftText("SONG: " + elapsed + " / " + total);
+        duration.setLeftText(StringConstantHolder.CP_SNG_LABEL + elapsed + " / " + total);
     }
 
     public void setPlayListDuration(String elapsed, String total)
     {
-        duration.setRightText("PLAYLIST: " + elapsed + " / " + total);
-    }
-
-    private void doTestStuff()
-    {
-        cur_song.setRightText("SONG - ARTIST - TIME");
-        prev_song.setRightText("SONG - ARTIST - TIME");
-        next_song.setRightText("SONG - ARTIST - TIME");
-        duration.setLeftText("SONG: 0:12 / 3:45");
-        duration.setRightText("PLAYLIST: 6:78 / 90:00");
+        duration.setRightText(StringConstantHolder.CP_PLYLST_LABEL + elapsed + " / " + total);
     }
 
     private enum ButtonType { PLAY, PREVIOUS, STOP, NEXT, PLAYLIST; }
