@@ -146,13 +146,13 @@ public class Song
 
     public String getSongInfo()
     {
-        return title + " - " + artist + " - " + getFormattedTime();
+        return title + " - " + artist + " - " + getFormattedTime(duration);
     }
 
-    public String getFormattedTime()
+    public static String getFormattedTime(int dur)
     {
         String str = "";
-        int time = duration;
+        int time = dur;
         if(time > 86400) // one day
         {
             int numDays = Math.round(time/86400);

@@ -19,8 +19,8 @@ public class PlayList extends JList
 {
     // instance variables - replace the example below with your own
     private ArrayList<Song> playlist;
-    private int totalTime, remainTime;
-    JFileChooser chooser;
+    private int totalTime;
+    private JFileChooser chooser;
 
     /**
      * Constructor for objects of class SongTest
@@ -42,7 +42,7 @@ public class PlayList extends JList
     private void initialize()
     {
         playlist  = new ArrayList<Song>();
-        totalTime = remainTime = 0;
+        totalTime = 0;
         chooser   = new JFileChooser();
         populateListData();
     }
@@ -60,8 +60,7 @@ public class PlayList extends JList
         }
         
         playlist.add(song);
-        totalTime  += song.getTime();
-        remainTime += song.getTime();
+        totalTime += song.getTime();
         song.bumpPopularity();
         populateListData();
     }
@@ -73,7 +72,6 @@ public class PlayList extends JList
             return false;
         playlist.remove(index);
         totalTime  -= song.getTime();
-        remainTime -= song.getTime();
         song.dropPopularity();
         populateListData();
         return true;
@@ -82,7 +80,7 @@ public class PlayList extends JList
     public void clearPlaylist()
     {
         playlist.clear();
-        totalTime = remainTime = 0;
+        totalTime = 0;
         populateListData();
     }
 
@@ -137,13 +135,15 @@ public class PlayList extends JList
         populateListData();
     }
 
+    public int getTotalTime()     { return totalTime; }
+
     private void populateListData()
     {
         String songs[] = new String[playlist.size() + 1];
         for(int i = 0; i < playlist.size(); ++i)
             songs[i] = playlist.get(i).getSongInfo();
 
-        String summary = "[ " + getFormattedTime() + "     total time -   "
+        String summary = "[ " + Song.getFormattedTime(totalTime) + "     total time -   "
                 + playlist.size();
         if(playlist.size() == 1)
             summary += " song ]";
@@ -151,49 +151,6 @@ public class PlayList extends JList
             summary += " total songs ]";
         songs[playlist.size()] = summary;
         setListData(songs);
-    }
-
-    public String getFormattedTime()
-    {
-        String str = "";
-        int time = totalTime;
-        if(time > 86400) // one day
-        {
-            int numDays = Math.round(time/86400);
-            if(numDays < 10)
-                str += "0";
-            str += numDays + ":";
-            time -= (numDays * 86400);
-        }
-        else
-            str += "00:";
-
-        if(time > 3600) // one hour
-        {
-            int numHours = Math.round(time/3600);
-            if(numHours < 10)
-                str += "0";
-            str += numHours + ":";
-            time -= (numHours * 3600);
-        }
-        else
-            str += "00:";
-
-        if(time > 60) // one minute
-        {
-            int numMins = Math.round(time/60);
-            if(numMins < 10)
-                str += "0";
-            str += numMins + ":";
-            time -= (numMins * 60);
-        }
-        else
-            str += "00:";
-
-        if(time < 10)
-            str += "0";
-        str += time;
-        return str;
     }
 
     public boolean containsSong(Song song)
@@ -321,7 +278,7 @@ public class PlayList extends JList
             }
 
             playlist  = pl;
-            totalTime = remainTime = newTotalTime;
+            totalTime = newTotalTime;
 
             populateListData();
         }
@@ -336,7 +293,7 @@ public class PlayList extends JList
         JOptionPane.showMessageDialog(null, err, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    public String getNextSegmentUsingScanner(Scanner in)
+    private String getNextSegmentUsingScanner(Scanner in)
     {
         if(in.hasNextLine())
             return new StringTokenizer(in.nextLine(), ";").nextToken();

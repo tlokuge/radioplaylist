@@ -12,34 +12,34 @@ import javax.swing.JPanel;
 
 public class NewSongFrame extends JFrame
 {
-    final PlayListFrame pl_panel;
+    private final PlayListFrame pl_panel;
 
-    JButton button;
+    private JButton button;
 
-    JLabel recLabel;
-    JTextField recField;
+    private JLabel recLabel;
+    private JTextField recField;
 
-    JLabel titleLabel;
-    JTextField titleField;
+    private JLabel titleLabel;
+    private JTextField titleField;
 
-    JLabel artistLabel;
-    JTextField artistField;
+    private JLabel artistLabel;
+    private JTextField artistField;
 
-    JLabel albumLabel;
-    JTextField albumField;
+    private JLabel albumLabel;
+    private JTextField albumField;
 
-    JLabel recTypeLabel;
-    JTextField recTypeField;
+    private JLabel recTypeLabel;
+    private JTextField recTypeField;
 
-    JLabel yearLabel;
-    JTextField yearField;
+    private JLabel yearLabel;
+    private JTextField yearField;
 
-    JLabel durationLabel;
-    JTextField minField;
-    JLabel colonLabel;
-    JTextField secField;
+    private JLabel durationLabel;
+    private JTextField minField;
+    private JLabel colonLabel;
+    private JTextField secField;
 
-    JPanel panel;
+    private JPanel panel;
 
     public NewSongFrame(final PlayListFrame pl)
     {

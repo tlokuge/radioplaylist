@@ -23,31 +23,31 @@ import javax.swing.table.TableRowSorter;
 
 public class PlayListFrame extends JFrame
 {
-    NewSongFrame new_song_frame;
+    private NewSongFrame new_song_frame;
 
-    ControlFrame control_frame;
+    private ControlFrame control_frame;
 
-    JPanel main_panel;
-    JPanel play_control_panel;
+    private JPanel main_panel;
+    private JPanel play_control_panel;
 
-    PlayList song_library_list;
+    private PlayList song_library_list;
 
-    JTable song_library_table;
+    private JTable song_library_table;
 
-    JTabbedPane playlist_tab;
+    private JTabbedPane playlist_tab;
 
-    JButton move_up_button;
-    JButton move_down_button;
-    JButton add_song_button;
-    JButton remove_song_button;
-    JButton add_songpl_button;
-    JButton remove_songpl_button;
-    JButton add_playlist_button;
-    JButton remove_playlist_button;
-    JButton shuffle_button;
-    JButton clear_button;
+    private JButton move_up_button;
+    private JButton move_down_button;
+    private JButton add_song_button;
+    private JButton remove_song_button;
+    private JButton add_songpl_button;
+    private JButton remove_songpl_button;
+    private JButton add_playlist_button;
+    private JButton remove_playlist_button;
+    private JButton shuffle_button;
+    private JButton clear_button;
 
-    JMenuBar menuBar;
+    private JMenuBar menuBar;
     
     public PlayListFrame()
     {
@@ -329,7 +329,6 @@ public class PlayListFrame extends JFrame
 
     class PlayListWindowListener implements WindowListener
     {
-
         public void windowOpened(WindowEvent e)      {}
         public void windowClosing(WindowEvent e)     {}
         public void windowIconified(WindowEvent e)   {}
