@@ -3,6 +3,8 @@ package radioplaylist;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,6 +24,8 @@ import javax.swing.table.TableRowSorter;
 public class PlayListFrame extends JFrame
 {
     NewSongFrame new_song_frame;
+
+    ControlFrame control_frame;
 
     JPanel main_panel;
     JPanel play_control_panel;
@@ -69,8 +73,14 @@ public class PlayListFrame extends JFrame
         add(main_panel, BorderLayout.CENTER);
         add(play_control_panel, BorderLayout.SOUTH);
 
+        addWindowListener(new PlayListWindowListener());
         new_song_frame.setVisible(false);
         setVisible(true);
+    }
+
+    public void setControlFrame(ControlFrame frame)
+    {
+        control_frame = frame;
     }
 
     private void initializeComponents()
@@ -315,5 +325,21 @@ public class PlayListFrame extends JFrame
         }
 
         return button;
+    }
+
+    class PlayListWindowListener implements WindowListener
+    {
+
+        public void windowOpened(WindowEvent e)      {}
+        public void windowClosing(WindowEvent e)     {}
+        public void windowIconified(WindowEvent e)   {}
+        public void windowDeiconified(WindowEvent e) {}
+        public void windowActivated(WindowEvent e)   {}
+        public void windowClosed(WindowEvent e)      {}
+        public void windowDeactivated(WindowEvent e)
+        {
+            if(control_frame != null)
+                control_frame.togglePlayListFrame(false);
+        }
     }
 }

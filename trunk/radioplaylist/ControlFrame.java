@@ -148,6 +148,21 @@ public class ControlFrame extends JFrame
         return button;
     }
 
+    public void togglePlayListFrame(boolean on)
+    {
+        playlist_frame.setVisible(on);
+        if(on)
+        {
+            if(playliston_icon != null)
+                playlist_button.setIcon(playliston_icon);
+        }
+        else
+        {
+            if(playlist_icon != null)
+                playlist_button.setIcon(playlist_icon);
+        }
+    }
+
     private void doTestStuff()
     {
         cur_song.setRightText("SONG - ARTIST - TIME");
@@ -277,17 +292,9 @@ public class ControlFrame extends JFrame
         private void doPlaylistButtonAction(ActionEvent e)
         {
             if(playlist_frame.isVisible())
-            {
-                playlist_frame.setVisible(false);
-                if(playlist_icon != null)
-                    playlist_button.setIcon(playlist_icon);
-            }
+                togglePlayListFrame(false);
             else
-            {
-                playlist_frame.setVisible(true);
-                if(playliston_icon != null)
-                    playlist_button.setIcon(playliston_icon);
-            }
+                togglePlayListFrame(true);
         }
     }
 }
