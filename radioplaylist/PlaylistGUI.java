@@ -23,6 +23,7 @@ public class PlaylistGUI
     {
         library_frame = new PlayListFrame();
         control_frame = new ControlFrame(library_frame);
+        library_frame.setControlFrame(control_frame);
 
         library_frame.setLocation(455,0);
             
