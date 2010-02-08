@@ -140,7 +140,7 @@ public abstract class StringConstantHolder
 
     static final String[] NSF_RECORD_TYPES =
     {
-         "EP", "Mini LP", "CD", "CD Single",
+         "EP", "Mini LP", "CD", "CD Single", "Vinyl",
          "LP Record", "Cassette Tape", "8 Track Tape",
         "4 Track Tape", "7\"", "10\"", "12\"", "45 RPM"
     };

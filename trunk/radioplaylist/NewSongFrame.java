@@ -54,7 +54,7 @@ public class NewSongFrame extends JFrame
         
         button = new JButton(StringConstantHolder.NSF_BUTTON_NAME);
         
-        titleLabel = new JLabel(StringConstantHolder.NSF_TIME_LABEL);
+        titleLabel = new JLabel(StringConstantHolder.NSF_TITLE_LABEL);
         titleField = new JTextField(40);
 
         artistLabel = new JLabel(StringConstantHolder.NSF_ARTIST_LABEL);
