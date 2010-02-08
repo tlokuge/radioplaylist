@@ -54,7 +54,8 @@ public class ControlFrame extends JFrame
         initializeLabelPanel();
         initializeButtons();
         initializeButtonPanel();
-        doTestStuff();
+        initializeSongs();
+        //doTestStuff();
 
         setLayout(new BorderLayout());
         add(label_panel, BorderLayout.NORTH);
@@ -111,7 +112,12 @@ public class ControlFrame extends JFrame
 
     private void initializeButtons()
     {
-        play_button     = createButton(StringConstantHolder.CP_PLY_NM, StringConstantHolder.CP_PLY_IMG);
+        play_button     = new JButton();
+        if(play_icon != null)
+            play_button.setIcon(play_icon);
+        else
+            play_button.setText(StringConstantHolder.CP_PLY_NM);
+        
         stop_button     = createButton(StringConstantHolder.CP_STP_NM, StringConstantHolder.CP_STP_IMG);
         previous_button = createButton(StringConstantHolder.CP_PRV_NM, StringConstantHolder.CP_PRV_IMG);
         next_button     = createButton(StringConstantHolder.CP_NXT_NM, StringConstantHolder.CP_NXT_IMG);
@@ -139,6 +145,17 @@ public class ControlFrame extends JFrame
         button_panel.add(next_button);
         button_panel.add(playlist_button);
         button_panel.setVisible(true);
+    }
+
+    private void initializeSongs()
+    {
+        setCurrentSong(null);
+        setPreviousSong(null);
+        setNextSong(null);
+
+        String dur = Song.getFormattedTime(0);
+        setSongDuration(dur, dur);
+        setPlayListDuration(dur, dur);
     }
 
     private JButton createButton(String name, String image_path)
@@ -244,7 +261,7 @@ public class ControlFrame extends JFrame
                     if(!radio.isPlaying())
                         radio.play(playlist_frame.getCurrentPlayList());
                     else
-                        radio.pausePlayList();
+                        radio.resumePlayList();
                 }
 
                 if(pause_icon != null)
@@ -256,8 +273,8 @@ public class ControlFrame extends JFrame
             {
                 if(radio != null)
                 {
-                    if(radio.isPlaying() && radio.isPaused())
-                        radio.resumePlayList();
+                    if(radio.isPlaying() && !radio.isPaused())
+                        radio.pausePlayList();
                 }
 
                 if(play_icon != null)
@@ -269,7 +286,8 @@ public class ControlFrame extends JFrame
 
         private void doPreviousButtonAction(ActionEvent e)
         {
-            radio.playPreviousSong();
+            if(radio.isPlaying())
+                radio.playPreviousSong();
         }
 
         private void doStopButtonAction(ActionEvent e)
@@ -278,11 +296,15 @@ public class ControlFrame extends JFrame
                 play_button.setIcon(play_icon);
             else
                 play_button.setText(StringConstantHolder.CP_PLY_NM);
+
+            if(radio.isPlaying())
+                radio.stopPlayList();
         }
 
         private void doNextButtonAction(ActionEvent e)
         {
-
+            if(radio.isPlaying())
+                radio.playNextSong();
         }
 
         private void doPlaylistButtonAction(ActionEvent e)

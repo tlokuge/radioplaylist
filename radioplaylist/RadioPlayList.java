@@ -15,6 +15,7 @@ public class RadioPlayList
     private int elapsed_seconds;
     private int total_elapsed_seconds;
     private boolean isPaused;
+    private boolean isPlaying;
 
     private Timer timer;
 
@@ -34,6 +35,7 @@ public class RadioPlayList
         elapsed_seconds = 0;
         total_elapsed_seconds = 0;
         isPaused = false;
+        isPlaying = false;
 
         timer = null;
     }
@@ -45,19 +47,18 @@ public class RadioPlayList
 
         current_playlist = pl;
         song_index = 0;
-        current_song = pl.getSongAt(song_index);
+        updateSongs();
+
+        isPlaying = true;
 
         timer = new Timer();
-        timer.schedule(new RadioTask(), 1);
+        timer.schedule(new RadioTask(), 0, 1000);
     }
 
     public void update()
     {
         if(isPaused)
-        {
-            System.err.println("Paused...");
             return;
-        }
 
         elapsed_seconds++;
         total_elapsed_seconds++;
@@ -71,7 +72,7 @@ public class RadioPlayList
     public void playNextSong()
     {
         song_index++;
-        if(song_index > current_playlist.getTotalSongs()) // reset playlist?
+        if(song_index > current_playlist.getTotalSongs() - 1) // reset playlist?
         {
             stopPlayList();
             return;
@@ -80,7 +81,8 @@ public class RadioPlayList
         if(timer != null)
         {
             timer.cancel();
-            timer.schedule(new RadioTask(), 1000);
+            timer = new Timer();
+            timer.schedule(new RadioTask(), 2000, 1000);
         }
         updateSongs();
     }
@@ -94,7 +96,8 @@ public class RadioPlayList
         if(timer != null)
         {
             timer.cancel();
-            timer.schedule(new RadioTask(), 1000);
+            timer = new Timer();
+            timer.schedule(new RadioTask(), 1000, 1000);
         }
 
         updateSongs();
@@ -105,11 +108,10 @@ public class RadioPlayList
         if(timer != null)
             timer.cancel();
         timer = null;
-        current_playlist = null;
-        current_song = null;
         elapsed_seconds = 0;
         total_elapsed_seconds = 0;
 
+        isPlaying = false;
         control_frame.setCurrentSong(null);
         control_frame.setPreviousSong(null);
         control_frame.setNextSong(null);
@@ -131,7 +133,7 @@ public class RadioPlayList
         elapsed_seconds = 0;
 
         control_frame.setCurrentSong(current_song);
-        if(song_index - 1 > 0)
+        if(song_index > 0)
             control_frame.setPreviousSong(current_playlist.getSongAt(song_index - 1));
         else
             control_frame.setPreviousSong(null);
@@ -149,14 +151,13 @@ public class RadioPlayList
                 Song.getFormattedTime(current_playlist.getTotalTime()));
     }
 
-    public boolean isPlaying() { return current_playlist != null; }
+    public boolean isPlaying() { return isPlaying; }
     public boolean isPaused() { return isPaused; }
 
     private class RadioTask extends TimerTask
     {
         public void run()
         {
-            System.err.println("Running...");
             update();
         }
     }
