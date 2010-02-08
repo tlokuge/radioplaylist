@@ -8,37 +8,37 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
 public class ControlFrame extends JFrame
 {
-    final JFrame playlist_frame;
+    private final PlayListFrame playlist_frame;
+    private RadioPlayList radio;
 
-    JPanel label_panel;
-    JPanel button_panel;
+    private JPanel label_panel;
+    private JPanel button_panel;
 
-    Label prev_song;
-    Label cur_song;
-    Label next_song;
-    Label duration;
+    private ControlLabel prev_song;
+    private ControlLabel cur_song;
+    private ControlLabel next_song;
+    private ControlLabel duration;
 
-    JButton play_button;
-    JButton previous_button;
-    JButton stop_button;
-    JButton next_button;
-    JButton playlist_button;
+    private JButton play_button;
+    private JButton previous_button;
+    private JButton stop_button;
+    private JButton next_button;
+    private JButton playlist_button;
     
-    ImageIcon play_icon;
-    ImageIcon pause_icon;
-    ImageIcon playlist_icon;
-    ImageIcon playliston_icon;
+    private ImageIcon play_icon;
+    private ImageIcon pause_icon;
+    private ImageIcon playlist_icon;
+    private ImageIcon playliston_icon;
 
-    public ControlFrame(final JFrame playlist_frame)
+    public ControlFrame(final PlayListFrame playlist_frame)
     {
         this.playlist_frame = playlist_frame;
+        radio = null;
 
         if(playlist_frame == null)
         {
@@ -63,6 +63,11 @@ public class ControlFrame extends JFrame
         setVisible(true);
     }
 
+    public void setRadioPlayList(RadioPlayList radio)
+    {
+        this.radio = radio;
+    }
+
     private ImageIcon createImage(String image_path)
     {
         String path = StringConstantHolder.RD_PLYLST_IMG_FLDR + image_path;
@@ -84,10 +89,10 @@ public class ControlFrame extends JFrame
 
     private void initializeLabels()
     {
-        cur_song  = new Label(StringConstantHolder.CP_NWP_LABEL);
-        prev_song = new Label(StringConstantHolder.CP_PRV_LABEL);
-        next_song = new Label(StringConstantHolder.CP_NXT_LABEL);
-        duration  = new Label();
+        cur_song  = new ControlLabel(StringConstantHolder.CP_NWP_LABEL);
+        prev_song = new ControlLabel(StringConstantHolder.CP_PRV_LABEL);
+        next_song = new ControlLabel(StringConstantHolder.CP_NXT_LABEL);
+        duration  = new ControlLabel();
 
         prev_song.setBorder(new EtchedBorder());
         next_song.setBorder(new EtchedBorder());
@@ -163,6 +168,40 @@ public class ControlFrame extends JFrame
         }
     }
 
+    public void setCurrentSong(Song s)
+    {
+        if(s == null)
+            cur_song.setRightText("--");
+        else
+            cur_song.setRightText(s.getSongInfo());
+    }
+
+    public void setPreviousSong(Song s)
+    {
+        if(s == null)
+            prev_song.setRightText("--");
+        else
+            prev_song.setRightText(s.getSongInfo());
+    }
+
+    public void setNextSong(Song s)
+    {
+        if(s == null)
+            next_song.setRightText("--");
+        else
+            next_song.setRightText(s.getSongInfo());
+    }
+
+    public void setSongDuration(String elapsed, String total)
+    {
+        duration.setLeftText("SONG: " + elapsed + " / " + total);
+    }
+
+    public void setPlayListDuration(String elapsed, String total)
+    {
+        duration.setRightText("PLAYLIST: " + elapsed + " / " + total);
+    }
+
     private void doTestStuff()
     {
         cur_song.setRightText("SONG - ARTIST - TIME");
@@ -170,63 +209,6 @@ public class ControlFrame extends JFrame
         next_song.setRightText("SONG - ARTIST - TIME");
         duration.setLeftText("SONG: 0:12 / 3:45");
         duration.setRightText("PLAYLIST: 6:78 / 90:00");
-    }
-
-    private class Label extends JPanel
-    {
-        private JLabel left_label;
-        private JLabel right_label;
-
-        Label()
-        {
-            super();
-            left_label  = new JLabel();
-            right_label = new JLabel();
-
-            initialize();
-        }
-
-        Label(String left)
-        {
-            super();
-            left_label  = new JLabel(left);
-            right_label = new JLabel();
-
-            initialize();
-        }
-
-        Label(String left, String right)
-        {
-            super();
-            left_label  = new JLabel(left);
-            right_label = new JLabel(right);
-
-            initialize();
-        }
-
-        void initialize()
-        {
-            left_label.setHorizontalAlignment(SwingConstants.LEFT);
-            right_label.setHorizontalAlignment(SwingConstants.RIGHT);
-            add(left_label);
-            add(right_label);
-
-            setVisible(true);
-        }
-
-        void setLeftText(String text)
-        {
-            left_label.setText(text);
-
-            repaint();
-        }
-
-        void setRightText(String text)
-        {
-            right_label.setText(text);
-
-            repaint();
-        }
     }
 
     private enum ButtonType { PLAY, PREVIOUS, STOP, NEXT, PLAYLIST; }
@@ -257,6 +239,14 @@ public class ControlFrame extends JFrame
             if(play_button.getIcon() == play_icon ||
                     play_button.getText().equalsIgnoreCase(StringConstantHolder.CP_PLY_NM))
             {
+                if(radio != null)
+                {
+                    if(!radio.isPlaying())
+                        radio.play(playlist_frame.getCurrentPlayList());
+                    else
+                        radio.pausePlayList();
+                }
+
                 if(pause_icon != null)
                     play_button.setIcon(pause_icon);
                 else
@@ -264,6 +254,12 @@ public class ControlFrame extends JFrame
             }
             else
             {
+                if(radio != null)
+                {
+                    if(radio.isPlaying() && radio.isPaused())
+                        radio.resumePlayList();
+                }
+
                 if(play_icon != null)
                     play_button.setIcon(play_icon);
                 else
@@ -273,7 +269,7 @@ public class ControlFrame extends JFrame
 
         private void doPreviousButtonAction(ActionEvent e)
         {
-
+            radio.playPreviousSong();
         }
 
         private void doStopButtonAction(ActionEvent e)

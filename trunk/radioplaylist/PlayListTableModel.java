@@ -31,7 +31,7 @@ public class PlayListTableModel extends AbstractTableModel
             case 0:     return s.getTitle();
             case 1:     return s.getArtist();
             case 2:     return s.getAlbum();
-            case 3:     return s.getFormattedTime();
+            case 3:     return Song.getFormattedTime(s.getTime());
             case 4:     return s.getRecType();
             case 5:     return s.getFrequency();
             case 6:     return s.getPopularity();

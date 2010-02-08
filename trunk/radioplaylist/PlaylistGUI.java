@@ -7,27 +7,24 @@ import javax.swing.JFrame;
  */
 public class PlaylistGUI
 {
-    PlayListFrame library_frame;
-    ControlFrame control_frame;
+    private PlayListFrame playlist_frame;
+    private ControlFrame control_frame;
 
-    PlayListFrame play_panel;
-    ControlFrame  control_panel;
+    private final int LIB_FRAME_WIDTH   = 800;
+    private final int LIB_FRAME_HEIGHT  = 500;
 
-    final int LIB_FRAME_WIDTH   = 800;
-    final int LIB_FRAME_HEIGHT  = 500;
-
-    final int CON_FRAME_WIDTH   = 450;
-    final int CON_FRAME_HEIGHT  = 235;
+    private final int CON_FRAME_WIDTH   = 450;
+    private final int CON_FRAME_HEIGHT  = 235;
 
     public PlaylistGUI()
     {
-        library_frame = new PlayListFrame();
-        control_frame = new ControlFrame(library_frame);
-        library_frame.setControlFrame(control_frame);
+        playlist_frame = new PlayListFrame();
+        control_frame = new ControlFrame(playlist_frame);
+        playlist_frame.setControlFrame(control_frame);
 
-        library_frame.setLocation(455,0);
+        playlist_frame.setLocation(455,0);
             
-        library_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
+        playlist_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
        
         initializeLibraryFrame();
@@ -36,9 +33,9 @@ public class PlaylistGUI
 
     private void initializeLibraryFrame()
     {
-        library_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
+        playlist_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
 
-        library_frame.setVisible(false);
+        playlist_frame.setVisible(false);
     }
 
     private void initializeControlFrame()
@@ -49,4 +46,7 @@ public class PlaylistGUI
         control_frame.setResizable(false);
         control_frame.setVisible(true);
     }
+
+    public ControlFrame getControlFrame()   { return control_frame; }
+    public PlayListFrame getPlayListFrame() { return playlist_frame; }
 }
