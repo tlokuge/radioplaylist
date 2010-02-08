@@ -145,7 +145,7 @@ public class PlayListButtonListener implements ActionListener
         if(pl == null)
             return;
 
-        pl.deleteSong(getSelectedLibrarySong());
+        pl.deleteSong(pl.getSongAt(pl.getSelectedIndex()));
         getSongLibraryTable().repaint();
 
         if(!pl.safeZone())
