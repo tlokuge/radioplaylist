@@ -2,12 +2,12 @@ package radioplaylist;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JOptionPane;
 
 
 public class RadioPlayList
 {
     private final ControlFrame control_frame;
-    private final PlayListFrame playlist_frame;
 
     private PlayList current_playlist;
     private Song current_song;
@@ -19,11 +19,10 @@ public class RadioPlayList
 
     private Timer timer;
 
-    public RadioPlayList(final ControlFrame cf, final PlayListFrame pf)
+    public RadioPlayList(final ControlFrame cf)
     {
         control_frame  = cf;
-        playlist_frame = pf;
-        if(cf == null || pf == null)
+        if(cf == null)
         {
             System.err.println("ERRRRRRRRR! AMG AREJKLSJHDKLS ERROR WORLD EXPLODDESS");
             return;
@@ -153,6 +152,19 @@ public class RadioPlayList
 
     public boolean isPlaying() { return isPlaying; }
     public boolean isPaused() { return isPaused; }
+
+
+
+    public static boolean sendConfirmDialog(String message, String title)
+    {
+        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
+                == JOptionPane.YES_OPTION;
+    }
+
+    public static void sendAlertDialog(String message, String title)
+    {
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    }
 
     private class RadioTask extends TimerTask
     {

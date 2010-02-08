@@ -140,9 +140,9 @@ public class PlayListFrame extends JFrame
         PlayList p3 = createPlayList("Sample PlayList 3");
         PlayList p4 = createPlayList("Sample PlayList 4");
 
-        Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "RecType 1", 450, 1, 1);
-        Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "RecType 2", 680, 2, 2);
-        Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "RecType 3", 900, 3, 3);
+        Song s1 = new Song(1, "Song 1", "Artist 1", "Album 1", "1", 450, 1, 1);
+        Song s2 = new Song(2, "Song 2", "Artist 2", "Album 2", "2", 680, 2, 2);
+        Song s3 = new Song(3, "Song 3", "Artist 3", "Album 3", "3", 900, 3, 3);
         
         addSongToLibrary(s1);
         addSongToLibrary(s2);

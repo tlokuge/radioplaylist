@@ -1,6 +1,7 @@
 package radioplaylist;  
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -175,6 +176,15 @@ public class PlayList extends JList
         return playlist.get(index);
     }
 
+    public Song[] getSongs()
+    {
+        Song[] songs = new Song[getTotalSongs()];
+        for(int i = 0; i < getTotalSongs(); ++i)
+            songs[i] = playlist.get(i);
+        
+        return songs;
+    }
+
     public int getTotalSongs()
     {
         return playlist.size();
@@ -209,10 +219,10 @@ public class PlayList extends JList
         }
     }
 
-    public void loadPlaylist()
+    public boolean loadPlaylist()
     {
         if(chooser.showOpenDialog(this) == JFileChooser.CANCEL_OPTION)
-            return;
+            return false;
 
         try
         {
@@ -226,7 +236,7 @@ public class PlayList extends JList
 
             str = getNextSegmentUsingScanner(in); // PlayList name
             if(str == null)
-                return;
+                return false;
             setName(str);
 
             while(in.hasNextLine())
@@ -235,43 +245,43 @@ public class PlayList extends JList
 
                 str = getNextSegmentUsingScanner(in); // Song Title
                 if(str == null)
-                    return;
+                    return false;
                 s.setTitle(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Performer
                 if(str == null)
-                    return;
+                    return false;
                 s.setArtist(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Duration
                 if(str == null)
-                    return;
+                    return false;
                 s.setDuration(Integer.parseInt(str));
 
                 str = getNextSegmentUsingScanner(in); // Song Album
                 if(str == null)
-                    return;
+                    return false;
                 s.setAlbum(str);
 
                 str = getNextSegmentUsingScanner(in); // Song Year
                 if(str == null)
-                    return;
+                    return false;
                 s.setYear(Integer.parseInt(str));
 
                 str = getNextSegmentUsingScanner(in); // Song Frequency
                 if(str == null)
-                    return;
+                    return false;
                 s.setFrequency(Integer.parseInt(str));
 
                 str = getNextSegmentUsingScanner(in); // Song Popularity
                 if(str == null)
-                    return;
+                    return false;
                 s.setPopularity(Integer.parseInt(str));
 
-                str = getNextSegmentUsingScanner(in); // Song Record Number
+                str = getNextSegmentUsingScanner(in); // Song Record Type
                 if(str == null)
-                    return;
-                s.setRecNum(Integer.parseInt(str));
+                    return false;
+                s.setRecType(str);
 
                 pl.add(s);
                 newTotalTime += s.getTime();
@@ -282,10 +292,18 @@ public class PlayList extends JList
 
             populateListData();
         }
+        catch(FileNotFoundException e)
+        {
+            RadioPlayList.sendAlertDialog("File not found!", "Load Error");
+            return false;
+        }
         catch(Exception e)
         {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     public void sendError(String err)

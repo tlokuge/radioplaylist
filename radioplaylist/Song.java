@@ -201,7 +201,7 @@ public class Song
                year + ";\n" +
                freq + ";\n" +
                popular + ";\n" +
-               recNum + ";\n";
+               recType + ";\n";
     }
     /*public String toString()
     {

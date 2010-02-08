@@ -102,10 +102,15 @@ public class PlayListButtonListener implements ActionListener
 
     private void doLoadButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        PlayList pl = new PlayList();
+        if(!pl.loadPlaylist())
             return;
-        pl.loadPlaylist();
+        
+        panel.addPlayListToTab(pl, true);
+
+        Song[] songs = pl.getSongs();
+        for(Song s : songs)
+            panel.addSongToLibrary(s);
     }
 
     private void doAddSongButtonAction(ActionEvent e)
@@ -129,7 +134,7 @@ public class PlayListButtonListener implements ActionListener
         getSongLibraryTable().repaint();
 
         if(!pl.safeZone())
-            sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
+            RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
         //add song function here.....
         //pl.addSong( );
     }
@@ -144,7 +149,7 @@ public class PlayListButtonListener implements ActionListener
         getSongLibraryTable().repaint();
 
         if(!pl.safeZone())
-            sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
+            RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
         //remove song function here....
         //pl.deleteSong( );
     }
@@ -162,7 +167,7 @@ public class PlayListButtonListener implements ActionListener
         if(pl == null)
             return;
 
-        if(sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
+        if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
             panel.removePlayList(pl);
         //JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
     }
@@ -181,19 +186,8 @@ public class PlayListButtonListener implements ActionListener
         if(pl == null)
             return;
 
-        if(sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
+        if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
             pl.clearPlaylist();
         //JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");
-    }
-
-    private boolean sendConfirmDialog(String message, String title)
-    {
-        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
-                == JOptionPane.YES_OPTION;
-    }
-
-    private void sendAlertDialog(String message, String title)
-    {
-        JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
     }
 }
