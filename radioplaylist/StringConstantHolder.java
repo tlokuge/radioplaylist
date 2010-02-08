@@ -6,7 +6,7 @@ public abstract class StringConstantHolder
 
     static final String IMG_LOAD_ERR = "Unable to load image: ";
 
-    /************** PlaylistPanel.java *****************/
+    /************** PlaylistFrame.java *****************/
     // ImageIcons
     static final String PP_UP_IMG      = "up.png";
     static final String PP_DN_IMG      = "down.png";
@@ -74,7 +74,7 @@ public abstract class StringConstantHolder
     // Menu Bar
     static final String PP_MN_BR    = "Radio PlayList";
 
-    /************** ControlPanel.java *****************/
+    /************** ControlFrame.java *****************/
     // Errors
     static final String CP_OPEN_PF_ERR = "ERROR! UNABLE TO OPEN PLAYLIST FRAME!";
 
@@ -83,9 +83,11 @@ public abstract class StringConstantHolder
     static final String CP_SAVE_FC  = "Save Playlist";
 
     // Labels
-    static final String CP_NWP_LABEL = "NOW PLAYING: ";
-    static final String CP_PRV_LABEL = "PREVIOUS: ";
-    static final String CP_NXT_LABEL = "NEXT: ";
+    static final String CP_NWP_LABEL    = "NOW PLAYING: ";
+    static final String CP_PRV_LABEL    = "PREVIOUS: ";
+    static final String CP_NXT_LABEL    = "NEXT: ";
+    static final String CP_SNG_LABEL    = "SONG: ";
+    static final String CP_PLYLST_LABEL = "PLAYLIST: ";
 
     // ImageIcons
     static final String CP_PLY_IMG   = "play.png";
@@ -116,6 +118,30 @@ public abstract class StringConstantHolder
     static final String PGUI_PLYLST_TTL = "Song Playlist";
     static final String PGUI_CNTRLS_TTL = "Playlist Controls";
 
-    /************** PlaylistGUI.java *****************/
+    /************** PlayList.java *****************/
     static final String PL_NEW_PL = "New Playlist";
+
+    /************** NewSongFrame.java *****************/
+    // Labels and Titles
+    static final String NSF_FRAME_TITLE   = "New Song";
+    static final String NSF_BUTTON_NAME   = "Add";
+    static final String NSF_TITLE_LABEL   = "Title:";
+    static final String NSF_ARTIST_LABEL  = "Artist:";
+    static final String NSF_ALBUM_LABEL   = "Album:";
+    static final String NSF_RECTYPE_LABEL = "Recording Type:";
+    static final String NSF_YEAR_LABEL    = "Year:";
+    static final String NSF_TIME_LABEL    = "Time:";
+    static final String NSF_COLON_LABEL   = ":";
+
+    // Messages
+    static final String NSF_WARN_DATA     = "Please enter all field data";
+    static final String NSF_FIELD_WARNING = "Field Warning";
+    static final String NSF_INVALID_NUMB  = "Please enter a valid number";
+
+    static final String[] NSF_RECORD_TYPES =
+    {
+         "EP", "Mini LP", "CD", "CD Single",
+         "LP Record", "Cassette Tape", "8 Track Tape",
+        "4 Track Tape", "7\"", "10\"", "12\"", "45 RPM"
+    };
 }
