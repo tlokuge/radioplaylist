@@ -265,7 +265,8 @@ public class PlayListFrame extends JFrame
 
     public Song getSelectedLibrarySong()
     {
-        if(song_library_table.getSelectedRow() < 0)
+        if(song_library_table.getSelectedRow() < 0
+                || song_library_table.getSelectedRow() >= song_library_table.getModel().getRowCount())
             return null;
         
         return ((PlayListTableModel) song_library_table.getModel())
