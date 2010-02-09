@@ -151,6 +151,8 @@ public class NewSongFrame extends JFrame
             if(min < 0)  return;
             int sec  = parseToInteger(secStr);
             if(sec < 0)  return;
+            if(min == 0 && sec == 0)
+                return;
 
             song.setYear(year);
             song.setDuration(min * 60 + sec);
