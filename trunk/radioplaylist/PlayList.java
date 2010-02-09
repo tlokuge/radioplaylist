@@ -55,8 +55,8 @@ public class PlayList extends JList
 
         if(containsSong(song))
         {
-            JOptionPane.showMessageDialog(null,"The song already exists. " + "" +
-                    "Try some other songs to prevent boring our listeners to death");
+            JOptionPane.showMessageDialog(null,"This song is already in the playlist,"
+                    + " please choose another song");
             return;
         }
         
