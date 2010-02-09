@@ -131,7 +131,7 @@ public class PlayListButtonListener implements ActionListener
 
         pl.addSong(getSelectedLibrarySong());
 
-        getSongLibraryTable().repaint();
+        //getSongLibraryTable().repaint();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
@@ -146,7 +146,7 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.deleteSong(pl.getSongAt(pl.getSelectedIndex()));
-        getSongLibraryTable().repaint();
+        //getSongLibraryTable().repaint();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
