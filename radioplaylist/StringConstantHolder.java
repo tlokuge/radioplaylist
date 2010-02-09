@@ -35,7 +35,7 @@ public abstract class StringConstantHolder
     static final String PP_ADDPL_NM = "New PlayList";
     static final String PP_REMPL_NM = "Delete PlayList";
     static final String PP_ADDSG_NM = "Add To PlayList";
-    static final String PP_REMSG_NM = "Remove To PlayList";
+    static final String PP_REMSG_NM = "Remove From PlayList";
 
     // Panel Titles
     static final String PP_PLAYLIST_PANEL = "Playlist";
@@ -70,6 +70,7 @@ public abstract class StringConstantHolder
     static final String PP_TIME_WARN  = "Your playlist is not within 43 and 48 minutes";
     static final String PP_TIME_TTL   = "Time Sufficiency Alert";
     static final String PP_PL_NM_PRMPT= "Enter a name for the playlist";
+    static final String PP_PL_NM_TTL  = "New PlayList";
 
     // Menu Bar
     static final String PP_MN_BR    = "Radio PlayList";
@@ -137,6 +138,8 @@ public abstract class StringConstantHolder
     static final String NSF_WARN_DATA     = "Please enter all field data";
     static final String NSF_FIELD_WARNING = "Field Warning";
     static final String NSF_INVALID_NUMB  = "Please enter a valid number";
+    static final String NSF_BOUNDS_ERROR  = "Please select a playlist that is within the 43 - 48 minute limit";
+    static final String NSF_PLAY_ERROR_TTL= "Play Error";
 
     static final String[] NSF_RECORD_TYPES =
     {

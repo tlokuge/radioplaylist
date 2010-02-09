@@ -39,10 +39,17 @@ public class RadioPlayList
         timer = null;
     }
 
-    public void play(PlayList pl)
+    public boolean play(PlayList pl)
     {
         if(pl == null)
-            return;
+            return false;
+
+        if(!pl.safeZone())
+        {
+                RadioPlayList.sendAlertDialog(StringConstantHolder.NSF_BOUNDS_ERROR,
+                        StringConstantHolder.NSF_PLAY_ERROR_TTL);
+            return false;
+        }
 
         current_playlist = pl;
         song_index = 0;
@@ -52,6 +59,8 @@ public class RadioPlayList
 
         timer = new Timer();
         timer.schedule(new RadioTask(), 0, 1000);
+
+        return true;
     }
 
     public void update()
@@ -129,6 +138,8 @@ public class RadioPlayList
     public void updateSongs()
     {
         current_song = current_playlist.getSongAt(song_index);
+        current_song.bumpFreq();
+        control_frame.getPlayListFrame().repaint();
         elapsed_seconds = 0;
 
         control_frame.setCurrentSong(current_song);
@@ -153,7 +164,13 @@ public class RadioPlayList
     public boolean isPlaying() { return isPlaying; }
     public boolean isPaused() { return isPaused; }
 
+    public static String sendInputDialog(String message, String title)
+    {
+        String str = null;
+        str = JOptionPane.showInputDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 
+        return str;
+    }
 
     public static boolean sendConfirmDialog(String message, String title)
     {

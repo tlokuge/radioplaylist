@@ -244,12 +244,12 @@ public class PlayListFrame extends JFrame
         play_control_panel.setLayout(new GridLayout(1, 9));
         play_control_panel.add(move_up_button);
         play_control_panel.add(move_down_button);
-        play_control_panel.add(add_song_button);
-        play_control_panel.add(remove_song_button);
         play_control_panel.add(add_songpl_button);
         play_control_panel.add(remove_songpl_button);
         play_control_panel.add(add_playlist_button);
         play_control_panel.add(remove_playlist_button);
+        play_control_panel.add(add_song_button);
+        play_control_panel.add(remove_song_button);
         play_control_panel.add(shuffle_button);
         play_control_panel.add(clear_button);
         play_control_panel.setVisible(true);
