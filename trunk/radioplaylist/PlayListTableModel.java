@@ -6,7 +6,7 @@ public class PlayListTableModel extends AbstractTableModel
 {
     private String[] columnNames =
     {
-        "Title", "Artist", "Album", "Length", "Record Type", "Play Count", "Popularity"
+        "Title", "Artist", "Album", "Length", "Year", "Record Type", "Play Count", "Popularity"
     };
     private PlayList playlist;
 
@@ -32,9 +32,10 @@ public class PlayListTableModel extends AbstractTableModel
             case 1:     return s.getArtist();
             case 2:     return s.getAlbum();
             case 3:     return Song.getFormattedTime(s.getTime());
-            case 4:     return s.getRecType();
-            case 5:     return s.getFrequency();
-            case 6:     return s.getPopularity();
+            case 4:     return s.getYear();
+            case 5:     return s.getRecType();
+            case 6:     return s.getFrequency();
+            case 7:     return s.getPopularity();
             default:    return "UNK COL" + columnIndex;
         }
     }
