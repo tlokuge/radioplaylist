@@ -156,8 +156,12 @@ public class PlayListButtonListener implements ActionListener
 
     private void doAddPlayListButtonAction(ActionEvent e)
     {
-        panel.addPlayListToTab(panel.createPlayList(
-                JOptionPane.showInputDialog(StringConstantHolder.PP_PL_NM_PRMPT)), true);
+        String name = RadioPlayList.sendInputDialog(StringConstantHolder.PP_PL_NM_PRMPT,
+                StringConstantHolder.PP_PL_NM_TTL);
+        if(name == null)
+            return;
+
+        panel.addPlayListToTab(panel.createPlayList(name), true);
         //JOptionPane.showMessageDialog(null, "This button blows up the world");
     }
 

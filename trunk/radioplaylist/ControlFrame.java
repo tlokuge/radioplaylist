@@ -219,6 +219,11 @@ public class ControlFrame extends JFrame
         duration.setRightText(StringConstantHolder.CP_PLYLST_LABEL + elapsed + " / " + total);
     }
 
+    public PlayListFrame getPlayListFrame()
+    {
+        return playlist_frame;
+    }
+
     private enum ButtonType { PLAY, PREVIOUS, STOP, NEXT, PLAYLIST; }
 
     private class ButtonListener implements ActionListener
@@ -250,7 +255,8 @@ public class ControlFrame extends JFrame
                 if(radio != null)
                 {
                     if(!radio.isPlaying())
-                        radio.play(playlist_frame.getCurrentPlayList());
+                        if(!radio.play(playlist_frame.getCurrentPlayList()))
+                            return;
                     else
                         radio.resumePlayList();
                 }
