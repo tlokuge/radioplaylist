@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
+
 /**
  * Write a description of class SongTest here.
  *
@@ -55,8 +55,7 @@ public class PlayList extends JList
 
         if(containsSong(song))
         {
-            JOptionPane.showMessageDialog(null,"This song is already in the playlist,"
-                    + " please choose another song");
+            RadioPlayList.sendAlertDialog(StringConstantHolder.PL_DUPL_SONG, null);
             return;
         }
         
@@ -74,6 +73,7 @@ public class PlayList extends JList
         int index = findSong(song);
         if(index < 0)
             return false;
+
         playlist.remove(index);
         totalTime  -= song.getTime();
         song.dropPopularity();
@@ -147,19 +147,25 @@ public class PlayList extends JList
         for(int i = 0; i < playlist.size(); ++i)
             songs[i] = playlist.get(i).getSongInfo();
 
-        String summary = "[ " + Song.getFormattedTime(totalTime) + "     total time -   "
-                + playlist.size();
+        String summary = String.format(StringConstantHolder.PL_SUMMARY, Song.getFormattedTime(totalTime));
         if(playlist.size() == 1)
-            summary += " song ]";
+            summary += StringConstantHolder.PL_SUM_SING;
         else
-            summary += " total songs ]";
+            summary += StringConstantHolder.PL_SUM_PLUR;
         songs[playlist.size()] = summary;
         setListData(songs);
     }
 
     public boolean containsSong(Song song)
     {
-        return playlist.contains(song);
+        if(song == null)
+            return false;
+
+        for(Song s : playlist)
+            if(s.equals(song))
+                return true;
+
+        return false;
     }
 
     public int findSong(Song song)
@@ -218,6 +224,7 @@ public class PlayList extends JList
         }
         catch(Exception e)
         {
+            RadioPlayList.sendErrorDialog(e.getLocalizedMessage(), StringConstantHolder.PL_SAVE_ERR);
             e.printStackTrace();
         }
     }
@@ -297,7 +304,7 @@ public class PlayList extends JList
         }
         catch(FileNotFoundException e)
         {
-            RadioPlayList.sendAlertDialog("File not found!", "Load Error");
+            RadioPlayList.sendErrorDialog(StringConstantHolder.PL_FNF_ERR, StringConstantHolder.PL_LOAD_ERR);
             return false;
         }
         catch(Exception e)
@@ -309,17 +316,12 @@ public class PlayList extends JList
         return true;
     }
 
-    public void sendError(String err)
-    {
-        JOptionPane.showMessageDialog(null, err, "ERROR", JOptionPane.ERROR_MESSAGE);
-    }
-
     private String getNextSegmentUsingScanner(Scanner in)
     {
         if(in.hasNextLine())
             return new StringTokenizer(in.nextLine(), ";").nextToken();
 
-        sendError("Parse error");
+        RadioPlayList.sendErrorDialog(StringConstantHolder.PL_PARSE_ERR, StringConstantHolder.PL_LOAD_ERR);
         return null;
     }
 }

@@ -75,7 +75,8 @@ public class ControlFrame extends JFrame
         if(new File(path).exists())
             return new ImageIcon(path);
         else
-            System.err.println(StringConstantHolder.IMG_LOAD_ERR + path);
+           RadioPlayList.sendErrorDialog(StringConstantHolder.IMG_LOAD_ERR + path,
+                   StringConstantHolder.PL_LOAD_ERR);
 
         return null;
     }
@@ -188,7 +189,7 @@ public class ControlFrame extends JFrame
     public void setCurrentSong(Song s)
     {
         if(s == null)
-            cur_song.setRightText("--");
+            cur_song.setRightText(StringConstantHolder.CP_BLANK_SONG);
         else
             cur_song.setRightText(s.getSongInfo());
     }
@@ -196,7 +197,7 @@ public class ControlFrame extends JFrame
     public void setPreviousSong(Song s)
     {
         if(s == null)
-            prev_song.setRightText("--");
+            prev_song.setRightText(StringConstantHolder.CP_BLANK_SONG);
         else
             prev_song.setRightText(s.getSongInfo());
     }
@@ -204,7 +205,7 @@ public class ControlFrame extends JFrame
     public void setNextSong(Song s)
     {
         if(s == null)
-            next_song.setRightText("--");
+            next_song.setRightText(StringConstantHolder.CP_BLANK_SONG);
         else
             next_song.setRightText(s.getSongInfo());
     }

@@ -3,7 +3,6 @@ package radioplaylist;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 enum PlayListButtonType
@@ -106,7 +105,7 @@ public class PlayListButtonListener implements ActionListener
         if(!pl.loadPlaylist())
             return;
         
-        panel.addPlayListToTab(pl, true);
+        panel.addPlayListToTab(pl);
 
         Song[] songs = pl.getSongs();
         for(Song s : songs)
@@ -161,7 +160,7 @@ public class PlayListButtonListener implements ActionListener
         if(name == null)
             return;
 
-        panel.addPlayListToTab(panel.createPlayList(name), true);
+        panel.addPlayListToTab(PlayListFrame.createPlayList(name));
         //JOptionPane.showMessageDialog(null, "This button blows up the world");
     }
 

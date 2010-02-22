@@ -2,9 +2,16 @@ package radioplaylist;
 
 public abstract class StringConstantHolder
 {
+    // RadioPlayList
     static String RD_PLYLST_IMG_FLDR = "src/images/";
 
     static final String IMG_LOAD_ERR = "Unable to load image: ";
+    static final String RD_PLYLIST_FATAL_ERROR = "Fatal Error";
+    static final String RD_PLYLIST_CF_ERROR  = "Unable to load Control Frame. Aborting!";
+    static final String RD_PLYLIST_DEF_INPUT = "Input";
+    static final String RD_PLYLIST_DEF_CONF  = "Confirm";
+    static final String RD_PLYLIST_DEF_ALERT = "Warning!";
+    static final String RD_PLYLIST_DEF_ERROR = "Error!";
 
     /************** PlaylistFrame.java *****************/
     // ImageIcons
@@ -89,6 +96,7 @@ public abstract class StringConstantHolder
     static final String CP_NXT_LABEL    = "NEXT: ";
     static final String CP_SNG_LABEL    = "SONG: ";
     static final String CP_PLYLST_LABEL = "PLAYLIST: ";
+    static final String CP_BLANK_SONG   = "--";
 
     // ImageIcons
     static final String CP_PLY_IMG   = "play.png";
@@ -120,7 +128,15 @@ public abstract class StringConstantHolder
     static final String PGUI_CNTRLS_TTL = "Playlist Controls";
 
     /************** PlayList.java *****************/
-    static final String PL_NEW_PL = "New Playlist";
+    static final String PL_NEW_PL    = "New Playlist";
+    static final String PL_SUMMARY   = "[  %s      total time -   ";
+    static final String PL_SUM_SING  = " song ]";
+    static final String PL_SUM_PLUR  = " total songs ]";
+    static final String PL_PARSE_ERR = "Unable to load PlayList - Parse Error!";
+    static final String PL_FNF_ERR   = "Unable to load PlayList - File Not Found!";
+    static final String PL_LOAD_ERR  = "Load Error!";
+    static final String PL_SAVE_ERR  = "Save Error!";
+    static final String PL_DUPL_SONG = "This song already exists! You cannot add duplicate songs to the playlist";
 
     /************** NewSongFrame.java *****************/
     // Labels and Titles
