@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.border.EtchedBorder;
@@ -34,7 +33,7 @@ public class PlayListFrame extends JFrame
 
     private JTable song_library_table;
 
-    private JTabbedPane playlist_tab;
+    private PlayListTab playlist_tab;
 
     private JButton move_up_button;
     private JButton move_down_button;
@@ -57,11 +56,10 @@ public class PlayListFrame extends JFrame
         play_control_panel = new JPanel();
         song_library_list  = new PlayList();
         song_library_table = new JTable();
-        playlist_tab       = new JTabbedPane();
+        playlist_tab       = new PlayListTab();
 
         setLayout(new BorderLayout());
         initializeButtons();
-        initializePlaylistTabs();
         initializeComponents();
         initializePanels();
         initializeMenus();
@@ -167,11 +165,6 @@ public class PlayListFrame extends JFrame
         remove_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
     }
 
-    private void initializePlaylistTabs()
-    {
-        playlist_tab.setTabPlacement(JTabbedPane.LEFT);
-    }
-
     private Component initializeSongLibrary()
     {
         PlayListTableModel model = new PlayListTableModel(song_library_list);
@@ -188,7 +181,7 @@ public class PlayListFrame extends JFrame
         new_song_frame.setVisible(true);
     }
 
-    public PlayList createPlayList(String name)
+    public static PlayList createPlayList(String name)
     {
         if(name == null || name.isEmpty())
             name = StringConstantHolder.PL_NEW_PL;
@@ -199,15 +192,13 @@ public class PlayListFrame extends JFrame
         return pl;
     }
 
-    public void addPlayListToTab(PlayList pl, boolean select)
+    public void addPlayListToTab(PlayList pl)
     {
         for(Component c : playlist_tab.getComponents())
             if((c instanceof PlayList) && ((PlayList)c).equals(pl))
                 return;
 
-        playlist_tab.add(pl, pl.getName());
-        if(select)
-            playlist_tab.setSelectedComponent(pl);
+        playlist_tab.addTab(pl);
     }
 
     public void removePlayList(PlayList pl)
@@ -257,8 +248,15 @@ public class PlayListFrame extends JFrame
 
     public PlayList getCurrentPlayList()
     {
-        if(playlist_tab.getSelectedComponent() instanceof PlayList)
-            return (PlayList)playlist_tab.getSelectedComponent();
+        if(!(playlist_tab.getSelectedComponent() instanceof JPanel))
+            return null;
+
+        JPanel panel = (JPanel)playlist_tab.getSelectedComponent();
+        for(int i = 0; i < panel.getComponentCount(); ++i)
+        {
+            if(panel.getComponent(i) instanceof PlayList)
+                return (PlayList)panel.getComponent(i);
+        }
 
         return null;
     }
@@ -288,7 +286,8 @@ public class PlayListFrame extends JFrame
             button.setIcon(new ImageIcon(path));
         else
         {
-            System.err.println(StringConstantHolder.IMG_LOAD_ERR + path);
+            RadioPlayList.sendErrorDialog(StringConstantHolder.IMG_LOAD_ERR + path,
+                    StringConstantHolder.PL_LOAD_ERR);
             button.setText(name);
         }
 

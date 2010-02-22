@@ -24,8 +24,10 @@ public class RadioPlayList
         control_frame  = cf;
         if(cf == null)
         {
-            System.err.println("ERRRRRRRRR! AMG AREJKLSJHDKLS ERROR WORLD EXPLODDESS");
-            return;
+            sendErrorDialog(StringConstantHolder.RD_PLYLIST_CF_ERROR,
+                    StringConstantHolder.RD_PLYLIST_FATAL_ERROR);
+
+            System.exit(1);
         }
 
         current_playlist = null;
@@ -166,6 +168,8 @@ public class RadioPlayList
 
     public static String sendInputDialog(String message, String title)
     {
+        if(title == null || title.isEmpty())
+            title = StringConstantHolder.RD_PLYLIST_DEF_INPUT;
         String str = null;
         str = JOptionPane.showInputDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
 
@@ -174,13 +178,24 @@ public class RadioPlayList
 
     public static boolean sendConfirmDialog(String message, String title)
     {
+        if(title == null || title.isEmpty())
+            title = StringConstantHolder.RD_PLYLIST_DEF_CONF;
         return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION)
                 == JOptionPane.YES_OPTION;
     }
 
     public static void sendAlertDialog(String message, String title)
     {
+        if(title == null || title.isEmpty())
+            title = StringConstantHolder.RD_PLYLIST_DEF_ALERT;
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void sendErrorDialog(String message, String title)
+    {
+        if(title == null || title.isEmpty())
+            title = StringConstantHolder.RD_PLYLIST_DEF_ERROR;
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     private class RadioTask extends TimerTask
