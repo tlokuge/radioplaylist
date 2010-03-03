@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JMenuBar;
@@ -17,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.table.TableRowSorter;
 
@@ -41,13 +43,13 @@ public class PlayListFrame extends JFrame
     private JButton remove_song_button;
     private JButton add_songpl_button;
     private JButton remove_songpl_button;
-    private JButton add_playlist_button;
-    private JButton remove_playlist_button;
+    //private JButton add_playlist_button;
+    //private JButton remove_playlist_button;
     private JButton shuffle_button;
     private JButton clear_button;
 
     private JMenuBar menuBar;
-    
+
     public PlayListFrame()
     {
         new_song_frame     = new NewSongFrame(this);
@@ -90,15 +92,15 @@ public class PlayListFrame extends JFrame
         menuBar = new JMenuBar();
 
         JMenu menu = new JMenu(StringConstantHolder.PP_MN_BR);
-        
+
         JMenuItem loadItem     = new JMenuItem(StringConstantHolder.PP_LD_NM);
         JMenuItem saveItem     = new JMenuItem(StringConstantHolder.PP_SV_NM);
         JMenuItem newSongItem  = new JMenuItem(StringConstantHolder.PP_ADD_NM);
         JMenuItem delSongItem  = new JMenuItem(StringConstantHolder.PP_DEL_NM);
         JMenuItem addSongItem  = new JMenuItem(StringConstantHolder.PP_ADDSG_NM);
         JMenuItem remSongItem  = new JMenuItem(StringConstantHolder.PP_REMSG_NM);
-        JMenuItem addPLItem    = new JMenuItem(StringConstantHolder.PP_ADDPL_NM);
-        JMenuItem remPLItem    = new JMenuItem(StringConstantHolder.PP_REMPL_NM);
+        //JMenuItem addPLItem    = new JMenuItem(StringConstantHolder.PP_ADDPL_NM);
+        //JMenuItem remPLItem    = new JMenuItem(StringConstantHolder.PP_REMPL_NM);
         JMenuItem randItem     = new JMenuItem(StringConstantHolder.PP_RDM_NM);
         JMenuItem clearItem    = new JMenuItem(StringConstantHolder.PP_CLR_NM);
 
@@ -108,8 +110,8 @@ public class PlayListFrame extends JFrame
         delSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONG));
         addSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONGPL));
         remSongItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONGPL));
-        addPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
-        remPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
+        //addPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
+        //remPLItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
         randItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
         clearItem.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
 
@@ -119,8 +121,8 @@ public class PlayListFrame extends JFrame
         menu.add(delSongItem);
         menu.add(addSongItem);
         menu.add(remSongItem);
-        menu.add(addPLItem);
-        menu.add(remPLItem);
+        //menu.add(addPLItem);
+        //menu.add(remPLItem);
         menu.add(randItem);
         menu.add(clearItem);
         menuBar.add(menu);
@@ -136,8 +138,8 @@ public class PlayListFrame extends JFrame
         remove_song_button     = createButton(StringConstantHolder.PP_DEL_NM, StringConstantHolder.PP_DEL_IMG);
         add_songpl_button      = createButton(StringConstantHolder.PP_ADDSG_NM, StringConstantHolder.PP_ADDSG_IMG);
         remove_songpl_button   = createButton(StringConstantHolder.PP_REMSG_NM, StringConstantHolder.PP_REMSG_IMG);
-        add_playlist_button    = createButton(StringConstantHolder.PP_ADDPL_NM, StringConstantHolder.PP_ADDPL_IMG);
-        remove_playlist_button = createButton(StringConstantHolder.PP_REMPL_NM, StringConstantHolder.PP_REMPL_IMG);
+      //  add_playlist_button    = createButton(StringConstantHolder.PP_ADDPL_NM, StringConstantHolder.PP_ADDPL_IMG);
+      //  remove_playlist_button = createButton(StringConstantHolder.PP_REMPL_NM, StringConstantHolder.PP_REMPL_IMG);
         shuffle_button         = createButton(StringConstantHolder.PP_RDM_NM, StringConstantHolder.PP_RDM_IMG);
         clear_button           = createButton(StringConstantHolder.PP_CLR_NM, StringConstantHolder.PP_CLR_IMG);
 
@@ -148,11 +150,11 @@ public class PlayListFrame extends JFrame
         remove_song_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
         add_songpl_button.setToolTipText(StringConstantHolder.PP_ADDPL_TT);
         remove_songpl_button.setToolTipText(StringConstantHolder.PP_DELPL_TT);
-        add_playlist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
-        remove_playlist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
+      //  add_playlist_button.setToolTipText(StringConstantHolder.PP_ADD_PL);
+      //  remove_playlist_button.setToolTipText(StringConstantHolder.PP_REM_PL);
         shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
         clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
-        
+
         move_up_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVUP));
         move_down_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVDN));
         add_song_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONG));
@@ -161,8 +163,8 @@ public class PlayListFrame extends JFrame
         remove_songpl_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONGPL));
         shuffle_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
         clear_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
-        add_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
-        remove_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
+        //add_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_PLAYLIST));
+        //remove_playlist_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_PLAYLIST));
     }
 
     private Component initializeSongLibrary()
@@ -229,7 +231,13 @@ public class PlayListFrame extends JFrame
     {
         main_panel.setLayout(new GridLayout(1, 3));
         main_panel.add(playlist_tab);
-        main_panel.add(initializeSongLibrary(), song_library_list.getName());
+        JPanel panel2 = new JPanel();
+        panel2.add(new JLabel("search"));
+        panel2.add(new JTextField(25));
+        panel2.add(initializeSongLibrary(), song_library_list.getName());
+        panel2.setBorder(new EtchedBorder());
+        panel2.setVisible(true);
+        main_panel.add(panel2);
         main_panel.setVisible(true);
 
         play_control_panel.setLayout(new GridLayout(1, 9));
@@ -237,8 +245,8 @@ public class PlayListFrame extends JFrame
         play_control_panel.add(move_down_button);
         play_control_panel.add(add_songpl_button);
         play_control_panel.add(remove_songpl_button);
-        play_control_panel.add(add_playlist_button);
-        play_control_panel.add(remove_playlist_button);
+        //play_control_panel.add(add_playlist_button);
+        //play_control_panel.add(remove_playlist_button);
         play_control_panel.add(add_song_button);
         play_control_panel.add(remove_song_button);
         play_control_panel.add(shuffle_button);
@@ -266,7 +274,7 @@ public class PlayListFrame extends JFrame
         if(song_library_table.getSelectedRow() < 0
                 || song_library_table.getSelectedRow() >= song_library_table.getModel().getRowCount())
             return null;
-        
+
         return ((PlayListTableModel) song_library_table.getModel())
                 .getPlayList().getSongAt(
                 song_library_table.getRowSorter().convertRowIndexToModel(

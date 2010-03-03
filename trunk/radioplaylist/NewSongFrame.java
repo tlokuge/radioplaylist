@@ -47,13 +47,13 @@ public class NewSongFrame extends JFrame
             System.err.println(StringConstantHolder.CP_OPEN_PF_ERR);
             return;
         }
-        
+
         setTitle(StringConstantHolder.NSF_FRAME_TITLE);
         setSize(520, 160);
         setLocation(200, 200);
-        
+
         button = new JButton(StringConstantHolder.NSF_BUTTON_NAME);
-        
+
         titleLabel = new JLabel(StringConstantHolder.NSF_TITLE_LABEL);
         titleField = new JTextField(40);
 
@@ -78,7 +78,7 @@ public class NewSongFrame extends JFrame
 
         //initialize
         panel = new JPanel();
-        
+
         panel.add(titleLabel);
         panel.add(titleField);
 

@@ -1,4 +1,4 @@
-package radioplaylist;  
+package radioplaylist;
 
 public abstract class StringConstantHolder
 {
@@ -48,9 +48,6 @@ public abstract class StringConstantHolder
     static final String PP_PLAYLIST_PANEL = "Playlist";
     static final String PP_LIBRARY_PANEL  = "Song Library";
 
-    // Placeholder Tab name
-    static final String PP_PLCHLDR_TAB = "[PH]Tab";
-    
     // Button Tooltips
     static final String PP_UP_TT    = "Click to move song up.";
     static final String PP_DN_TT    = "Click to move song down.";
@@ -80,7 +77,7 @@ public abstract class StringConstantHolder
     static final String PP_PL_NM_TTL  = "New PlayList";
 
     // Menu Bar
-    static final String PP_MN_BR    = "Radio PlayList";
+    static final String PP_MN_BR      = "Radio PlayList";
 
     /************** ControlFrame.java *****************/
     // Errors
@@ -163,4 +160,12 @@ public abstract class StringConstantHolder
          "LP Record", "Cassette Tape", "8 Track Tape",
         "4 Track Tape", "7\"", "10\"", "12\"", "45 RPM"
     };
+
+    /************** PlayListTab.java *****************/
+    static final String PT_CLOSE_ICON_PATH   = "InternalFrame.paletteCloseIcon";
+    static final String PT_HELP_AREA         = "Help Tab";
+    static final String PT_NEW_TAB           = "Click to add new playlist";
+    static final String PT_DELTAB_PROMPT     = "Are you sure you wish to delete this playlist?";
+    static final String PT_DELTAB_PROMPT_TTL = "Delete Tab?";
+    static final String PT_UNTITLED_PL       = "Untitled PlayList - ";
 }

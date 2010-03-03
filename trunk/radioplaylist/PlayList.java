@@ -1,4 +1,4 @@
-package radioplaylist;  
+package radioplaylist;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,7 +58,7 @@ public class PlayList extends JList
             RadioPlayList.sendAlertDialog(StringConstantHolder.PL_DUPL_SONG, null);
             return;
         }
-        
+
         playlist.add(song);
         totalTime += song.getTime();
         song.bumpPopularity();
@@ -69,7 +69,7 @@ public class PlayList extends JList
     {
         if(song == null)
             return false;
-        
+
         int index = findSong(song);
         if(index < 0)
             return false;
@@ -190,7 +190,7 @@ public class PlayList extends JList
         Song[] songs = new Song[getTotalSongs()];
         for(int i = 0; i < getTotalSongs(); ++i)
             songs[i] = playlist.get(i);
-        
+
         return songs;
     }
 
@@ -239,7 +239,7 @@ public class PlayList extends JList
             String str = "";
             int newTotalTime = 0;
             Song s;
-            
+
             ArrayList<Song> pl = new ArrayList<Song>();
             File f = chooser.getSelectedFile();
             Scanner in = new Scanner(f);

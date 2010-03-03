@@ -15,8 +15,8 @@ enum PlayListButtonType
     REMOVE_SONG,
     ADD_SONGPL,
     REMOVE_SONGPL,
-    ADD_PLAYLIST,
-    REMOVE_PLAYLIST,
+    //ADD_PLAYLIST,
+    //REMOVE_PLAYLIST,
     RANDOMIZE,
     CLEAR;
 }
@@ -44,8 +44,8 @@ public class PlayListButtonListener implements ActionListener
             case REMOVE_SONG:    doRemoveSongButtonAction(e);  break;
             case ADD_SONGPL:     doAddButtonAction(e);         break;
             case REMOVE_SONGPL:  doRemoveButtonAction(e);      break;
-            case ADD_PLAYLIST:   doAddPlayListButtonAction(e); break;
-            case REMOVE_PLAYLIST:doRemPlayListButtonAction(e); break;
+            //case ADD_PLAYLIST:   doAddPlayListButtonAction(e); break;
+            //case REMOVE_PLAYLIST:doRemPlayListButtonAction(e); break;
             case RANDOMIZE:      doRandomButtonAction(e);      break;
             case CLEAR:          doClearButtonAction(e);       break;
         }
@@ -104,7 +104,7 @@ public class PlayListButtonListener implements ActionListener
         PlayList pl = new PlayList();
         if(!pl.loadPlaylist())
             return;
-        
+
         panel.addPlayListToTab(pl);
 
         Song[] songs = pl.getSongs();
@@ -152,28 +152,28 @@ public class PlayListButtonListener implements ActionListener
         //remove song function here....
         //pl.deleteSong( );
     }
-
-    private void doAddPlayListButtonAction(ActionEvent e)
-    {
-        String name = RadioPlayList.sendInputDialog(StringConstantHolder.PP_PL_NM_PRMPT,
-                StringConstantHolder.PP_PL_NM_TTL);
-        if(name == null)
-            return;
-
-        panel.addPlayListToTab(PlayListFrame.createPlayList(name));
-        //JOptionPane.showMessageDialog(null, "This button blows up the world");
-    }
-
-    private void doRemPlayListButtonAction(ActionEvent e)
-    {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
-            return;
-
-        if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
-            panel.removePlayList(pl);
-        //JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
-    }
+//
+//    private void doAddPlayListButtonAction(ActionEvent e)
+//    {
+//        String name = RadioPlayList.sendInputDialog(StringConstantHolder.PP_PL_NM_PRMPT,
+//                StringConstantHolder.PP_PL_NM_TTL);
+//        if(name == null)
+//            return;
+//
+//        panel.addPlayListToTab(PlayListFrame.createPlayList(name));
+//        //JOptionPane.showMessageDialog(null, "This button blows up the world");
+//    }
+//
+//    private void doRemPlayListButtonAction(ActionEvent e)
+//    {
+//        PlayList pl = getCurrentPlayList();
+//        if(pl == null)
+//            return;
+//
+//        if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
+//            panel.removePlayList(pl);
+//        //JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
+//    }
 
     private void doRandomButtonAction(ActionEvent e)
     {
