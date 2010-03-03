@@ -212,9 +212,19 @@ public class PlayList extends JList
         if(chooser.showSaveDialog(this) == JFileChooser.CANCEL_OPTION)
             return;
 
+        savePlaylist(chooser.getSelectedFile());
+    }
+
+    public void savePlaylist(File f)
+    {
+        if(f == null || !f.exists())
+        {
+            // RadioPlayList.sendErrorDialog(..., StringConstantHolder.PL_SAVE_ERR);
+            return;
+        }
+
         try
         {
-            File f = chooser.getSelectedFile();
             PrintStream out = new PrintStream(f);
             out.print(getName() + ";\n");
             for(Song s : playlist)
@@ -224,7 +234,7 @@ public class PlayList extends JList
         }
         catch(Exception e)
         {
-            RadioPlayList.sendErrorDialog(e.getLocalizedMessage(), StringConstantHolder.PL_SAVE_ERR);
+            RadioPlayList.sendErrorDialog(e.getMessage(), StringConstantHolder.PL_SAVE_ERR);
             e.printStackTrace();
         }
     }
@@ -234,6 +244,17 @@ public class PlayList extends JList
         if(chooser.showOpenDialog(this) == JFileChooser.CANCEL_OPTION)
             return false;
 
+        return loadPlaylist(chooser.getSelectedFile());
+    }
+
+    public boolean loadPlaylist(File f)
+    {
+        if(f == null || !f.exists())
+        {
+            // RadioPlayList.sendErrorDialog(..., StringConstantHolder.PL_LOAD_ERR);
+            return false;
+        }
+
         try
         {
             String str = "";
@@ -241,7 +262,6 @@ public class PlayList extends JList
             Song s;
 
             ArrayList<Song> pl = new ArrayList<Song>();
-            File f = chooser.getSelectedFile();
             Scanner in = new Scanner(f);
 
             str = getNextSegmentUsingScanner(in); // PlayList name
@@ -309,7 +329,7 @@ public class PlayList extends JList
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            RadioPlayList.sendErrorDialog(e.getLocalizedMessage(), StringConstantHolder.PL_LOAD_ERR);
             return false;
         }
 
