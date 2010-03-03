@@ -29,7 +29,7 @@ public class ControlFrame extends JFrame
     private JButton stop_button;
     private JButton next_button;
     private JButton playlist_button;
-    
+
     private ImageIcon play_icon;
     private ImageIcon pause_icon;
     private ImageIcon playlist_icon;
@@ -118,7 +118,7 @@ public class ControlFrame extends JFrame
             play_button.setIcon(play_icon);
         else
             play_button.setText(StringConstantHolder.CP_PLY_NM);
-        
+
         stop_button     = createButton(StringConstantHolder.CP_STP_NM, StringConstantHolder.CP_STP_IMG);
         previous_button = createButton(StringConstantHolder.CP_PRV_NM, StringConstantHolder.CP_PRV_IMG);
         next_button     = createButton(StringConstantHolder.CP_NXT_NM, StringConstantHolder.CP_NXT_IMG);
@@ -247,7 +247,7 @@ public class ControlFrame extends JFrame
                 case PLAYLIST:  doPlaylistButtonAction(e); break;
             }
         }
-       
+
         private void doPlayButtonAction(ActionEvent e)
         {
             if(play_button.getIcon() == play_icon ||

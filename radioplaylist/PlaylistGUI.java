@@ -1,4 +1,4 @@
-package radioplaylist;  
+package radioplaylist;
 
 import javax.swing.JFrame;
 
@@ -22,18 +22,16 @@ public class PlaylistGUI
         control_frame = new ControlFrame(playlist_frame);
         playlist_frame.setControlFrame(control_frame);
 
-        playlist_frame.setLocation(455,0);
-            
         playlist_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
-       
+
         initializeLibraryFrame();
         initializeControlFrame();
     }
 
     private void initializeLibraryFrame()
     {
-        playlist_frame.setSize(LIB_FRAME_WIDTH, LIB_FRAME_HEIGHT);
+        playlist_frame.setExtendedState(playlist_frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
         playlist_frame.setVisible(false);
     }

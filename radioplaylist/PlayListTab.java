@@ -7,6 +7,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.UIManager;
@@ -17,60 +18,92 @@ public class PlayListTab extends JTabbedPane
     private Icon close_icon;
     private boolean first_time;
     private boolean ignore;
+    private int untitled_num;
+    private JTextArea help_area;
 
     public PlayListTab()
     {
         super();
-        close_icon = UIManager.getIcon("InternalFrame.paletteCloseIcon");
+        close_icon = UIManager.getIcon(StringConstantHolder.PT_CLOSE_ICON_PATH);
 
         first_time = true;
         ignore = false;
+        untitled_num = 0;
 
         dummy_panel = new JPanel();
+        JPanel help_panel = new JPanel();
+        help_area = new JTextArea();
+        help_area.setEditable(false);
+        help_area.setColumns(help_panel.getWidth());
+        help_area.setRows(help_panel.getHeight());
+
+        help_panel.add(help_area);
         setTabPlacement(JTabbedPane.LEFT);
-        addTab(PlayListFrame.createPlayList("PlayList 1"));
+        addTab(help_panel);
+
 
         addChangeListener(new PlayListTabChangeListener());
+
+        buildHelpArea();
+    }
+
+    public void buildHelpArea()
+    {
+        help_area.setText("Help Area");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
+        help_area.append("\nSome help text goes here");
     }
 
     public void addTab(Component comp)
     {
         JPanel panel = new JPanel();
-        JButton close_button = new JButton("Delete PlayList");
-        close_button.addActionListener(new PlayListTabCloseButtonListener(panel, this));
+        JButton close_button = new JButton(close_icon);
+        close_button.addActionListener(new PlayListTabCloseButtonListener(panel));
 
         if(!first_time)
+        {
             panel.add(close_button);
+        }
         panel.add(comp);
 
         super.addTab(comp.getName(), panel);
-    
+
         if(first_time)
             first_time = false;
         else
             ignore = true;
         super.remove(dummy_panel);
-        super.addTab("Click to add new playlist", dummy_panel);
+        super.addTab(StringConstantHolder.PT_NEW_TAB, dummy_panel);
     }
 
     class PlayListTabCloseButtonListener implements ActionListener
     {
         private JPanel panel;
-        private PlayListTab tabs;
 
-        public PlayListTabCloseButtonListener(JPanel panel, PlayListTab tabs)
+        public PlayListTabCloseButtonListener(JPanel panel)
         {
             this.panel = panel;
-            this.tabs = tabs;
         }
 
         public void actionPerformed(ActionEvent e)
         {
-            if(!RadioPlayList.sendConfirmDialog("Are you sure you wish to remove this tab?", "Delete Tab?"))
+            if(!RadioPlayList.sendConfirmDialog(StringConstantHolder.PT_DELTAB_PROMPT,
+                    StringConstantHolder.PT_DELTAB_PROMPT_TTL))
                 return;
 
+            setSelectedIndex(getSelectedIndex() - 1);
             ignore = true;
-            tabs.remove(panel);
+            remove(panel);
             panel.removeAll();
             panel = null;
         }
@@ -99,7 +132,10 @@ public class PlayListTab extends JTabbedPane
                 }
 
                 if(name.isEmpty())
-                    name = "[PH] New PlayList";
+                {
+                    ++untitled_num;
+                    name = StringConstantHolder.PT_UNTITLED_PL + untitled_num;
+                }
 
                 addTab(PlayListFrame.createPlayList(name));
             }
