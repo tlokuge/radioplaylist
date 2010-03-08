@@ -24,9 +24,11 @@ public class RegPageFrame extends JFrame
         private JLabel conPWCheck;
 
         private JPanel panel;
+        
+        private boolean pwAdd, conPWAdd, nameAdd, usrNameAdd;
 	public RegPageFrame()
         {
-            boolean pwAdd, conPWAdd, nameAdd, usrNameAdd = false;
+            pwAdd = conPWAdd = nameAdd = usrNameAdd = false;
             JFrame frame = new JFrame();
 		
             //button
