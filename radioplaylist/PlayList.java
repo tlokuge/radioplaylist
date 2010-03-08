@@ -251,7 +251,7 @@ public class PlayList extends JList
     {
         if(f == null || !f.exists())
         {
-            // RadioPlayList.sendErrorDialog(..., StringConstantHolder.PL_LOAD_ERR);
+            RadioPlayList.sendErrorDialog("Unable to load playlist", StringConstantHolder.PL_LOAD_ERR);
             return false;
         }
 
