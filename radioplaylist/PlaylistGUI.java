@@ -11,11 +11,11 @@ public class PlaylistGUI
     private ControlFrame control_frame;
     private RegPageFrame reg_frame;
 
-    private final int LIB_FRAME_WIDTH   = 800;
-    private final int LIB_FRAME_HEIGHT  = 500;
-
     private final int CON_FRAME_WIDTH   = 450;
     private final int CON_FRAME_HEIGHT  = 235;
+
+    private final int REG_FRAME_WIDTH   = 600;
+    private final int REG_FRAME_HEIGHT  = 420;
 
     public PlaylistGUI()
     {
@@ -31,7 +31,7 @@ public class PlaylistGUI
         initializeLibraryFrame();
         initializeControlFrame();
 
-        reg_frame.setSize(300, 300);
+        reg_frame.setSize(REG_FRAME_WIDTH, REG_FRAME_HEIGHT);
         reg_frame.setVisible(true);
     }
 
