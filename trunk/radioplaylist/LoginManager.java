@@ -16,7 +16,9 @@ public class LoginManager
     private User current_user;
     private File users_file;
 
-    public LoginManager()
+    private static LoginManager instance;
+
+    private LoginManager()
     {
         users = new ArrayList<User>();
         current_user = null;
@@ -328,4 +330,18 @@ public class LoginManager
     }
 
     public User getCurrentUser() { return current_user; }
+
+    public static synchronized LoginManager getLoginManager()
+    {
+        if(instance == null)
+            instance = new LoginManager();
+
+        return instance;
+    }
+
+    public Object clone()
+            throws CloneNotSupportedException
+    {
+        throw new CloneNotSupportedException();
+    }
 }

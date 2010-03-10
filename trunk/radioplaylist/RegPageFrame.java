@@ -1,139 +1,247 @@
 package radioplaylist;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public class RegPageFrame extends JFrame
 {
-	private static final int FRAME_WIDTH = 500;
-	private static final int FRAME_HEIGHT = 100;
+    private JButton reg_button;
 
-        private JButton button;
+    private JLabel nameLabel;
+    private JTextField nameField;
 
-        private JLabel nameLabel;
-        private JTextField nameField;
+    private JLabel usrNameLabel;
+    private JTextField usrNameField;
+    private JLabel usrCheck;
 
-        private JLabel usrNameLabel;
-        private JTextField usrNameField;
+    private JLabel pwLabel;
+    private JPasswordField pwField;
+    private JLabel pwCheck;
 
-        private JLabel pwLabel;
-        private JPasswordField pwField;
-        private JLabel pwCheck;
+    private JLabel conPWLabel;
+    private JPasswordField conPWField;
+    private JLabel conPWCheck;
 
-        private JLabel conPWLabel;
-        private JPasswordField conPWField;
-        private JLabel conPWCheck;
+    public RegPageFrame()
+    {
+        initializeComponents();
 
-        private JPanel panel;
+        setLayout(new BorderLayout());
 
-	public RegPageFrame()
+        setupTopPanel();
+        setupMiddlePanel();
+        setupBottomPanel();
+    }
+
+    private void initializeComponents()
+    {
+        //reg_button
+        reg_button = new JButton("Register");
+
+        //name of user
+        nameLabel = new JLabel("Name:   ");
+        nameField = new JTextField(30);
+
+        //username
+        usrNameLabel = new JLabel("User Name:   ");
+        usrNameField = new JTextField(30);
+        usrCheck     = new JLabel("");
+
+        //password
+        pwLabel = new JLabel("Password:   ");
+        pwField = new JPasswordField(30);
+        pwCheck = new JLabel("Too short");
+
+        conPWLabel = new JLabel("Confirm Password:   ");
+        conPWField = new JPasswordField(30);
+        conPWCheck = new JLabel("Too short");
+
+        nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        usrNameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        pwLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        conPWLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        
+        pwField.getDocument().addDocumentListener(new PWInputListener());
+        conPWField.getDocument().addDocumentListener(new ConPWInputListener());
+        usrNameField.getDocument().addDocumentListener(new usrNameCheckListener());
+        reg_button.addActionListener(new RegButtonListener());
+    }
+
+    private void setupTopPanel()
+    {
+        JPanel top = new JPanel();
+
+        JLabel image_label = new JLabel();
+
+
+        top.setLayout(new GridLayout(1, 1));
+        
+        image_label.setIcon(
+                new ImageIcon("src/images/logo200x200.jpg"));
+        image_label.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        top.add(image_label);
+
+        add(top, BorderLayout.NORTH);
+    }
+
+    private void setupMiddlePanel()
+    {
+        JPanel mid = new JPanel();
+
+        mid.setLayout(new GridLayout(4, 3));
+
+        mid.add(nameLabel);
+        mid.add(nameField);
+        mid.add(new JLabel());
+
+        mid.add(usrNameLabel);
+        mid.add(usrNameField);
+        mid.add(usrCheck);
+
+        mid.add(pwLabel);
+        mid.add(pwField);
+        mid.add(pwCheck);
+
+        mid.add(conPWLabel);
+        mid.add(conPWField);
+        mid.add(conPWCheck);
+
+        add(mid, BorderLayout.CENTER);
+    }
+
+    private void setupBottomPanel()
+    {
+        JPanel bot = new JPanel();
+
+        bot.add(reg_button);
+
+        add(bot, BorderLayout.SOUTH);
+    }
+
+    public void resetFields()
+    {
+        nameField.setText("");
+        usrNameField.setText("");
+        usrCheck.setText("   Too short");
+        pwField.setText("");
+        pwCheck.setText("   Too short");
+        conPWField.setText("");
+        conPWCheck.setText("   Too short");
+    }
+
+    public boolean checkText(String text, JLabel output)
+    {
+        if(text.length() < 5)
         {
-            //button
-            button = new JButton("Register");
-		
-            //name of user
-            nameLabel = new JLabel("Name");
-            nameField = new JTextField(30);
-		
-            //username
-            usrNameLabel = new JLabel("User Name");
-            usrNameField = new JTextField(30);
-		
-            //password
-            pwLabel = new JLabel("Password");
-            pwField = new JPasswordField(30);
-            pwCheck = new JLabel("Too short");
-		
-            conPWLabel = new JLabel("Confirm Password");
-            conPWField = new JPasswordField(30);
-            conPWCheck = new JLabel("");
-		
-            panel = new JPanel();
-            //name
-            panel.add(nameLabel);
-            panel.add(nameField);
-            //user name
-            panel.add(usrNameLabel);
-            panel.add(usrNameField);
-            //password
-            panel.add(pwLabel);
-            panel.add(pwField);
-            panel.add(pwCheck);
-            //confirm password
-            panel.add(conPWLabel);
-            panel.add(conPWField);
-            panel.add(conPWCheck);
-		
-            add(panel);
-
-            pwField.getDocument().addDocumentListener(new PWInputListener());
-
-            conPWField.getDocument().addDocumentListener(new ConPWInputListener());
+            output.setText("   Too short");
+            return false;
         }
 
-        public void resetFields()
+        if(text.length() > 20)
         {
-            nameField.setText("");
-            usrNameField.setText("");
-            pwField.setText("");
-            conPWField.setText("");
+            output.setText("   Too long");
+            return false;
         }
 
-        class PWInputListener implements DocumentListener
-	{
-            public void checkPassword()
+        for(int i = 0; i < text.length(); i++)
+        {
+            int j = (int) text.charAt(i);
+            if(!((j > 47 && j < 58)
+                    || (j > 59 && j < 91)
+                    || (j > 96 && j < 123)))
             {
-                conPWCheck.setText("");
-
-                //check Password length
-                if(pwField.getPassword().length < 5)
-                {
-                    pwCheck.setText("Too short");
-                    return;
-                }
-                else if(pwField.getPassword().length > 20)
-                {
-                    pwCheck.setText("Too long");
-                    return;
-                }
-                //checks if password conditions met
-                for(int i = 0; i < pwField.getPassword().length; i++)
-                {
-                    int j = (int)pwField.getPassword()[i];
-                    if((j > 47 && j < 58) || (j > 64 && j < 91) || (j > 96 && j < 123))
-                    {
-                        pwCheck.setText("Password Invalid");
-                        return;
-                    }
-                }
-                //otherwise outputs good...not sure if that's a good idea
-                pwCheck.setText("Good");
-                // pwAdd = true;
+                output.setText("   Invalid");
+                return false;
             }
-            public void insertUpdate(DocumentEvent e) { checkPassword(); }
-            public void removeUpdate(DocumentEvent e) { checkPassword(); }
-            public void changedUpdate(DocumentEvent e) {}
         }
-		
-	class ConPWInputListener implements DocumentListener
-	{
-            public void checkPasswords()
-            {
-                if(pwField.getPassword().length > 5
-                        && pwField.getPassword().length < 20
-                        && Arrays.equals(conPWField.getPassword(), pwField.getPassword()))
-                {
-                    conPWCheck.setText("Correct");
-                    return;
-                }
 
-                conPWCheck.setText("Incorrect");
+        return true;
+    }
+
+    class PWInputListener implements DocumentListener
+    {
+
+        public void checkPassword()
+        {
+            conPWCheck.setText("");
+
+            if(checkText(new String(pwField.getPassword()), pwCheck))
+                pwCheck.setText("   Good");
+        }
+
+        public void insertUpdate(DocumentEvent e) { checkPassword(); }
+        public void removeUpdate(DocumentEvent e) { checkPassword(); }
+        public void changedUpdate(DocumentEvent e) {}
+    }
+
+    class ConPWInputListener implements DocumentListener
+    {
+
+        public void checkPasswords()
+        {
+            String text = pwCheck.getText();
+            if(!text.equals("   Password Invalid") && !text.equals("   Too short")
+                    && !text.equals("   Too long")
+                    && Arrays.equals(conPWField.getPassword(), pwField.getPassword()))
+            {
+                conPWCheck.setText("   Correct");
+                return;
             }
 
-            public void insertUpdate(DocumentEvent e) { checkPasswords(); }
-            public void removeUpdate(DocumentEvent e) { checkPasswords(); }
-            public void changedUpdate(DocumentEvent e) {}
-	}
+            conPWCheck.setText("   Incorrect");
+        }
+
+        public void insertUpdate(DocumentEvent e) { checkPasswords(); }
+        public void removeUpdate(DocumentEvent e) { checkPasswords(); }
+        public void changedUpdate(DocumentEvent e) {}
+    }
+
+    class usrNameCheckListener implements DocumentListener
+    {
+        public void checkUserName()
+        {
+            if(!checkText(usrNameField.getText(), usrCheck))
+                return;
+
+            if(LoginManager.getLoginManager().contains(usrNameField.getText()) == -1)
+                usrCheck.setText("   Available!");
+            else
+                usrCheck.setText("   Unavailable!");
+        }
+        
+        public void insertUpdate(DocumentEvent e) { checkUserName(); }
+        public void removeUpdate(DocumentEvent e) { checkUserName(); }
+        public void changedUpdate(DocumentEvent e) {}
+    }
+
+    class RegButtonListener implements ActionListener
+    {
+        public void actionPerformed(ActionEvent event)
+        {
+            if(conPWCheck.getText().equals("   Correct") && nameField.getText().length() > 0
+                    && usrCheck.getText().equals("   Available!"))
+            {
+                LoginManager.getLoginManager().addUser(nameField.getText(), usrNameField.getText(),
+                        new String(conPWField.getPassword()));
+
+                resetFields();
+
+                RadioPlayList.sendAlertDialog("User " + usrNameField.getText() + " added!", "Registered");
+            }
+        }
+    }
 }
