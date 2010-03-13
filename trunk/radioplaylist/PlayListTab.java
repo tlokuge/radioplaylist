@@ -49,19 +49,30 @@ public class PlayListTab extends JTabbedPane
 
     public void buildHelpArea()
     {
-        help_area.setText("Help Area");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
-        help_area.append("\nSome help text goes here");
+        help_area.setText("\tHelp Area");
+        help_area.append("\nThank you for using -program name-!");
+        help_area.append("\nThis is a short how-to guide to help you " +
+                "get started.");
+        help_area.append("\nWARNING: Never give out your username and");
+        help_area.append("\nto anyone for security reasons.");
+        help_area.append("\n");
+        help_area.append("\nCreating a new playlist:");
+        help_area.append("\n   1. Simply click the tab on the left to " +
+                "create a new playlist");
+        help_area.append("\n      Alternatively, you may use the Radio " +
+                "Playlist menu located");
+        help_area.append("\n      on the top left of the screen");
+        help_area.append("\n   2. Don't forget to name your playlist!");
+        help_area.append("\n");
+        help_area.append("\nSaving a playlist:");
+        help_area.append("\n   1. Once you have a playlist, you may save by " +
+                "clicking on the");
+        help_area.append("\n      Radio Playlist menu and selecting Save Playlist");
+        help_area.append("\n");
+        help_area.append("\nLoading an existing playlist:");
+        help_area.append("\n   1. You can load a playlist by clicking on the" +
+                "Radio Playlist menu");
+        help_area.append("\n      and selecting Load Playlist");
     }
 
     public void addTab(Component comp)
