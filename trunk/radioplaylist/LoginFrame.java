@@ -13,10 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-/**
- *
- * @author Thavisha
- */
+
 public class LoginFrame extends JFrame
 {
     private RegPageFrame regPageFrame;
@@ -78,11 +75,9 @@ public class LoginFrame extends JFrame
 
         mid1.add(userNameLabel);
         mid1.add(userNameField);
-        //bot.add(new JLabel());
 
         mid2.add(passwordLabel);
         mid2.add(passwordField);
-        //bot.add(new JLabel());
 
         bot.add(loginButton);
         bot.add(registerButton);

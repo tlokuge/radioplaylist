@@ -347,7 +347,8 @@ public class PlayListFrame extends JFrame
 
             if(!search.isEmpty() && !search.equals(" "))
                 for(Song s : song_library_list.getSongs())
-                    if(s.getTitle().toLowerCase().contains(search.toLowerCase()))
+                    if(s.getTitle().toLowerCase().contains(search.toLowerCase())
+                        || s.getArtist().toLowerCase().contains(search.toLowerCase()))
                         searchResults.addSong(s);
 
             resultsFrame.add(searchResults);
