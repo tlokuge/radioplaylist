@@ -167,31 +167,33 @@ public class PlayListFrame extends JFrame
         // Initializing buttons
         move_up_button         = createButton(StringConstantHolder.PP_UP_NM, StringConstantHolder.PP_UP_IMG);
         move_down_button       = createButton(StringConstantHolder.PP_DN_NM, StringConstantHolder.PP_DN_IMG);
+        shuffle_button         = createButton(StringConstantHolder.PP_RDM_NM, StringConstantHolder.PP_RDM_IMG);
+        clear_button           = createButton(StringConstantHolder.PP_CLR_NM, StringConstantHolder.PP_CLR_IMG);
         add_song_button        = createButton(StringConstantHolder.PP_ADD_NM, StringConstantHolder.PP_ADD_IMG);
         remove_song_button     = createButton(StringConstantHolder.PP_DEL_NM, StringConstantHolder.PP_DEL_IMG);
         add_songpl_button      = createButton(StringConstantHolder.PP_ADDSG_NM, StringConstantHolder.PP_ADDSG_IMG);
         remove_songpl_button   = createButton(StringConstantHolder.PP_REMSG_NM, StringConstantHolder.PP_REMSG_IMG);
-        shuffle_button         = createButton(StringConstantHolder.PP_RDM_NM, StringConstantHolder.PP_RDM_IMG);
-        clear_button           = createButton(StringConstantHolder.PP_CLR_NM, StringConstantHolder.PP_CLR_IMG);
-
+        
         //Instructions when hovering over buttons
         move_up_button.setToolTipText(StringConstantHolder.PP_UP_TT);
         move_down_button.setToolTipText(StringConstantHolder.PP_DN_TT);
+        shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
+        clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
         add_song_button.setToolTipText(StringConstantHolder.PP_ADD_TT);
         remove_song_button.setToolTipText(StringConstantHolder.PP_DEL_TT);
         add_songpl_button.setToolTipText(StringConstantHolder.PP_ADDPL_TT);
         remove_songpl_button.setToolTipText(StringConstantHolder.PP_DELPL_TT);
-        shuffle_button.setToolTipText(StringConstantHolder.PP_RDM_TT);
-        clear_button.setToolTipText(StringConstantHolder.PP_CLR_TT);
+        
 
         move_up_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVUP));
         move_down_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.MVDN));
+        shuffle_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
+        clear_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
         add_song_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONG));
         remove_song_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONG));
         add_songpl_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.ADD_SONGPL));
         remove_songpl_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.REMOVE_SONGPL));
-        shuffle_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.RANDOMIZE));
-        clear_button.addActionListener(new PlayListButtonListener(this, PlayListButtonType.CLEAR));
+        
     }
 
     private Component initializeSongLibrary()
@@ -277,12 +279,12 @@ public class PlayListFrame extends JFrame
         play_control_panel.setLayout(new GridLayout(1, 9));
         play_control_panel.add(move_up_button);
         play_control_panel.add(move_down_button);
+        play_control_panel.add(shuffle_button);
+        play_control_panel.add(clear_button);
         play_control_panel.add(add_songpl_button);
         play_control_panel.add(remove_songpl_button);
         play_control_panel.add(add_song_button);
-        play_control_panel.add(remove_song_button);
-        play_control_panel.add(shuffle_button);
-        play_control_panel.add(clear_button);
+        play_control_panel.add(remove_song_button);      
         play_control_panel.setVisible(true);
     }
 
@@ -345,7 +347,7 @@ public class PlayListFrame extends JFrame
 
             if(!search.isEmpty() && !search.equals(" "))
                 for(Song s : song_library_list.getSongs())
-                    if(s.getTitle().contains(search))
+                    if(s.getTitle().toLowerCase().contains(search.toLowerCase()))
                         searchResults.addSong(s);
 
             resultsFrame.add(searchResults);
