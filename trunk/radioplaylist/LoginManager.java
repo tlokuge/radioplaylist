@@ -83,7 +83,9 @@ public class LoginManager
         if(hashed_pass != null)
             password = hashed_pass;
 
-        users.add(new User(realname, username, password, true));
+        User u = new User(realname, username, password, true);
+        users.add(u);
+        saveUser(u);
     }
 
     public int contains(String username)
@@ -109,32 +111,28 @@ public class LoginManager
 
     public User login(String username, String password)
     {
-        String hashed_pass = SHA1(password);
-        if(hashed_pass == null)
+        if(contains(username) == -1)
+        {
+            RadioPlayList.sendAlertDialog("User does not exist!", "Login Alert!");
             return null;
+        }
 
+        String hashed_pass = SHA1(password);
         User user = getUser(username, hashed_pass);
         if(user == null)
         {
-            RadioPlayList.sendAlertDialog("Invalid Username", "Login Alert!");
+            RadioPlayList.sendAlertDialog("Invalid password!", "Login Alert!");
             return null;
         }
 
         if(!user.isLoaded())
-            loadUser(user);
+            if(loadUser(user))
+                user.load();
 
         current_user = user;
 
+        RadioPlayList.sendAlertDialog("Logged in as " + user.getRealName(), "Logged in");
         return current_user;
-    }
-
-    public boolean loadUser(String username)
-    {
-        int index = contains(username);
-        if(index == -1)
-            return false;
-
-        return loadUser(users.get(index));
     }
 
     private boolean userFileContains(String username)
@@ -153,7 +151,6 @@ public class LoginManager
                     break;
 
                 String u_name = strtok.nextToken();
-                System.out.println(u_name);
                 if(username.equals(u_name))
                     return true;
 
@@ -167,7 +164,7 @@ public class LoginManager
         return false;
     }
 
-    public boolean loadUser(User user)
+    private boolean loadUser(User user)
     {
         if(user == null)
             return false;
@@ -179,8 +176,7 @@ public class LoginManager
             return false;
         }
 
-        PlayList pl = new PlayList();
-        if(!pl.loadPlaylist(new File(user_folder.getAbsolutePath() + File.separator
+        if(!user.getLibrary().loadPlaylist(new File(user_folder.getAbsolutePath() + File.separator
                 + "library.txt")))
         {
             RadioPlayList.sendErrorDialog("Unable to load user library for " + user.getUserName(), "Load Error");
@@ -195,6 +191,7 @@ public class LoginManager
         try
         {
             Scanner in = new Scanner(new FileReader(list_file));
+            PlayList pl;
             while(in.hasNextLine())
             {
                 pl = new PlayList();
@@ -211,16 +208,21 @@ public class LoginManager
             e.printStackTrace();
         }
 
-        user.load();
         return true;
     }
 
     public boolean saveCurrentUser()
     {
-        if(current_user == null)
+        return saveUser(current_user);
+    }
+
+    private boolean saveUser(User u)
+    {
+        if(u == null || !users.contains(u))
             return false;
 
-        File user_folder = new File("src/users/" + current_user.getUserName());
+        String userName = u.getUserName();
+        File user_folder = new File("src/users/" + userName);
         if(!user_folder.exists() && !user_folder.mkdir())
         {
             RadioPlayList.sendErrorDialog("Unable to create user folder", "Save Error!");
@@ -231,37 +233,41 @@ public class LoginManager
         {
             if(users_file == null)
             {
-                RadioPlayList.sendErrorDialog("Unable to save user" + current_user.getUserName(), "User Save Error");
+                RadioPlayList.sendErrorDialog("Unable to save user" + userName, "User Save Error");
                 return false;
             }
 
-            if(!userFileContains(current_user.getUserName()))
+            if(!userFileContains(userName))
             {
                 PrintWriter out = new PrintWriter(new FileWriter(users_file, true));
-                out.write(current_user.getUserName() + " "
-                        + current_user.getPassword() + " "
-                        + current_user.getRealName() + "\n");
+                out.write(userName + " "
+                        + u.getPassword() + " "
+                        + u.getRealName() + "\n");
                 out.close();
             }
 
             File save_file;
             save_file = new File(user_folder.getAbsolutePath() + File.separator
                     + "library.txt");
-            if(!save_file.exists() && save_file.createNewFile())
-                current_user.getLibrary().savePlaylist(save_file);
+            if(save_file.exists())
+                u.getLibrary().savePlaylist(save_file);
+            else if(save_file.createNewFile())
+                u.getLibrary().savePlaylist(save_file);
 
-            if(current_user.getPlayLists().size() < 1)
+            if(u.getPlayLists().size() < 1)
                 return true;
 
             PlayList current;
             String playlist_names = "";
 
-            for(int i = 0; i < current_user.getPlayLists().size(); ++i)
+            for(int i = 0; i < u.getPlayLists().size(); ++i)
             {
-                current = current_user.getPlayLists().get(i);
+                current = u.getPlayLists().get(i);
                 save_file = new File(user_folder.getAbsolutePath() +
                         File.separator + current.getName() + ".txt");
-                if(!save_file.exists() && save_file.createNewFile())
+                if(save_file.exists())
+                    current.savePlaylist(save_file);
+                else if(save_file.createNewFile())
                 {
                     playlist_names += current.getName() + "\n";
                     current.savePlaylist(save_file);
@@ -271,7 +277,7 @@ public class LoginManager
             }
 
             save_file = new File(user_folder.getAbsolutePath() + File.separator +
-                    current_user.getUserName() + "_playlists.txt");
+                    userName + "_playlists.txt");
             if(save_file.exists() || save_file.createNewFile())
             {
                 PrintWriter out = new PrintWriter(new FileWriter(save_file, true));

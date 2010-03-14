@@ -18,6 +18,9 @@ import javax.swing.event.DocumentListener;
 
 public class RegPageFrame extends JFrame
 {
+    private final int REG_FRAME_WIDTH   = 600;
+    private final int REG_FRAME_HEIGHT  = 420;
+
     private JButton reg_button;
 
     private JLabel nameLabel;
@@ -44,6 +47,11 @@ public class RegPageFrame extends JFrame
         setupTopPanel();
         setupMiddlePanel();
         setupBottomPanel();
+
+        setTitle("Registration Page");
+        setSize(REG_FRAME_WIDTH, REG_FRAME_HEIGHT);
+        setVisible(true);
+
     }
 
     private void initializeComponents()
@@ -190,7 +198,6 @@ public class RegPageFrame extends JFrame
 
     class ConPWInputListener implements DocumentListener
     {
-
         public void checkPasswords()
         {
             String text = pwCheck.getText();
@@ -238,9 +245,10 @@ public class RegPageFrame extends JFrame
                 LoginManager.getLoginManager().addUser(nameField.getText(), usrNameField.getText(),
                         new String(conPWField.getPassword()));
 
+                RadioPlayList.sendAlertDialog("User " + nameField.getText() + 
+                        "[" + usrNameField.getText() + "] added!", "Registered");
+                
                 resetFields();
-
-                RadioPlayList.sendAlertDialog("User " + usrNameField.getText() + " added!", "Registered");
             }
         }
     }
