@@ -59,8 +59,6 @@ public class PlayListTab extends JTabbedPane
         help_area.append("\nCreating a new playlist:");
         help_area.append("\n   1. Simply click the tab on the left to " +
                 "create a new playlist");
-        help_area.append("\n      Alternatively, you may use the Radio " +
-                "Playlist menu located");
         help_area.append("\n      on the top left of the screen");
         help_area.append("\n   2. Don't forget to name your playlist!");
         help_area.append("\n");
@@ -73,6 +71,9 @@ public class PlayListTab extends JTabbedPane
         help_area.append("\n   1. You can load a playlist by clicking on the" +
                 "Radio Playlist menu");
         help_area.append("\n      and selecting Load Playlist");
+        help_area.append("\n");
+        help_area.append("\n");
+        help_area.append("\nPlease be advised that ");
     }
 
     public void addTab(Component comp)
