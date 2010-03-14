@@ -10,12 +10,6 @@ import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 
-/**
- * Write a description of class SongTest here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class PlayList extends JList
 {
     // instance variables - replace the example below with your own
@@ -23,9 +17,6 @@ public class PlayList extends JList
     private int totalTime;
     private JFileChooser chooser;
 
-    /**
-     * Constructor for objects of class SongTest
-     */
     public PlayList()
     {
         super();
@@ -219,7 +210,8 @@ public class PlayList extends JList
     {
         if(f == null || !f.exists())
         {
-            // RadioPlayList.sendErrorDialog(..., StringConstantHolder.PL_SAVE_ERR);
+            RadioPlayList.sendErrorDialog("Unable to save PlayList " + getName(),
+                    StringConstantHolder.PL_SAVE_ERR);
             return;
         }
 

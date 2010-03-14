@@ -50,10 +50,10 @@ public class PlayListTab extends JTabbedPane
     public void buildHelpArea()
     {
         help_area.setText("\tHelp Area");
-        help_area.append("\nThank you for using -program name-!");
+        help_area.append("\nThank you for using RadioPlayList!");
         help_area.append("\nThis is a short how-to guide to help you " +
                 "get started.");
-        help_area.append("\nWARNING: Never give out your username and");
+        help_area.append("\nWARNING: Never give out your username and password");
         help_area.append("\nto anyone for security reasons.");
         help_area.append("\n");
         help_area.append("\nCreating a new playlist:");
@@ -82,9 +82,8 @@ public class PlayListTab extends JTabbedPane
         close_button.addActionListener(new PlayListTabCloseButtonListener(panel));
 
         if(!first_time)
-        {
             panel.add(close_button);
-        }
+
         panel.add(comp);
 
         super.addTab(comp.getName(), panel);
@@ -115,6 +114,16 @@ public class PlayListTab extends JTabbedPane
             setSelectedIndex(getSelectedIndex() - 1);
             ignore = true;
             remove(panel);
+
+            for(Component c : panel.getComponents())
+            {
+                if(c instanceof PlayList)
+                {
+                    LoginManager.getLoginManager().getCurrentUser().removePlayList((PlayList)c);
+                    LoginManager.getLoginManager().saveCurrentUser();
+                }
+            }
+
             panel.removeAll();
             panel = null;
         }
@@ -148,7 +157,11 @@ public class PlayListTab extends JTabbedPane
                     name = StringConstantHolder.PT_UNTITLED_PL + untitled_num;
                 }
 
-                addTab(PlayListFrame.createPlayList(name));
+                PlayList pl = PlayListFrame.createPlayList(name);
+                addTab(pl);
+
+                LoginManager.getLoginManager().getCurrentUser().addPlayList(pl);
+                LoginManager.getLoginManager().saveCurrentUser();
             }
         }
     }

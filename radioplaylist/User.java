@@ -18,13 +18,19 @@ public class User
         this.password  = password;
         this.isLoaded  = isLoaded;
         playlists = new ArrayList<PlayList>();
-        library = new PlayList();
+        library = new PlayList(username + "'s Library");
     }
     
     public void addPlayList(PlayList pl)
     {
         if(pl != null)
             playlists.add(pl);
+    }
+
+    public void removePlayList(PlayList pl)
+    {
+        if(pl != null && playlists.contains(pl))
+            playlists.remove(pl);
     }
 
     public boolean comparePassword(String other_password)

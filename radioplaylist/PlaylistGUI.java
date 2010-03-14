@@ -9,30 +9,25 @@ public class PlaylistGUI
 {
     private PlayListFrame playlist_frame;
     private ControlFrame control_frame;
-    private RegPageFrame reg_frame;
+    private RadioPlayList radio_playlist;
 
     private final int CON_FRAME_WIDTH   = 450;
     private final int CON_FRAME_HEIGHT  = 235;
 
-    private final int REG_FRAME_WIDTH   = 600;
-    private final int REG_FRAME_HEIGHT  = 420;
-
     public PlaylistGUI()
     {
-        playlist_frame = new PlayListFrame();
+        playlist_frame = new PlayListFrame(LoginManager.getLoginManager().getCurrentUser());
         control_frame = new ControlFrame(playlist_frame);
-        reg_frame = new RegPageFrame();
-
+        radio_playlist = new RadioPlayList(control_frame);
+        
         playlist_frame.setControlFrame(control_frame);
+        control_frame.setRadioPlayList(radio_playlist);
 
         playlist_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
 
         initializeLibraryFrame();
         initializeControlFrame();
-
-        reg_frame.setSize(REG_FRAME_WIDTH, REG_FRAME_HEIGHT);
-        reg_frame.setVisible(true);
     }
 
     private void initializeLibraryFrame()

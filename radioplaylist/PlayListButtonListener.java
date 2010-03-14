@@ -15,8 +15,6 @@ enum PlayListButtonType
     REMOVE_SONG,
     ADD_SONGPL,
     REMOVE_SONGPL,
-    //ADD_PLAYLIST,
-    //REMOVE_PLAYLIST,
     RANDOMIZE,
     CLEAR;
 }
@@ -44,8 +42,6 @@ public class PlayListButtonListener implements ActionListener
             case REMOVE_SONG:    doRemoveSongButtonAction(e);  break;
             case ADD_SONGPL:     doAddButtonAction(e);         break;
             case REMOVE_SONGPL:  doRemoveButtonAction(e);      break;
-            //case ADD_PLAYLIST:   doAddPlayListButtonAction(e); break;
-            //case REMOVE_PLAYLIST:doRemPlayListButtonAction(e); break;
             case RANDOMIZE:      doRandomButtonAction(e);      break;
             case CLEAR:          doClearButtonAction(e);       break;
         }
@@ -74,8 +70,10 @@ public class PlayListButtonListener implements ActionListener
 
         int ind = pl.getSelectedIndex();
         if(pl.shiftUp(pl.getSongAt(ind)))
+        {
             pl.setSelectedIndex(ind - 1);
-        //JOptionPane.showMessageDialog(null,"Imagine that this function works");
+            LoginManager.getLoginManager().saveCurrentUser();
+        }
     }
 
     private void doMvDnButtonAction(ActionEvent e)
@@ -86,8 +84,10 @@ public class PlayListButtonListener implements ActionListener
 
         int ind = pl.getSelectedIndex();
         if(pl.shiftDown(pl.getSongAt(ind)))
+        {
             pl.setSelectedIndex(ind + 1);
-        //JOptionPane.showMessageDialog(null,"Imagine that this function works too");
+            LoginManager.getLoginManager().saveCurrentUser();
+        }
     }
 
     private void doSaveButtonAction(ActionEvent e)
@@ -96,7 +96,6 @@ public class PlayListButtonListener implements ActionListener
         if(pl == null)
             return;
         pl.savePlaylist();
-        //JOptionPane.showMessageDialog(null,"I couldn't figure out how JFileChooser works");
     }
 
     private void doLoadButtonAction(ActionEvent e)
@@ -129,13 +128,10 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.addSong(getSelectedLibrarySong());
-
-        //getSongLibraryTable().repaint();
+        LoginManager.getLoginManager().saveCurrentUser();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
-        //add song function here.....
-        //pl.addSong( );
     }
 
     private void doRemoveButtonAction(ActionEvent e)
@@ -145,42 +141,20 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.deleteSong(pl.getSongAt(pl.getSelectedIndex()));
-        //getSongLibraryTable().repaint();
+        LoginManager.getLoginManager().saveCurrentUser();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
-        //remove song function here....
-        //pl.deleteSong( );
     }
-//
-//    private void doAddPlayListButtonAction(ActionEvent e)
-//    {
-//        String name = RadioPlayList.sendInputDialog(StringConstantHolder.PP_PL_NM_PRMPT,
-//                StringConstantHolder.PP_PL_NM_TTL);
-//        if(name == null)
-//            return;
-//
-//        panel.addPlayListToTab(PlayListFrame.createPlayList(name));
-//        //JOptionPane.showMessageDialog(null, "This button blows up the world");
-//    }
-//
-//    private void doRemPlayListButtonAction(ActionEvent e)
-//    {
-//        PlayList pl = getCurrentPlayList();
-//        if(pl == null)
-//            return;
-//
-//        if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_REMPL_CNFM, StringConstantHolder.PP_REMPL_TTL))
-//            panel.removePlayList(pl);
-//        //JOptionPane.showMessageDialog(null, "<Insert Witty Comment Here>");
-//    }
 
     private void doRandomButtonAction(ActionEvent e)
     {
         PlayList pl = getCurrentPlayList();
         if(pl == null)
             return;
+
         pl.randomize();
+        LoginManager.getLoginManager().saveCurrentUser();
     }
 
     private void doClearButtonAction(ActionEvent e)
@@ -190,7 +164,9 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
+        {
             pl.clearPlaylist();
-        //JOptionPane.showMessageDialog(null,"POOF! Oh...oh no..it's still here");
+            LoginManager.getLoginManager().saveCurrentUser();
+        }
     }
 }
