@@ -55,6 +55,8 @@ public class PlayListTab extends JTabbedPane
                 "get started.");
         help_area.append("\nWARNING: Never give out your username and password");
         help_area.append("\nto anyone for security reasons.");
+        help_area.append("\nPlease contact your System Administrator for any");
+        help_area.append("\n account-related problems");
         help_area.append("\n");
         help_area.append("\nCreating a new playlist:");
         help_area.append("\n   1. Simply click the tab on the left to " +
@@ -73,7 +75,9 @@ public class PlayListTab extends JTabbedPane
         help_area.append("\n      and selecting Load Playlist");
         help_area.append("\n");
         help_area.append("\n");
-        help_area.append("\nPlease be advised that ");
+        help_area.append("\nWe hope RadioPlayList ensure a comfortable " +
+                "and easy experience");
+        help_area.append("\nin creating or managing your playlists.");
     }
 
     public void addTab(Component comp)
