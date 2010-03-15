@@ -58,6 +58,7 @@ public class LoginManager
 
                     users.add(new User(realname, username, password, false));
                 }
+                in.close();
             }
             else if(!users_file.exists() && !users_file.createNewFile())
             {
@@ -201,6 +202,7 @@ public class LoginManager
                 if(pl.loadPlaylist(playlist_file))
                     user.addPlayList(pl);
             }
+            in.close();
         }
         catch(Exception e)
         {
@@ -214,6 +216,66 @@ public class LoginManager
     public boolean saveCurrentUser()
     {
         return saveUser(current_user);
+    }
+
+    private void checkPlayListFiles(User u, File user_folder)
+    {
+        if(u == null || user_folder == null || !user_folder.exists())
+            return;
+
+        File save_file = new File(user_folder.getAbsolutePath() + File.separator
+                + u.getUserName() + "_playlists.txt");
+        if(!save_file.exists())
+            return;
+
+        try
+        {
+            Scanner in = new Scanner(new FileReader(save_file));
+            String playlist = "";
+            String playlists = "";
+            boolean exists = false;
+            while(in.hasNextLine())
+            {
+                playlist = in.nextLine();
+                System.out.println("Testing: " + playlist);
+                for(PlayList pl : u.getPlayLists())
+                {
+                    System.out.println("Checking " + pl.getName());
+                    exists = false;
+                    if(pl.getName().equals(playlist))
+                    {
+                        System.out.println("Found, breaking");
+                        playlists += playlist + "\n";
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if(!exists)
+                {
+                    System.out.println("Did not find, attempt to delete");
+                    File pl_file = new File(user_folder.getAbsolutePath()
+                            + File.separator + playlist + ".txt");
+                    if(pl_file.exists())
+                        pl_file.delete();
+                }
+            }
+
+            in.close();
+
+            save_file.delete();
+            if(save_file.createNewFile())
+            {
+                PrintWriter out = new PrintWriter(new FileWriter(save_file));
+                out.write(playlists);
+                out.flush();
+                out.close();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private boolean saveUser(User u)
@@ -249,11 +311,11 @@ public class LoginManager
             File save_file;
             save_file = new File(user_folder.getAbsolutePath() + File.separator
                     + "library.txt");
-            if(save_file.exists())
-                u.getLibrary().savePlaylist(save_file);
-            else if(save_file.createNewFile())
+            if(save_file.exists() || save_file.createNewFile())
                 u.getLibrary().savePlaylist(save_file);
 
+            checkPlayListFiles(u, user_folder);
+            
             if(u.getPlayLists().size() < 1)
                 return true;
 
@@ -282,6 +344,7 @@ public class LoginManager
             {
                 PrintWriter out = new PrintWriter(new FileWriter(save_file, true));
                 out.write(playlist_names);
+                out.flush();
                 out.close();
             }
         }
