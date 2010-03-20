@@ -192,10 +192,37 @@ public class PlayList extends JList
 
     public boolean equals(PlayList other)
     {
-        if(other.getName().equals(getName()) && other.playlist.equals(playlist))
-            return true;
+        if(!other.getName().equals(getName()))
+        {
+            System.out.println("Names do not match!");
+            return false;
+        }
+        
+        if(playlist.size() != other.playlist.size())
+        {
+            System.out.println("Sizes do not match!");
+            return false;
+        }
 
-        return false;
+        for(Song s : playlist)
+        {
+            boolean equal = false;
+            for(Song other_s : other.playlist)
+            {
+                if(s.equals(other_s))
+                {
+                    equal = true;
+                    break;
+                }
+            }
+            if(!equal)
+            {
+                System.out.println("Found songs that do not match!");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void savePlaylist()
@@ -243,7 +270,6 @@ public class PlayList extends JList
     {
         if(f == null || !f.exists())
         {
-            RadioPlayList.sendErrorDialog("Unable to load playlist", StringConstantHolder.PL_LOAD_ERR);
             return false;
         }
 

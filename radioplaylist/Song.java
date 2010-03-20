@@ -18,7 +18,7 @@ public class Song
     public Song()
     {
         // initialise instance variables
-        title = artist = album = recType = null;
+        title = artist = album = recType = "";
         duration = year = freq = recNum = 0;
         popular = 50;
     }
@@ -136,6 +136,9 @@ public class Song
 
     public boolean equals(Song other)
     {
+        if(other == null)
+            return false;
+
         if(title.equalsIgnoreCase(other.title) && artist.equalsIgnoreCase(other.artist)
                 && year == other.year && album.equalsIgnoreCase(other.album)
                 && recType.equalsIgnoreCase(other.recType) && recNum == other.recNum)

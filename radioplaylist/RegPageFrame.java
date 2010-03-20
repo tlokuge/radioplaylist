@@ -224,7 +224,7 @@ public class RegPageFrame extends JFrame
             if(!checkText(usrNameField.getText(), usrCheck))
                 return;
 
-            if(LoginManager.getLoginManager().contains(usrNameField.getText()) == -1)
+            if(LoginManager.instance().contains(usrNameField.getText()) == -1)
                 usrCheck.setText("   Available!");
             else
                 usrCheck.setText("   Unavailable!");
@@ -242,7 +242,7 @@ public class RegPageFrame extends JFrame
             if(conPWCheck.getText().equals("   Correct") && nameField.getText().length() > 0
                     && usrCheck.getText().equals("   Available!"))
             {
-                LoginManager.getLoginManager().addUser(nameField.getText(), usrNameField.getText(),
+                LoginManager.instance().addUser(nameField.getText(), usrNameField.getText(),
                         new String(conPWField.getPassword()));
 
                 RadioPlayList.sendAlertDialog("User " + nameField.getText() + 

@@ -29,13 +29,15 @@ public class LoginManager
 
     public void initialize()
     {
-        File user_folder = new File("src/users/");
-        users_file = new File("src/users/users.txt");
+        File user_folder = new File(StringConstantHolder.RD_PLYLST_USR_FLDR);
+        users_file = new File(StringConstantHolder.RD_PLYLST_USR_FLDR
+                + StringConstantHolder.RD_PLYLST_USR_FILE);
         try
         {
             if(!user_folder.exists() && !user_folder.mkdir())
             {
-                RadioPlayList.sendErrorDialog("Unable to create user folder. Aborting program", "Save Error");
+                RadioPlayList.sendErrorDialog(StringConstantHolder.LGN_MGR_USR_FLDR_ERR,
+                        StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
                 System.exit(1);
             }
 
@@ -62,7 +64,8 @@ public class LoginManager
             }
             else if(!users_file.exists() && !users_file.createNewFile())
             {
-                RadioPlayList.sendErrorDialog("Unable to create users file. Aborting program", "Save Error!");
+                RadioPlayList.sendErrorDialog(StringConstantHolder.LGN_MGR_USR_FILE_ERR,
+                        StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
                 System.exit(1);
             }
         }
@@ -76,7 +79,8 @@ public class LoginManager
     {
         if(contains(username) != -1)
         {
-            RadioPlayList.sendAlertDialog("That username is taken", "User Error");
+            RadioPlayList.sendAlertDialog(StringConstantHolder.LGN_MGR_USRNME_TAKEN,
+                    StringConstantHolder.LGN_MGR_USR_ERR_TTL);
             return;
         }
 
@@ -114,7 +118,8 @@ public class LoginManager
     {
         if(contains(username) == -1)
         {
-            RadioPlayList.sendAlertDialog("User does not exist!", "Login Alert!");
+            RadioPlayList.sendAlertDialog(StringConstantHolder.LGN_MGR_UNK_USR_PASS,
+                    StringConstantHolder.LGN_MGR_USR_ERR_TTL);
             return null;
         }
 
@@ -122,7 +127,8 @@ public class LoginManager
         User user = getUser(username, hashed_pass);
         if(user == null)
         {
-            RadioPlayList.sendAlertDialog("Invalid password!", "Login Alert!");
+            RadioPlayList.sendAlertDialog(StringConstantHolder.LGN_MGR_UNK_USR_PASS,
+                    StringConstantHolder.LGN_MGR_USR_ERR_TTL);
             return null;
         }
 
@@ -132,37 +138,9 @@ public class LoginManager
 
         current_user = user;
 
-        RadioPlayList.sendAlertDialog("Logged in as " + user.getRealName(), "Logged in");
+        RadioPlayList.sendAlertDialog(String.format(StringConstantHolder.LGN_MGR_LOGGED_IN_AS, user.getRealName()),
+                StringConstantHolder.LGN_MGR_USR_ERR_TTL);
         return current_user;
-    }
-
-    private boolean userFileContains(String username)
-    {
-        if(users_file == null)
-            return false;
-
-        try
-        {
-            Scanner in = new Scanner(new FileReader(users_file));
-            while(in.hasNextLine())
-            {
-                String line = in.nextLine();
-                StringTokenizer strtok = new StringTokenizer(line, " ");
-                if(strtok.countTokens() == 0)
-                    break;
-
-                String u_name = strtok.nextToken();
-                if(username.equals(u_name))
-                    return true;
-
-                while(strtok.hasMoreTokens()) { strtok.nextToken(); }
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private boolean loadUser(User user)
@@ -170,22 +148,24 @@ public class LoginManager
         if(user == null)
             return false;
 
-        File user_folder = new File("src/users/" + user.getUserName());
+        File user_folder = new File(StringConstantHolder.RD_PLYLST_USR_FLDR + user.getUserName());
         if(!user_folder.exists())
         {
-            RadioPlayList.sendErrorDialog("Cannot load user that was not saved!", "Load Error!");
+            RadioPlayList.sendErrorDialog(StringConstantHolder.LGN_MGR_LD_ERR_1,
+                    StringConstantHolder.LGN_MGR_LD_ERR_TTL);
             return false;
         }
 
         if(!user.getLibrary().loadPlaylist(new File(user_folder.getAbsolutePath() + File.separator
-                + "library.txt")))
+                + StringConstantHolder.RD_PLYLST_LBR_FILE)))
         {
-            RadioPlayList.sendErrorDialog("Unable to load user library for " + user.getUserName(), "Load Error");
+            RadioPlayList.sendErrorDialog(String.format(StringConstantHolder.LGN_MGR_LD_ERR_2, user.getUserName())
+                    , StringConstantHolder.LGN_MGR_LD_ERR_TTL);
             return false;
         }
 
         File list_file = new File(user_folder.getAbsolutePath() + File.separator
-                + user.getUserName() + "_playlists.txt");
+                + user.getUserName() + StringConstantHolder.RD_PLYLST_PL_FILE);
         if(!list_file.exists())
             return true;
 
@@ -196,17 +176,22 @@ public class LoginManager
             while(in.hasNextLine())
             {
                 pl = new PlayList();
+                String pl_name = in.nextLine();
                 String path = user_folder.getPath() + File.separator
-                        + in.nextLine() + ".txt";
+                        + pl_name + ".txt";
                 File playlist_file = new File(path);
                 if(pl.loadPlaylist(playlist_file))
                     user.addPlayList(pl);
+                else
+                    RadioPlayList.sendErrorDialog(
+                            String.format(StringConstantHolder.LGN_MGR_PL_LD_ERR, pl_name),
+                            StringConstantHolder.LGN_MGR_LD_ERR_TTL);
             }
             in.close();
         }
         catch(Exception e)
         {
-            System.err.println("Load Error");
+            RadioPlayList.sendErrorDialog(e.getMessage(), StringConstantHolder.LGN_MGR_LD_ERR_TTL);
             e.printStackTrace();
         }
 
@@ -218,76 +203,17 @@ public class LoginManager
         return saveUser(current_user);
     }
 
-    private void checkPlayListFiles(User u, File user_folder)
-    {
-        if(u == null || user_folder == null || !user_folder.exists())
-            return;
-
-        File save_file = new File(user_folder.getAbsolutePath() + File.separator
-                + u.getUserName() + "_playlists.txt");
-        if(!save_file.exists())
-            return;
-
-        try
-        {
-            Scanner in = new Scanner(new FileReader(save_file));
-            String playlist = "";
-            String playlists = "";
-            boolean exists = false;
-            while(in.hasNextLine())
-            {
-                playlist = in.nextLine();
-                System.out.println("Testing: " + playlist);
-                for(PlayList pl : u.getPlayLists())
-                {
-                    System.out.println("Checking " + pl.getName());
-                    exists = false;
-                    if(pl.getName().equals(playlist))
-                    {
-                        System.out.println("Found, breaking");
-                        playlists += playlist + "\n";
-                        exists = true;
-                        break;
-                    }
-                }
-
-                if(!exists)
-                {
-                    System.out.println("Did not find, attempt to delete");
-                    File pl_file = new File(user_folder.getAbsolutePath()
-                            + File.separator + playlist + ".txt");
-                    if(pl_file.exists())
-                        pl_file.delete();
-                }
-            }
-
-            in.close();
-
-            save_file.delete();
-            if(save_file.createNewFile())
-            {
-                PrintWriter out = new PrintWriter(new FileWriter(save_file));
-                out.write(playlists);
-                out.flush();
-                out.close();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     private boolean saveUser(User u)
     {
         if(u == null || !users.contains(u))
             return false;
 
         String userName = u.getUserName();
-        File user_folder = new File("src/users/" + userName);
+        File user_folder = new File(StringConstantHolder.RD_PLYLST_USR_FLDR + userName);
         if(!user_folder.exists() && !user_folder.mkdir())
         {
-            RadioPlayList.sendErrorDialog("Unable to create user folder", "Save Error!");
+            RadioPlayList.sendErrorDialog(StringConstantHolder.LGN_MGR_USR_FLDR_ERR,
+                    StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
             return false;
         }
 
@@ -295,26 +221,22 @@ public class LoginManager
         {
             if(users_file == null)
             {
-                RadioPlayList.sendErrorDialog("Unable to save user" + userName, "User Save Error");
+                RadioPlayList.sendErrorDialog(StringConstantHolder.LGN_MGR_SAVE_ERR_1 + userName,
+                        StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
                 return false;
             }
 
-            if(!userFileContains(userName))
-            {
-                PrintWriter out = new PrintWriter(new FileWriter(users_file, true));
-                out.write(userName + " "
-                        + u.getPassword() + " "
-                        + u.getRealName() + "\n");
-                out.close();
-            }
+            PrintWriter out = new PrintWriter(new FileWriter(users_file, true));
+            out.write(userName + " "
+                    + u.getPassword() + " "
+                    + u.getRealName() + "\n");
+            out.close();
 
             File save_file;
             save_file = new File(user_folder.getAbsolutePath() + File.separator
-                    + "library.txt");
+                    + StringConstantHolder.RD_PLYLST_LBR_FILE);
             if(save_file.exists() || save_file.createNewFile())
                 u.getLibrary().savePlaylist(save_file);
-
-            checkPlayListFiles(u, user_folder);
             
             if(u.getPlayLists().size() < 1)
                 return true;
@@ -335,14 +257,16 @@ public class LoginManager
                     current.savePlaylist(save_file);
                 }
                 else
-                    RadioPlayList.sendAlertDialog("Unable to create playlist file " + current.getName(), "Save Error!");
+                    RadioPlayList.sendAlertDialog(
+                            String.format(StringConstantHolder.LGN_MGR_SAVE_ERR_2, current.getName(), u.getUserName()),
+                            StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
             }
 
             save_file = new File(user_folder.getAbsolutePath() + File.separator +
-                    userName + "_playlists.txt");
+                    userName + StringConstantHolder.RD_PLYLST_PL_FILE);
             if(save_file.exists() || save_file.createNewFile())
             {
-                PrintWriter out = new PrintWriter(new FileWriter(save_file, true));
+                out = new PrintWriter(new FileWriter(save_file, true));
                 out.write(playlist_names);
                 out.flush();
                 out.close();
@@ -350,9 +274,57 @@ public class LoginManager
         }
         catch(Exception e)
         {
-            RadioPlayList.sendErrorDialog(e.getLocalizedMessage(), "User Save Error");
+            RadioPlayList.sendErrorDialog(e.getLocalizedMessage(),
+                    StringConstantHolder.LGN_MGR_SAVE_ERR_TTL);
             e.printStackTrace();
             return false;
+        }
+
+        return true;
+    }
+
+    public boolean deletePlayList(User u, PlayList pl)
+    {
+        if(u == null || pl == null)
+            return false;
+
+        File pl_list_file = new File(StringConstantHolder.RD_PLYLST_USR_FLDR + u.getUserName()
+                + File.separator + u.getUserName() + StringConstantHolder.RD_PLYLST_PL_FILE);
+        if(!pl_list_file.exists())
+            return false;
+
+        String pl_name = pl.getName();
+        try
+        {
+            String pl_list = "";
+            Scanner in = new Scanner(pl_list_file);
+            boolean exists = false;
+            while(in.hasNextLine())
+            {
+                String line = in.nextLine();
+                if(line.equals(pl_name))
+                {
+                    exists = true;
+                    break;
+                }
+                pl_list += line + "\n";
+            }
+            in.close();
+            if(!exists)
+                return false;
+            File pl_file = new File(StringConstantHolder.RD_PLYLST_USR_FLDR + u.getUserName()
+                    + File.separator + pl_name + ".txt");
+            if(pl_file.exists())
+                pl_file.delete();
+            PrintWriter out = new PrintWriter(new FileWriter(pl_list_file));
+            out.write(pl_list);
+            out.flush();
+            out.close();
+            u.removePlayList(pl);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
 
         return true;
@@ -400,7 +372,7 @@ public class LoginManager
 
     public User getCurrentUser() { return current_user; }
 
-    public static synchronized LoginManager getLoginManager()
+    public static synchronized LoginManager instance()
     {
         if(instance == null)
             instance = new LoginManager();
