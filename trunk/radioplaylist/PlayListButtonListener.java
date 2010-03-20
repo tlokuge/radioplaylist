@@ -72,7 +72,7 @@ public class PlayListButtonListener implements ActionListener
         if(pl.shiftUp(pl.getSongAt(ind)))
         {
             pl.setSelectedIndex(ind - 1);
-            LoginManager.getLoginManager().saveCurrentUser();
+            LoginManager.instance().saveCurrentUser();
         }
     }
 
@@ -86,7 +86,7 @@ public class PlayListButtonListener implements ActionListener
         if(pl.shiftDown(pl.getSongAt(ind)))
         {
             pl.setSelectedIndex(ind + 1);
-            LoginManager.getLoginManager().saveCurrentUser();
+            LoginManager.instance().saveCurrentUser();
         }
     }
 
@@ -128,7 +128,7 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.addSong(getSelectedLibrarySong());
-        LoginManager.getLoginManager().saveCurrentUser();
+        LoginManager.instance().saveCurrentUser();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
@@ -141,7 +141,7 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.deleteSong(pl.getSongAt(pl.getSelectedIndex()));
-        LoginManager.getLoginManager().saveCurrentUser();
+        LoginManager.instance().saveCurrentUser();
 
         if(!pl.safeZone())
             RadioPlayList.sendAlertDialog(StringConstantHolder.PP_TIME_WARN, StringConstantHolder.PP_TIME_TTL);
@@ -154,7 +154,7 @@ public class PlayListButtonListener implements ActionListener
             return;
 
         pl.randomize();
-        LoginManager.getLoginManager().saveCurrentUser();
+        LoginManager.instance().saveCurrentUser();
     }
 
     private void doClearButtonAction(ActionEvent e)
@@ -166,7 +166,7 @@ public class PlayListButtonListener implements ActionListener
         if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
         {
             pl.clearPlaylist();
-            LoginManager.getLoginManager().saveCurrentUser();
+            LoginManager.instance().saveCurrentUser();
         }
     }
 }

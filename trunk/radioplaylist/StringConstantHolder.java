@@ -4,6 +4,10 @@ public abstract class StringConstantHolder
 {
     // RadioPlayList
     static String RD_PLYLST_IMG_FLDR = "src/images/";
+    static String RD_PLYLST_USR_FLDR = "src/users/";
+    static String RD_PLYLST_USR_FILE = "users.txt";
+    static String RD_PLYLST_LBR_FILE = "library.txt";
+    static String RD_PLYLST_PL_FILE  = "_playlists.txt";
 
     static final String IMG_LOAD_ERR = "Unable to load image: ";
     static final String RD_PLYLIST_FATAL_ERROR = "Fatal Error";
@@ -12,6 +16,23 @@ public abstract class StringConstantHolder
     static final String RD_PLYLIST_DEF_CONF  = "Confirm";
     static final String RD_PLYLIST_DEF_ALERT = "Warning!";
     static final String RD_PLYLIST_DEF_ERROR = "Error!";
+
+    /******* LoginManager.java ************/
+    static final String LGN_MGR_USR_FLDR_ERR = "Unable to create user folder!";
+    static final String LGN_MGR_USR_FILE_ERR = "Unable to create users file!";
+    static final String LGN_MGR_SAVE_ERR_1   = "Users file does not exist! Unable to save user: ";
+    static final String LGN_MGR_SAVE_ERR_2   = "Unable to save playlist: %s (User: %s)";
+    static final String LGN_MGR_SAVE_ERR_TTL = "Save Error!";
+
+    static final String LGN_MGR_USRNME_TAKEN = "That username is taken!";
+    static final String LGN_MGR_UNK_USR_PASS = "Invalid username or password";
+    static final String LGN_MGR_LOGGED_IN_AS = "Logged in as %s!";
+    static final String LGN_MGR_USR_ERR_TTL  = "Login Alert!";
+
+    static final String LGN_MGR_LD_ERR_1   = "Unable to load unsaved user";
+    static final String LGN_MGR_LD_ERR_2   = "Unable to load user library for %s!";
+    static final String LGN_MGR_PL_LD_ERR  = "Unable to load playlist [%s]!";
+    static final String LGN_MGR_LD_ERR_TTL = "Load Error!";
 
     /************** PlaylistFrame.java *****************/
     // ImageIcons

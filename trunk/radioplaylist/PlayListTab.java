@@ -117,15 +117,14 @@ public class PlayListTab extends JTabbedPane
                 return;
 
             setSelectedIndex(getSelectedIndex() - 1);
-            ignore = true;
             remove(panel);
 
             for(Component c : panel.getComponents())
             {
                 if(c instanceof PlayList)
                 {
-                    LoginManager.getLoginManager().getCurrentUser().removePlayList((PlayList)c);
-                    LoginManager.getLoginManager().saveCurrentUser();
+                    LoginManager.instance().deletePlayList(LoginManager.instance().getCurrentUser(),
+                            (PlayList)c);
                 }
             }
 
@@ -165,8 +164,8 @@ public class PlayListTab extends JTabbedPane
                 PlayList pl = PlayListFrame.createPlayList(name);
                 addTab(pl);
 
-                LoginManager.getLoginManager().getCurrentUser().addPlayList(pl);
-                LoginManager.getLoginManager().saveCurrentUser();
+                LoginManager.instance().getCurrentUser().addPlayList(pl);
+                LoginManager.instance().saveCurrentUser();
             }
         }
     }

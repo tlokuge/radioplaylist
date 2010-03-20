@@ -247,7 +247,7 @@ public class PlayListFrame extends JFrame
         song_library_list.addSong(song);
         song_library_table.revalidate();
 
-        LoginManager.getLoginManager().saveCurrentUser();
+        LoginManager.instance().saveCurrentUser();
     }
 
     public void removeSongFromLibrary(Song song)
@@ -258,7 +258,7 @@ public class PlayListFrame extends JFrame
         song_library_list.deleteSong(song);
         song_library_table.revalidate();
 
-        LoginManager.getLoginManager().saveCurrentUser();
+        LoginManager.instance().saveCurrentUser();
     }
 
     private void initializePanels()

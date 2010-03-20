@@ -36,6 +36,8 @@ public class LoginFrame extends JFrame
         setSize(400, 325);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        LoginManager.instance();
     }
 
     private void initializeComponents()
@@ -114,7 +116,7 @@ public class LoginFrame extends JFrame
         {
             if(isLoginButton)
             {
-                User user = LoginManager.getLoginManager().login(userNameField.getText(),
+                User user = LoginManager.instance().login(userNameField.getText(),
                     new String(passwordField.getPassword()));
                 if(user != null)
                 {

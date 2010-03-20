@@ -16,7 +16,7 @@ public class PlaylistGUI
 
     public PlaylistGUI()
     {
-        playlist_frame = new PlayListFrame(LoginManager.getLoginManager().getCurrentUser());
+        playlist_frame = new PlayListFrame(LoginManager.instance().getCurrentUser());
         control_frame = new ControlFrame(playlist_frame);
         radio_playlist = new RadioPlayList(control_frame);
         
