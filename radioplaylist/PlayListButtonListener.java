@@ -57,11 +57,6 @@ public class PlayListButtonListener implements ActionListener
         return panel.getSelectedLibrarySong();
     }
 
-    private JTable getSongLibraryTable()
-    {
-        return panel.getSongLibraryTable();
-    }
-
     private void doMvUpButtonAction(ActionEvent e)
     {
         PlayList pl = getCurrentPlayList();

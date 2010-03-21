@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,13 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.border.EtchedBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableRowSorter;
 
 public class PlayListFrame extends JFrame
 {
@@ -30,12 +25,10 @@ public class PlayListFrame extends JFrame
 
     private ControlFrame control_frame;
 
+    private LibraryPanel library_panel;
+
     private JPanel main_panel;
     private JPanel play_control_panel;
-
-    private PlayList song_library_list;
-
-    private JTable song_library_table;
 
     private PlayListTab playlist_tab;
 
@@ -68,18 +61,17 @@ public class PlayListFrame extends JFrame
 
         new_song_frame     = new NewSongFrame(this);
 
+        library_panel      = new LibraryPanel(user.getLibrary(), user.getLibrary());
+
         main_panel         = new JPanel();
         play_control_panel = new JPanel();
-        song_library_table = new JTable();
-        playlist_tab       = new PlayListTab();
 
-        song_library_list  = user.getLibrary();
+        playlist_tab       = new PlayListTab();
 
         setLayout(new BorderLayout());
 
         initializeButtons();
         initializeSearchComponents();
-        initializeComponents();
         initializePanels();
         initializeMenus();
         initializeUser();
@@ -116,13 +108,6 @@ public class PlayListFrame extends JFrame
         resultsFrame.setVisible(false);
 
         resultsFrame.add(searchResults);
-    }
-
-    private void initializeComponents()
-    {
-        song_library_list.setSelectedIndex(-1);
-        song_library_list.setBorder(
-                BorderFactory.createTitledBorder(new EtchedBorder(), StringConstantHolder.PP_LIBRARY_PANEL));
     }
 
     private void initializeMenus()
@@ -196,16 +181,6 @@ public class PlayListFrame extends JFrame
         
     }
 
-    private Component initializeSongLibrary()
-    {
-        PlayListTableModel model = new PlayListTableModel(song_library_list);
-        song_library_table.setModel(model);
-        RowSorter<PlayListTableModel> sorter = new TableRowSorter<PlayListTableModel>(model);
-        song_library_table.setRowSorter(sorter);
-
-        return new JScrollPane(song_library_table);
-    }
-
     public void showNewSongFrame()
     {
         new_song_frame.resetFields();
@@ -241,24 +216,14 @@ public class PlayListFrame extends JFrame
 
     public void addSongToLibrary(Song song)
     {
-        if(song_library_list.containsSong(song))
-            return;
-
-        song_library_list.addSong(song);
-        song_library_table.revalidate();
-
-        LoginManager.instance().saveCurrentUser();
+        if(library_panel.addSongToLibrary(song))
+            LoginManager.instance().saveCurrentUser();
     }
 
     public void removeSongFromLibrary(Song song)
     {
-        if(!song_library_list.containsSong(song))
-            return;
-
-        song_library_list.deleteSong(song);
-        song_library_table.revalidate();
-
-        LoginManager.instance().saveCurrentUser();
+        if(library_panel.removeSongFromLibrary(song))
+            LoginManager.instance().saveCurrentUser();
     }
 
     private void initializePanels()
@@ -269,7 +234,7 @@ public class PlayListFrame extends JFrame
         JPanel panel2 = new JPanel();
         panel2.add(new JLabel("Search"));
         panel2.add(searchField);
-        panel2.add(initializeSongLibrary(), song_library_list.getName());
+        panel2.add(library_panel, user.getLibrary().getName());
         panel2.setBorder(new EtchedBorder());
         panel2.setVisible(true);
 
@@ -305,19 +270,7 @@ public class PlayListFrame extends JFrame
 
     public Song getSelectedLibrarySong()
     {
-        if(song_library_table.getSelectedRow() < 0
-                || song_library_table.getSelectedRow() >= song_library_table.getModel().getRowCount())
-            return null;
-
-        return ((PlayListTableModel) song_library_table.getModel())
-                .getPlayList().getSongAt(
-                song_library_table.getRowSorter().convertRowIndexToModel(
-                song_library_table.getSelectedRow()));
-    }
-
-    public JTable getSongLibraryTable()
-    {
-        return song_library_table;
+        return library_panel.getSelectedLibrarySong();
     }
 
     private JButton createButton(String name, String image_path)
@@ -346,7 +299,7 @@ public class PlayListFrame extends JFrame
                 searchResults.deleteSong(s);
 
             if(!search.isEmpty() && !search.equals(" "))
-                for(Song s : song_library_list.getSongs())
+                for(Song s : library_panel.getLibrary().getSongs())
                     if(s.getTitle().toLowerCase().contains(search.toLowerCase())
                         || s.getArtist().toLowerCase().contains(search.toLowerCase()))
                         searchResults.addSong(s);
