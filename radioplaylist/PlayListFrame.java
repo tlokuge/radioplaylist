@@ -1,7 +1,6 @@
 package radioplaylist;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -47,42 +46,22 @@ public class PlayListFrame extends JFrame
 
     private JMenuBar menuBar;
 
-    private User user;
-
-    public PlayListFrame(User user)
+    public PlayListFrame()
     {
-        if(user == null || !user.isLoaded())
-        {
-            RadioPlayList.sendErrorDialog("Unable to load playlists - invalid user!", "Fatal error");
-            System.exit(1);
-        }
-
-        this.user = user;
-
-        new_song_frame     = new NewSongFrame(this);
-
-        library_panel      = new LibraryPanel(user.getLibrary(), user.getLibrary());
-
-        main_panel         = new JPanel();
-        play_control_panel = new JPanel();
-
-        playlist_tab       = new PlayListTab();
-
+        super();
         setLayout(new BorderLayout());
 
+        initializeFramesAndPanels();
         initializeButtons();
         initializeSearchComponents();
-        initializePanels();
         initializeMenus();
         initializeUser();
 
-        add(main_panel, BorderLayout.CENTER);
-        add(play_control_panel, BorderLayout.SOUTH);
-
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new PlayListWindowListener());
-        new_song_frame.setVisible(false);
-        setVisible(true);
+
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setVisible(false);
     }
 
     public void setControlFrame(ControlFrame frame)
@@ -90,10 +69,35 @@ public class PlayListFrame extends JFrame
         control_frame = frame;
     }
 
-    private void initializeUser()
+    private void initializeFramesAndPanels()
     {
+        new_song_frame     = null;
+
+        library_panel      = new LibraryPanel();
+
+        main_panel         = new JPanel();
+        play_control_panel = new JPanel();
+
+        playlist_tab       = new PlayListTab();
+    }
+
+    public void initializeUser()
+    {
+        if(LoginManager.instance().getCurrentUser() == null)
+            return;
+
+        User user = LoginManager.instance().getCurrentUser();
+        library_panel.initialize(user.getLibrary(), user.getCommercial());
+
         for(PlayList pl : user.getPlayLists())
             addPlayListToTab(pl);
+
+        initializeSubPanels();
+
+        add(main_panel, BorderLayout.CENTER);
+        add(play_control_panel, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
     private void initializeSearchComponents()
@@ -107,7 +111,7 @@ public class PlayListFrame extends JFrame
         resultsFrame.setSize(300, 300);
         resultsFrame.setVisible(false);
 
-        resultsFrame.add(searchResults);
+        resultsFrame.add(new JPlayList(searchResults));
     }
 
     private void initializeMenus()
@@ -183,6 +187,9 @@ public class PlayListFrame extends JFrame
 
     public void showNewSongFrame()
     {
+        if(new_song_frame == null)
+            new_song_frame = new NewSongFrame(this);
+        
         new_song_frame.resetFields();
         new_song_frame.setVisible(true);
     }
@@ -193,40 +200,36 @@ public class PlayListFrame extends JFrame
             name = StringConstantHolder.PL_NEW_PL;
 
         PlayList pl = new PlayList(name);
-        pl.setBorder(new EtchedBorder());
-        pl.setSelectedIndex(-1);
 
         return pl;
     }
 
     public void addPlayListToTab(PlayList pl)
     {
-        for(Component c : playlist_tab.getComponents())
-            if((c instanceof PlayList) && ((PlayList)c).equals(pl))
-                return;
+        if(playlist_tab.containsPlayList(pl))
+            return;
 
         playlist_tab.addTab(pl);
     }
 
-    public void removePlayList(PlayList pl)
-    {
-        playlist_tab.remove(pl);
-        pl = null;
-    }
-
     public void addSongToLibrary(Song song)
     {
-        if(library_panel.addSongToLibrary(song))
+        if(library_panel.addSongToSelectedLibrary(song))
             LoginManager.instance().saveCurrentUser();
     }
 
     public void removeSongFromLibrary(Song song)
     {
-        if(library_panel.removeSongFromLibrary(song))
+        if(library_panel.removeSongFromSelectedLibrary(song))
+        {
+            for(PlayList pl : LoginManager.instance().getCurrentUser().getPlayLists())
+                pl.deleteSong(song);
+            
             LoginManager.instance().saveCurrentUser();
+        }
     }
 
-    private void initializePanels()
+    private void initializeSubPanels()
     {
         main_panel.setLayout(new GridLayout(1, 3));
         main_panel.add(playlist_tab);
@@ -234,7 +237,7 @@ public class PlayListFrame extends JFrame
         JPanel panel2 = new JPanel();
         panel2.add(new JLabel("Search"));
         panel2.add(searchField);
-        panel2.add(library_panel, user.getLibrary().getName());
+        panel2.add(library_panel);
         panel2.setBorder(new EtchedBorder());
         panel2.setVisible(true);
 
@@ -253,24 +256,14 @@ public class PlayListFrame extends JFrame
         play_control_panel.setVisible(true);
     }
 
-    public PlayList getCurrentPlayList()
+    public JPlayList getCurrentPlayList()
     {
-        if(!(playlist_tab.getSelectedComponent() instanceof JPanel))
-            return null;
-
-        JPanel panel = (JPanel)playlist_tab.getSelectedComponent();
-        for(int i = 0; i < panel.getComponentCount(); ++i)
-        {
-            if(panel.getComponent(i) instanceof PlayList)
-                return (PlayList)panel.getComponent(i);
-        }
-
-        return null;
+        return playlist_tab.getCurrentPlayList();
     }
 
     public Song getSelectedLibrarySong()
     {
-        return library_panel.getSelectedLibrarySong();
+        return library_panel.getSelectedSong();
     }
 
     private JButton createButton(String name, String image_path)
@@ -299,12 +292,12 @@ public class PlayListFrame extends JFrame
                 searchResults.deleteSong(s);
 
             if(!search.isEmpty() && !search.equals(" "))
-                for(Song s : library_panel.getLibrary().getSongs())
+                for(Song s : library_panel.getSelectedLibrary().getSongs())
                     if(s.getTitle().toLowerCase().contains(search.toLowerCase())
                         || s.getArtist().toLowerCase().contains(search.toLowerCase()))
                         searchResults.addSong(s);
 
-            resultsFrame.add(searchResults);
+            resultsFrame.add(new JPlayList(searchResults));
             if(!resultsFrame.isVisible())
             {
                 resultsFrame.setAlwaysOnTop(true);

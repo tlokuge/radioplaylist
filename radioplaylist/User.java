@@ -8,6 +8,7 @@ public class User
     private String username;
     private String password;
     private PlayList library;
+    private PlayList commercial;
     private ArrayList<PlayList> playlists;
     private boolean isLoaded;
 
@@ -19,6 +20,7 @@ public class User
         this.isLoaded  = isLoaded;
         playlists = new ArrayList<PlayList>();
         library = new PlayList(username + "'s Library");
+        commercial = new PlayList(username + "'s Commercial");
     }
     
     public void addPlayList(PlayList pl)
@@ -38,13 +40,13 @@ public class User
         return password.equals(other_password);
     }
 
-    public void setSongLibrary(PlayList library) { this.library = library; }
     public void load() { isLoaded = true; }
 
-    public String getRealName()  { return realname; }
-    public String getUserName()  { return username; }
-    public String getPassword()  { return password; }
-    public boolean isLoaded()    { return isLoaded; }
-    public PlayList getLibrary() { return library;  }
+    public String getRealName()      { return realname; }
+    public String getUserName()      { return username; }
+    public String getPassword()      { return password; }
+    public boolean isLoaded()        { return isLoaded; }
+    public PlayList getLibrary()     { return library;  }
+    public PlayList getCommercial() { return commercial; }
     public ArrayList<PlayList> getPlayLists() { return playlists; }
 }

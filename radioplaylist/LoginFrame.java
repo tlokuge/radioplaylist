@@ -27,8 +27,11 @@ public class LoginFrame extends JFrame
     private JButton loginButton;
     private JButton registerButton;
 
-    public LoginFrame()
+    private PlaylistGUI gui;
+
+    public LoginFrame(PlaylistGUI gui)
     {
+        super();
         initializeComponents();
         addComponentsToFrame();
 
@@ -37,7 +40,7 @@ public class LoginFrame extends JFrame
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        LoginManager.instance();
+        this.gui = gui;
     }
 
     private void initializeComponents()
@@ -120,8 +123,8 @@ public class LoginFrame extends JFrame
                     new String(passwordField.getPassword()));
                 if(user != null)
                 {
-                    PlaylistGUI gui = new PlaylistGUI();
-                    
+                    gui.display();
+
                     if(regPageFrame != null)
                         regPageFrame.dispose();
                     

@@ -3,7 +3,6 @@ package radioplaylist;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JTable;
 
 enum PlayListButtonType
 {
@@ -47,7 +46,7 @@ public class PlayListButtonListener implements ActionListener
         }
     }
 
-    private PlayList getCurrentPlayList()
+    private JPlayList getCurrentPlayList()
     {
         return panel.getCurrentPlayList();
     }
@@ -59,38 +58,42 @@ public class PlayListButtonListener implements ActionListener
 
     private void doMvUpButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
-        int ind = pl.getSelectedIndex();
+        PlayList pl = jpl.getPlayList();
+        int ind = jpl.getSelectedIndex();
         if(pl.shiftUp(pl.getSongAt(ind)))
         {
-            pl.setSelectedIndex(ind - 1);
+            jpl.setListData(pl.populateListData());
+            jpl.setSelectedIndex(ind - 1);
             LoginManager.instance().saveCurrentUser();
         }
     }
 
     private void doMvDnButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
-        int ind = pl.getSelectedIndex();
+        PlayList pl = jpl.getPlayList();
+        int ind = jpl.getSelectedIndex();
         if(pl.shiftDown(pl.getSongAt(ind)))
         {
-            pl.setSelectedIndex(ind + 1);
+            jpl.setListData(pl.populateListData());
+            jpl.setSelectedIndex(ind + 1);
             LoginManager.instance().saveCurrentUser();
         }
     }
 
     private void doSaveButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
-        pl.savePlaylist();
+        jpl.getPlayList().savePlaylist();
     }
 
     private void doLoadButtonAction(ActionEvent e)
@@ -118,11 +121,13 @@ public class PlayListButtonListener implements ActionListener
 
     private void doAddButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
+        PlayList pl = jpl.getPlayList();
         pl.addSong(getSelectedLibrarySong());
+        jpl.setListData(pl.populateListData());
         LoginManager.instance().saveCurrentUser();
 
         if(!pl.safeZone())
@@ -131,11 +136,12 @@ public class PlayListButtonListener implements ActionListener
 
     private void doRemoveButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
-        pl.deleteSong(pl.getSongAt(pl.getSelectedIndex()));
+        PlayList pl = jpl.getPlayList();
+        pl.deleteSong(pl.getSongAt(jpl.getSelectedIndex()));
         LoginManager.instance().saveCurrentUser();
 
         if(!pl.safeZone())
@@ -144,23 +150,26 @@ public class PlayListButtonListener implements ActionListener
 
     private void doRandomButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
+        PlayList pl = jpl.getPlayList();
         pl.randomize();
+        jpl.setListData(pl.populateListData());
         LoginManager.instance().saveCurrentUser();
     }
 
     private void doClearButtonAction(ActionEvent e)
     {
-        PlayList pl = getCurrentPlayList();
-        if(pl == null)
+        JPlayList jpl = getCurrentPlayList();
+        if(jpl == null)
             return;
 
         if(RadioPlayList.sendConfirmDialog(StringConstantHolder.PP_CLR_CNFM, StringConstantHolder.PP_CLR_TTL))
         {
-            pl.clearPlaylist();
+            jpl.getPlayList().clearPlaylist();
+            jpl.setListData(jpl.getPlayList().populateListData());
             LoginManager.instance().saveCurrentUser();
         }
     }

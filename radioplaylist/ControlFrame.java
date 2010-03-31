@@ -256,7 +256,7 @@ public class ControlFrame extends JFrame
                 if(radio != null)
                 {
                     if(!radio.isPlaying())
-                        if(!radio.play(playlist_frame.getCurrentPlayList()))
+                        if(!radio.play(playlist_frame.getCurrentPlayList().getPlayList()))
                             return;
                     else
                         radio.resumePlayList();

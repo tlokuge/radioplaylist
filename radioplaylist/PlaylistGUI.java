@@ -16,7 +16,7 @@ public class PlaylistGUI
 
     public PlaylistGUI()
     {
-        playlist_frame = new PlayListFrame(LoginManager.instance().getCurrentUser());
+        playlist_frame = new PlayListFrame();
         control_frame = new ControlFrame(playlist_frame);
         radio_playlist = new RadioPlayList(control_frame);
         
@@ -25,16 +25,8 @@ public class PlaylistGUI
 
         playlist_frame.setTitle(StringConstantHolder.PGUI_PLYLST_TTL);
         control_frame.setTitle(StringConstantHolder.PGUI_CNTRLS_TTL);
-
-        initializeLibraryFrame();
+        
         initializeControlFrame();
-    }
-
-    private void initializeLibraryFrame()
-    {
-        playlist_frame.setExtendedState(playlist_frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-
-        playlist_frame.setVisible(false);
     }
 
     private void initializeControlFrame()
@@ -43,7 +35,15 @@ public class PlaylistGUI
         control_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         control_frame.setResizable(false);
+        control_frame.setVisible(false);
+    }
+
+    public void display()
+    {
         control_frame.setVisible(true);
+        playlist_frame.setVisible(true);
+
+        playlist_frame.initializeUser();
     }
 
     public ControlFrame getControlFrame()   { return control_frame; }
