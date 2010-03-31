@@ -164,6 +164,14 @@ public class LoginManager
             return false;
         }
 
+        if(!user.getCommercial().loadPlaylist(new File(user_folder.getAbsolutePath() + File.separator
+                + StringConstantHolder.RD_PLYLST_COM_FILE)))
+        {
+            RadioPlayList.sendErrorDialog(String.format(StringConstantHolder.LGN_MGR_LD_ERR_3, user.getUserName())
+                    , StringConstantHolder.LGN_MGR_LD_ERR_TTL);
+            return false;
+        }
+
         File list_file = new File(user_folder.getAbsolutePath() + File.separator
                 + user.getUserName() + StringConstantHolder.RD_PLYLST_PL_FILE);
         if(!list_file.exists())
@@ -237,7 +245,12 @@ public class LoginManager
                     + StringConstantHolder.RD_PLYLST_LBR_FILE);
             if(save_file.exists() || save_file.createNewFile())
                 u.getLibrary().savePlaylist(save_file);
-            
+
+            save_file = new File(user_folder.getAbsolutePath() + File.separator
+                    + StringConstantHolder.RD_PLYLST_COM_FILE);
+            if(save_file.exists() || save_file.createNewFile())
+                u.getCommercial().savePlaylist(save_file);
+
             if(u.getPlayLists().size() < 1)
                 return true;
 

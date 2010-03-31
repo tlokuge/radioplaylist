@@ -50,34 +50,37 @@ public class PlayListTab extends JTabbedPane
     public void buildHelpArea()
     {
         help_area.setText("\tHelp Area");
-        help_area.append("\nThank you for using RadioPlayList!");
-        help_area.append("\nThis is a short how-to guide to help you " +
-                "get started.");
-        help_area.append("\nWARNING: Never give out your username and password");
-        help_area.append("\nto anyone for security reasons.");
-        help_area.append("\nPlease contact your System Administrator for any");
-        help_area.append("\n account-related problems");
-        help_area.append("\n");
-        help_area.append("\nCreating a new playlist:");
-        help_area.append("\n   1. Simply click the tab on the left to " +
-                "create a new playlist");
-        help_area.append("\n      on the top left of the screen");
-        help_area.append("\n   2. Don't forget to name your playlist!");
-        help_area.append("\n");
-        help_area.append("\nSaving a playlist:");
-        help_area.append("\n   1. Once you have a playlist, you may save by " +
-                "clicking on the");
-        help_area.append("\n      Radio Playlist menu and selecting Save Playlist");
-        help_area.append("\n");
-        help_area.append("\nLoading an existing playlist:");
-        help_area.append("\n   1. You can load a playlist by clicking on the" +
-                "Radio Playlist menu");
-        help_area.append("\n      and selecting Load Playlist");
-        help_area.append("\n");
-        help_area.append("\n");
-        help_area.append("\nWe hope RadioPlayList ensure a comfortable " +
-                "and easy experience");
-        help_area.append("\nin creating or managing your playlists.");
+        String help =
+                "\nThank you for using RadioPlayList!"
+                 + "\nThis is a short how-to guide to help you "
+                 + "get started."
+                 + "\nWARNING: Never give out your username and password"
+                 + "\nto anyone for security reasons."
+                 + "\nPlease contact your System Administrator for any"
+                 + "\n account-related problems\n"
+                 + "\nCreating a new playlist:"
+                 + "\n   1. Simply click the tab on the left to "
+                 + "create a new playlist"
+                 + "\n      on the top left of the screen"
+                 + "\n   2. Don't forget to name your playlist!\n"
+                 + "\nSaving a playlist:"
+                 + "\n   1. Once you have a playlist, you may save by "
+                 + "clicking on the"
+                 + "\n      Radio Playlist menu and selecting Save Playlist\n"
+                 + "\nLoading an existing playlist:"
+                 + "\n   1. You can load a playlist by clicking on the"
+                 + "Radio Playlist menu"
+                 + "\n      and selecting Load Playlist\n\n"
+                 + "\nWe hope RadioPlayList ensure a comfortable "
+                 + "and easy experience"
+                 + "\nin creating or managing your playlists.";
+
+        help_area.append(help);
+    }
+
+    public void addTab(PlayList pl)
+    {
+        addTab(new JPlayList(pl));
     }
 
     public void addTab(Component comp)
@@ -101,6 +104,27 @@ public class PlayListTab extends JTabbedPane
         super.addTab(StringConstantHolder.PT_NEW_TAB, dummy_panel);
     }
 
+    public JPlayList getCurrentPlayList()
+    {
+        if(!(getSelectedComponent() instanceof JPanel))
+            return null;
+
+        for(Component c : ((JPanel)getSelectedComponent()).getComponents())
+            if(c instanceof JPlayList)
+                return (JPlayList)c;
+
+        return null;
+    }
+
+    public boolean containsPlayList(PlayList pl)
+    {
+        for(Component c : getComponents())
+            if(c instanceof JPlayList && ((JPlayList)c).getPlayList().equals(pl))
+                return true;
+
+        return false;
+    }
+
     class PlayListTabCloseButtonListener implements ActionListener
     {
         private JPanel panel;
@@ -121,10 +145,10 @@ public class PlayListTab extends JTabbedPane
 
             for(Component c : panel.getComponents())
             {
-                if(c instanceof PlayList)
+                if(c instanceof JPlayList)
                 {
                     LoginManager.instance().deletePlayList(LoginManager.instance().getCurrentUser(),
-                            (PlayList)c);
+                            ((JPlayList)c).getPlayList());
                 }
             }
 
@@ -154,6 +178,21 @@ public class PlayListTab extends JTabbedPane
                     tabs.setSelectedIndex(0);
                     return;
                 }
+                
+                if(name.equalsIgnoreCase("library") || name.equalsIgnoreCase("commercials"))
+                {
+                    RadioPlayList.sendErrorDialog(
+                            StringConstantHolder.PP_INV_NAME, StringConstantHolder.PP_NAME_ERRTTL);
+                    return;
+                }
+
+                for(PlayList pl : LoginManager.instance().getCurrentUser().getPlayLists())
+                    if(pl.getName().equalsIgnoreCase(name))
+                    {
+                        RadioPlayList.sendErrorDialog(
+                                StringConstantHolder.PP_INV_NAME, StringConstantHolder.PP_NAME_ERRTTL);
+                        return;
+                    }
 
                 if(name.isEmpty())
                 {

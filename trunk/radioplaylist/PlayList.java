@@ -8,35 +8,34 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
 
-public class PlayList extends JList
+public class PlayList
 {
     // instance variables - replace the example below with your own
     private ArrayList<Song> playlist;
     private int totalTime;
     private JFileChooser chooser;
+    private String name;
 
     public PlayList()
     {
-        super();
         initialize();
         setName(StringConstantHolder.PL_NEW_PL);
     }
 
     public PlayList(String name)
     {
-        super();
         initialize();
         setName(name);
     }
+
+    public void setName(String name) { this.name = name; }
 
     private void initialize()
     {
         playlist  = new ArrayList<Song>();
         totalTime = 0;
-        chooser   = new JFileChooser();
-        populateListData();
+        chooser   = null;
     }
 
     public void addSong(Song song)
@@ -53,7 +52,6 @@ public class PlayList extends JList
         playlist.add(song);
         totalTime += song.getTime();
         song.bumpPopularity();
-        populateListData();
     }
 
     public boolean deleteSong(Song song)
@@ -68,7 +66,7 @@ public class PlayList extends JList
         playlist.remove(index);
         totalTime  -= song.getTime();
         song.dropPopularity();
-        populateListData();
+
         return true;
     }
 
@@ -76,7 +74,6 @@ public class PlayList extends JList
     {
         playlist.clear();
         totalTime = 0;
-        populateListData();
     }
 
     public boolean swap(Song s1, Song s2)
@@ -91,7 +88,6 @@ public class PlayList extends JList
         playlist.set(ind1, s2);
         playlist.set(ind2, s1);
 
-        populateListData();
         return true;
     }
 
@@ -126,13 +122,12 @@ public class PlayList extends JList
             playlist.remove(a);
         }
         playlist = p;
-
-        populateListData();
     }
 
     public int getTotalTime()     { return totalTime; }
+    public String getName()       { return name; }
 
-    private void populateListData()
+    public String[] populateListData()
     {
         String songs[] = new String[playlist.size() + 1];
         for(int i = 0; i < playlist.size(); ++i)
@@ -144,7 +139,8 @@ public class PlayList extends JList
         else
             summary += StringConstantHolder.PL_SUM_PLUR;
         songs[playlist.size()] = summary;
-        setListData(songs);
+
+        return songs;
     }
 
     public boolean containsSong(Song song)
@@ -193,17 +189,11 @@ public class PlayList extends JList
     public boolean equals(PlayList other)
     {
         if(!other.getName().equals(getName()))
-        {
-            System.out.println("Names do not match!");
             return false;
-        }
         
         if(playlist.size() != other.playlist.size())
-        {
-            System.out.println("Sizes do not match!");
             return false;
-        }
-
+ 
         for(Song s : playlist)
         {
             boolean equal = false;
@@ -216,10 +206,7 @@ public class PlayList extends JList
                 }
             }
             if(!equal)
-            {
-                System.out.println("Found songs that do not match!");
                 return false;
-            }
         }
 
         return true;
@@ -227,7 +214,10 @@ public class PlayList extends JList
 
     public void savePlaylist()
     {
-        if(chooser.showSaveDialog(this) == JFileChooser.CANCEL_OPTION)
+        if(chooser == null)
+            chooser = new JFileChooser();
+
+        if(chooser.showSaveDialog(null) == JFileChooser.CANCEL_OPTION)
             return;
 
         savePlaylist(chooser.getSelectedFile());
@@ -260,7 +250,10 @@ public class PlayList extends JList
 
     public boolean loadPlaylist()
     {
-        if(chooser.showOpenDialog(this) == JFileChooser.CANCEL_OPTION)
+        if(chooser == null)
+            chooser = new JFileChooser();
+
+        if(chooser.showOpenDialog(null) == JFileChooser.CANCEL_OPTION)
             return false;
 
         return loadPlaylist(chooser.getSelectedFile());

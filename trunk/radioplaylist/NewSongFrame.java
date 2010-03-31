@@ -36,10 +36,9 @@ public class NewSongFrame extends JFrame
     private JLabel colonLabel;
     private JTextField secField;
 
-    private JPanel panel;
-
     public NewSongFrame(final PlayListFrame pl)
     {
+        super();
         pl_panel = pl;
 
         if(pl_panel == null)
@@ -52,6 +51,12 @@ public class NewSongFrame extends JFrame
         setSize(520, 160);
         setLocation(200, 200);
 
+        initializeComponents();
+        addComponents();
+    }
+
+    private void initializeComponents()
+    {
         button = new JButton(StringConstantHolder.NSF_BUTTON_NAME);
 
         titleLabel = new JLabel(StringConstantHolder.NSF_TITLE_LABEL);
@@ -76,8 +81,12 @@ public class NewSongFrame extends JFrame
         colonLabel = new JLabel(StringConstantHolder.NSF_COLON_LABEL);
         secField = new JTextField(2);
 
-        //initialize
-        panel = new JPanel();
+        button.addActionListener(new NewSongButtonListener());
+    }
+
+    private void addComponents()
+    {
+        JPanel panel = new JPanel();
 
         panel.add(titleLabel);
         panel.add(titleField);
@@ -100,8 +109,6 @@ public class NewSongFrame extends JFrame
         panel.add(secField);
 
         panel.add(button);
-
-        button.addActionListener(new NewSongButtonListener());
 
         add(panel);
     }

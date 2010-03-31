@@ -16,7 +16,19 @@ public class LibraryPanel extends JPanel
     private PlayList library;
     private PlayList commercial;
 
-    public LibraryPanel(PlayList library, PlayList commercial)
+    public LibraryPanel()
+    {
+        super();
+
+        tabs = new JTabbedPane();
+
+        library_table = new JTable();
+        commercial_table = new JTable();
+
+        add(tabs);
+    }
+
+    public void initialize(PlayList library, PlayList commercial)
     {
         if(library == null || commercial == null)
         {
@@ -26,53 +38,82 @@ public class LibraryPanel extends JPanel
         this.library = library;
         this.commercial = commercial;
 
-        tabs = new JTabbedPane();
-
-        library_table = new JTable();
         PlayListTableModel model = new PlayListTableModel(library);
         library_table.setModel(model);
         library_table.setRowSorter(new TableRowSorter<PlayListTableModel>(model));
 
-        commercial_table = new JTable();
-        PlayListTableModel model_comm = new PlayListTableModel(library);
+        PlayListTableModel model_comm = new PlayListTableModel(commercial);
         commercial_table.setModel(model_comm);
         commercial_table.setRowSorter(new TableRowSorter<PlayListTableModel>(model_comm));
 
         tabs.add(library.getName(), new JScrollPane(library_table));
-        tabs.add("Commercial Library", new JScrollPane(commercial_table));
-        add(tabs);
+        tabs.add(commercial.getName(), new JScrollPane(commercial_table));
+
+        revalidate();
     }
 
-    public boolean addSongToLibrary(Song song)
+    public boolean addSongToSelectedLibrary(Song song)
     {
-        if(library.containsSong(song))
+        JTable table = commercial_table;
+        PlayList pl  = commercial;
+        if(((JScrollPane)tabs.getSelectedComponent()).getViewport().getView() == library_table)
+        {
+            table = library_table;
+            pl = library;
+        }
+
+        if(pl.containsSong(song))
             return false;
 
-        library.addSong(song);
-        library_table.revalidate();
+        pl.addSong(song);
+        table.revalidate();
 
         return true;
     }
 
-    public boolean removeSongFromLibrary(Song song)
+    public boolean removeSongFromSelectedLibrary(Song song)
     {
-        if(!library.containsSong(song))
+        JTable table = commercial_table;
+        PlayList pl  = commercial;
+        if(((JScrollPane)tabs.getSelectedComponent()).getViewport().getView() == library_table)
+        {
+            table = library_table;
+            pl = library;
+        }
+
+        if(!pl.containsSong(song))
             return false;
 
-        library.deleteSong(song);
-        library_table.revalidate();
+        pl.deleteSong(song);
+        table.revalidate();
 
         return true;
     }
 
-    public Song getSelectedLibrarySong()
+    public Song getSelectedSong()
     {
-        if(library_table.getSelectedRow() < 0
-                || library_table.getSelectedRow() >= library_table.getModel().getRowCount())
+        JTable table = commercial_table;
+        PlayList pl  = commercial;
+        if(((JScrollPane)tabs.getSelectedComponent()).getViewport().getView() == library_table)
+        {
+            table = library_table;
+            pl = library;
+        }
+
+        if(table.getSelectedRow() < 0
+                || table.getSelectedRow() >= table.getModel().getRowCount())
             return null;
 
-        return library.getSongAt(
-                library_table.getRowSorter().convertRowIndexToModel(library_table.getSelectedRow()));
+        return pl.getSongAt(
+                table.getRowSorter().convertRowIndexToModel(table.getSelectedRow()));
+    }
+
+    public PlayList getSelectedLibrary()
+    {
+        if(((JScrollPane)tabs.getSelectedComponent()).getViewport().getView() == library_table)
+            return library;
+
+        return commercial;
     }
 
     public PlayList getLibrary()

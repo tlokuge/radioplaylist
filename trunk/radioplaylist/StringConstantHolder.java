@@ -3,11 +3,12 @@ package radioplaylist;
 public abstract class StringConstantHolder
 {
     // RadioPlayList
-    static String RD_PLYLST_IMG_FLDR = "src/images/";
-    static String RD_PLYLST_USR_FLDR = "src/users/";
-    static String RD_PLYLST_USR_FILE = "users.txt";
-    static String RD_PLYLST_LBR_FILE = "library.txt";
-    static String RD_PLYLST_PL_FILE  = "_playlists.txt";
+    static final String RD_PLYLST_IMG_FLDR = "src/images/";
+    static final String RD_PLYLST_USR_FLDR = "src/users/";
+    static final String RD_PLYLST_USR_FILE = "users.txt";
+    static final String RD_PLYLST_LBR_FILE = "library.txt";
+    static final String RD_PLYLST_COM_FILE = "commercials.txt";
+    static final String RD_PLYLST_PL_FILE  = "_playlists.txt";
 
     static final String IMG_LOAD_ERR = "Unable to load image: ";
     static final String RD_PLYLIST_FATAL_ERROR = "Fatal Error";
@@ -31,6 +32,7 @@ public abstract class StringConstantHolder
 
     static final String LGN_MGR_LD_ERR_1   = "Unable to load unsaved user";
     static final String LGN_MGR_LD_ERR_2   = "Unable to load user library for %s!";
+    static final String LGN_MGR_LD_ERR_3   = "Unable to load user commercial library for %s!";
     static final String LGN_MGR_PL_LD_ERR  = "Unable to load playlist [%s]!";
     static final String LGN_MGR_LD_ERR_TTL = "Load Error!";
 
@@ -96,6 +98,8 @@ public abstract class StringConstantHolder
     static final String PP_TIME_TTL   = "Time Sufficiency Alert";
     static final String PP_PL_NM_PRMPT= "Enter a name for the playlist";
     static final String PP_PL_NM_TTL  = "New PlayList";
+    static final String PP_INV_NAME   = "Please enter a difference playlist name!";
+    static final String PP_NAME_ERRTTL= "Invalid Name Error!";
 
     // Menu Bar
     static final String PP_MN_BR      = "Radio PlayList";
