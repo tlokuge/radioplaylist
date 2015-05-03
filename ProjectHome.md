@@ -1,0 +1,1 @@
+This program allows you to create a virtual playlist of songs that can be modified at will.
